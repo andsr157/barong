@@ -10,3 +10,13 @@ useHead({
     <NuxtPage />
   </NuxtLayout>
 </template>
+
+<style>
+html,
+body,
+#__nuxt {
+  height: 100vh;
+  width: 360px;
+  max-width: 375px;
+}
+</style>
