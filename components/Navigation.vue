@@ -14,7 +14,7 @@ defineProps<Props>()
 
 <template>
   <nav
-    class="fixed w-full max-w-[375px] bottom-0 h-14 px-6 py-4 shadow-[0px_-5px_20px_-10px_rgba(0,0,0,0.25)]"
+    class="fixed w-full max-w-[375px] bottom-0 h-14 px-6 py-4 shadow-[0px_-5px_20px_-10px_rgba(0,0,0,0.25)] bg-white"
   >
     <ul class="flex justify-between">
       <li v-for="nav in navigation" :key="nav.path">

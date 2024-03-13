@@ -1,10 +1,11 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: "partner",
-})
+const data = ref("")
 </script>
 <template>
-  <section class="px-6">
-    <h1 class="text-xl font-bold mt-10">Hello July sangean</h1>
-  </section>
+  <HomeUserHero />
+
+  <HomeUserTrash />
+  <!-- <input type="text" class="border-[2px] w-24 mb-10 mx-6" />
+  {{ data }} -->
+  <HomeUserActiveTransaction />
 </template>
