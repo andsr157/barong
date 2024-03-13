@@ -7,9 +7,13 @@ const colors = {
     "brg-primary": "#307FF5",
     "brg-secondary": "#3BCEE0",
     "brg-primary-dark": "#363F5E",
+    "brg-secondary-dark": "#384D84",
     "brg-dark-gray": "#4A526E",
     "brg-light-gray": "#C1C9D6",
-    "brg-red": "F53030",
+    "brg-red": "#F53030",
+    "brg-orange": "#F9A43A",
+    "brg-brown": "#C75025",
+    "brg-white": "#F6F6F8",
   },
 }
 
