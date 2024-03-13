@@ -2,7 +2,7 @@
 import { TRASH } from "~/constants/trash.constants"
 </script>
 <template>
-  <section class="ps-6">
+  <section class="ps-6 mb-10">
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Total sampahmu
     </h2>
