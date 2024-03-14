@@ -8,17 +8,17 @@ export const NAVIGATION = [
     {
         name: 'history',
         icon: 'lets-icons:order-fill',
-        path: '/history',
+        path: '/user/history',
     },
     {
         name: 'transaction',
         icon: 'heroicons:plus-16-solid',
-        path: '/transaction/add',
+        path: '/user/transaction/add',
     },
     {
         name: 'chat',
         icon: 'mingcute:chat-1-fill',
-        path: '/chat',
+        path: '/user/chat',
     },
     {
         name: 'user',

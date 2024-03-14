@@ -1,11 +1,9 @@
-<script setup lang="ts">
-const data = ref("")
-</script>
 <template>
-  <HomeUserHero />
+  <div>
+    <SectionHomeUserHero />
 
-  <HomeUserTrash />
-  <!-- <input type="text" class="border-[2px] w-24 mb-10 mx-6" />
-  {{ data }} -->
-  <HomeUserActiveTransaction />
+    <SectionHomeUserTrash />
+
+    <SectionHomeUserActiveTransaction />
+  </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TRASH } from "~/constants/trash.constants"
+import { TRASH_CARD } from "~/constants/trash.constants"
 </script>
 <template>
   <section class="ps-6 mb-10">
@@ -8,7 +8,7 @@ import { TRASH } from "~/constants/trash.constants"
     </h2>
     <div>
       <Swiper :slides-per-view="1.45" :loop="true">
-        <SwiperSlide v-for="data in TRASH">
+        <SwiperSlide v-for="data in TRASH_CARD">
           <CardTrash
             :category="data.category"
             :weight="data.weight"

@@ -1,5 +1,5 @@
 
-export const TRASH = [
+export const TRASH_CARD = [
     {
         category: 'Plastik',
         weight: 12,
@@ -43,4 +43,32 @@ export const TRASH = [
         dark: false
     },
 
+]
+
+
+export const TRANSACTION = [
+    {
+        detailSampah: [
+            { category: "Alumunium", subcategory: 'Perabot' },
+            { category: "Plastik", subcategory: 'Plastik Bening' },
+            { category: "Kertas", subcategory: 'Hvs' },
+        ],
+        status: "mencari pengepul",
+        review: {
+            rate: null,
+            ulasan: null,
+        },
+    },
+    {
+        detailSampah: [
+            { category: "Plastik", subcategory: 'Plastik Bening' },
+            { category: "Alumunium", subcategory: 'Perabot' },
+            { category: "Kertas", subcategory: 'Hvs' },
+        ],
+        status: "diambil",
+        review: {
+            rate: null,
+            ulasan: null,
+        },
+    },
 ]
