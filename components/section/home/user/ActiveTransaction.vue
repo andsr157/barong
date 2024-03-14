@@ -1,32 +1,6 @@
 <script setup lang="ts">
 import { formatSampah } from "~/composables/helpers"
-
-const activeTransaction = [
-  {
-    detailSampah: [
-      { category: "Alumunium" },
-      { category: "Plastik" },
-      { category: "Kertas" },
-    ],
-    status: "mencari pengepul",
-    review: {
-      rate: null,
-      ulasan: null,
-    },
-  },
-  {
-    detailSampah: [
-      { category: "Plastik" },
-      { category: "Alumunium" },
-      { category: "Kertas" },
-    ],
-    status: "diambil",
-    review: {
-      rate: null,
-      ulasan: null,
-    },
-  },
-]
+import { TRANSACTION } from "~/constants/trash.constants"
 </script>
 
 <template>
@@ -36,7 +10,7 @@ const activeTransaction = [
     </h2>
     <div class="flex flex-col gap-5">
       <CardTransactionUser
-        v-for="transaction in activeTransaction"
+        v-for="transaction in TRANSACTION"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
         :review="transaction.review.rate"

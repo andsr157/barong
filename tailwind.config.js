@@ -8,6 +8,7 @@ const colors = {
     "brg-secondary": "#3BCEE0",
     "brg-primary-dark": "#363F5E",
     "brg-secondary-dark": "#384D84",
+    "brg-gray": "#4A526E",
     "brg-dark-gray": "#4A526E",
     "brg-light-gray": "#C1C9D6",
     "brg-red": "#F53030",
