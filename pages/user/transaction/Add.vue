@@ -17,5 +17,6 @@ definePageMeta({
     </section>
 
     <SectionTransactionUserTrashImage />
+    <SectionTransactionUserTrashData />
   </div>
 </template>
