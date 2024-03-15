@@ -7,9 +7,7 @@ interface Props {
   options?: category[]
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  labelClass: "font-semibold text-brg-primary-dark",
-})
+const props = defineProps<Props>()
 
 const dropDown = ref<HTMLElement | null>(null)
 const emit = defineEmits()

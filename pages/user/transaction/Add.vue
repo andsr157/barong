@@ -18,5 +18,8 @@ definePageMeta({
 
     <SectionTransactionUserTrashImage />
     <SectionTransactionUserTrashData />
+    <SectionTransactionUserTrashNote />
+
+    <ButtonLarge label="Selanjutnya" class="my-12" />
   </div>
 </template>

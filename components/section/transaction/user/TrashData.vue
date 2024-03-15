@@ -3,7 +3,7 @@ import { TRANSACTION } from "~/constants/trash.constants"
 </script>
 
 <template>
-  <section class="mt-6 pb-48">
+  <section class="my-6">
     <h2 class="text-brg-primary-dark font-semibold">Data Sampah</h2>
     <div class="my-2">
       <div
