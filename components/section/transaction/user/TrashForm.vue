@@ -52,7 +52,11 @@ const optionSubCategory = computed((): subcategory[] => {
 })
 
 const selectedCategory = ref<category>()
-const selectedSubCategory = ref<category>()
+const selectedSubCategory = ref<category | null>()
+
+watch(selectedCategory, () => {
+  selectedSubCategory.value = null
+})
 </script>
 
 <template>
@@ -64,7 +68,7 @@ const selectedSubCategory = ref<category>()
         label="Kategori sampah"
         label-class="!text-[10px] !font-medium"
         v-model="selectedCategory"
-        :option="category"
+        :options="category"
       />
     </div>
     <div>
@@ -72,7 +76,7 @@ const selectedSubCategory = ref<category>()
         label="SubKategori sampah"
         label-class="!text-[10px] !font-medium"
         v-model="selectedSubCategory"
-        :option="optionSubCategory"
+        :options="optionSubCategory"
       />
     </div>
   </div>

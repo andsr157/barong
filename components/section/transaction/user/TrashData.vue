@@ -14,7 +14,7 @@ import { TRANSACTION } from "~/constants/trash.constants"
           class="w-48 h-[38px] border-[1px] border-brg-light-gray rounded-[10px] px-3 py-[10px] shrink-0"
         >
           <p class="text-xs text-brg-primary-dark font-medium">
-            {{ trash.category }} ! {{ trash.subcategory }}
+            {{ trash.category }} | {{ trash.subcategory }}
           </p>
         </div>
         <Input
