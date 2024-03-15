@@ -4,6 +4,8 @@ defineProps<{
   name: string
   telp: string
   address: string
+  noButton?: boolean
+  labelButton?: string
 }>()
 </script>
 
@@ -15,15 +17,18 @@ defineProps<{
       <Icon name="majesticons:home" size="20px" />
       <h3 class="text-sm font-semibold">{{ label }}</h3>
     </div>
-    <div class="mb-3 text-xs flex flex-col gap-y-1">
+    <div class="text-xs flex flex-col gap-y-1">
       <p class="text-brg-primary-dark font-semibold">{{ name }}</p>
       <p class="text-brg-gray">{{ telp }}</p>
       <p class="text-brg-gray">
         {{ address }}
       </p>
     </div>
-    <div class="w-full flex justify-end">
-      <slot />
+    <div class="w-full flex justify-end mt-3" v-if="!noButton">
+      <ButtonSmall
+        :label="labelButton || ''"
+        button-class="!px-6 !font-medium"
+      />
     </div>
   </div>
 </template>

@@ -7,8 +7,7 @@
       name="July Dwi Saputra"
       telp="+62876543219"
       address="Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561"
-    >
-      <ButtonSmall label="Ubah Alamat" button-class="!px-6 !font-medium" />
-    </CardAddress>
+      label-button="Ubah Alamat"
+    />
   </section>
 </template>
