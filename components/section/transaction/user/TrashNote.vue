@@ -12,13 +12,15 @@ const data = ref("")
         <span>opsional</span>
       </div>
     </div>
-    <textarea
-      cols="10"
-      rows="8"
-      class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
-      placeholder="isi catatan"
-      v-model="data"
-    >
-    </textarea>
+    <ClientOnly>
+      <textarea
+        cols="10"
+        rows="8"
+        class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
+        placeholder="isi catatan"
+        v-model="data"
+      >
+      </textarea>
+    </ClientOnly>
   </section>
 </template>
