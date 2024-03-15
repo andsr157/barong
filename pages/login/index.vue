@@ -25,48 +25,41 @@ const switchVisibility = () =>
     </div>
     <div class="mt-8 flex flex-col gap-5 right-0">
       <div>
-        <div
-          class="flex items-center border-solid border-[#E0E0E0] border-[1px] px-5 gap-2 h-[41px] w-[292-px] rounded-3xl"
-        >
-          <Icon name="mdi:email" class="text-brg-primary text-xl" />
-          <input
-            type="email"
-            class="placeholder:text-[11px] focus:outline-none focus:text-xs text-xs"
-            placeholder="Email"
-          />
-        </div>
-        <p class="text-brg-red text-[8px] px-5 mt-[5px]" v-show="false">
-          Email tidak boleh kosong.
-        </p>
+        <Input
+          wrapperClass="!rounded-[20px] gap-2 !px-5"
+          placeholder="Email"
+          prefixIcon="mdi:email"
+          prefixIconColor="text-brg-primary"
+          prefixIconSize="22"
+          errorMessage="Email tidak valid"
+          inputClass="placeholder:text-[11px]"
+        />
       </div>
 
       <div>
-        <div
-          class="flex justify-between items-center border-solid border-[#E0E0E0] border-[1px] px-5 h-[41px] w-[292-px] rounded-3xl"
+        <Input
+          wrapperClass="!rounded-[20px] gap-2 !px-5"
+          placeholder="Password"
+          prefixIcon="mdi:lock"
+          prefixIconColor="text-brg-primary"
+          prefixIconSize="22"
+          :type="passwordFieldType"
+          v-model="password"
+          errorMessage="Password minimal 8 karakter."
+          inputClass="placeholder:text-[11px]"
         >
-          <div class="flex items-center gap-2">
-            <Icon name="mdi:lock" class="text-brg-primary text-xl" />
-            <input
-              :type="passwordFieldType"
-              v-model="password"
-              class="placeholder:text-[11px] focus:outline-none focus:text-xs text-xs"
-              placeholder="Kata Sandi"
+          <template #suffix>
+            <Icon
+              @click="switchVisibility"
+              :name="
+                passwordFieldType === 'password'
+                  ? 'ant-design:eye-filled'
+                  : 'ant-design:eye-invisible-filled'
+              "
+              class="text-brg-primary text-2xl text-end cursor-pointer"
             />
-          </div>
-
-          <Icon
-            @click="switchVisibility"
-            :name="
-              passwordFieldType === 'password'
-                ? 'ant-design:eye-filled'
-                : 'ant-design:eye-invisible-filled'
-            "
-            class="text-brg-primary text-xl text-end cursor-pointer"
-          />
-        </div>
-        <p class="text-brg-red text-[8px] px-5 mt-[5px]" v-show="false">
-          Kata sandi minimal 8 karakter.
-        </p>
+          </template>
+        </Input>
       </div>
     </div>
     <NuxtLink

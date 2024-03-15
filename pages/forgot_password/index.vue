@@ -15,19 +15,17 @@ definePageMeta({
     </p>
     <div class="mt-8 flex flex-col gap-5 right-0">
       <div>
-        <div
-          class="flex items-center border-solid border-[#E0E0E0] border-[1px] px-5 gap-2 h-[41px] w-[292-px] rounded-3xl"
-        >
-          <Icon name="mdi:email" class="text-brg-primary text-xl" />
-          <input
-            type="email"
-            class="placeholder:text-[11px] focus:outline-none focus:text-xs text-xs"
+        <div>
+          <Input
+            wrapperClass="!rounded-[20px] gap-2 !px-5"
             placeholder="Email"
+            prefixIcon="mdi:email"
+            prefixIconColor="text-brg-primary"
+            prefixIconSize="22"
+            errorMessage="Email tidak valid"
+            inputClass="placeholder:text-[11px]"
           />
         </div>
-        <p class="text-brg-red text-[8px] px-5 mt-[5px]" v-show="false">
-          Email tidak boleh kosong.
-        </p>
       </div>
     </div>
 
