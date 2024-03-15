@@ -59,7 +59,7 @@ const updateInput = (event: Event) => {
     />
     <slot name="suffix" />
   </div>
-  <p v-if="errorMessage" class="text-brg-red text-xs px-5 mt-[5px]">
+  <p v-if="errorMessage" class="text-brg-red text-[10px] px-5 mt-[5px]">
     {{ errorMessage }}
   </p>
 </template>
