@@ -6,6 +6,7 @@ defineProps<{
   address: string
   noButton?: boolean
   labelButton?: string
+  path?: string
 }>()
 </script>
 
@@ -25,10 +26,12 @@ defineProps<{
       </p>
     </div>
     <div class="w-full flex justify-end mt-3" v-if="!noButton">
-      <ButtonSmall
-        :label="labelButton || ''"
-        button-class="!px-6 !font-medium"
-      />
+      <NuxtLink :to="path">
+        <ButtonSmall
+          :label="labelButton || ''"
+          button-class="!px-6 !font-medium"
+        />
+      </NuxtLink>
     </div>
   </div>
 </template>
