@@ -1,14 +1,19 @@
 <script setup lang="ts">
-defineProps<{
+interface Props {
   label: string
-  color: string
-}>()
+  buttonClass?: string
+  color?: string
+}
+
+withDefaults(defineProps<Props>(), {
+  color: "bg-brg-primary",
+})
 </script>
 
 <template>
   <button
     class="min-w-[86px] h-8 rounded-[20px] text-white text-[11px] font-semibold"
-    :class="color"
+    :class="[buttonClass, color]"
   >
     {{ label }}
   </button>

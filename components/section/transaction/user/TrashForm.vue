@@ -44,6 +44,8 @@ const subcategory = [
   },
 ]
 
+const emit = defineEmits()
+
 const optionSubCategory = computed((): subcategory[] => {
   if (!selectedCategory.value) return []
   return subcategory.filter(
@@ -99,6 +101,7 @@ watch(selectedCategory, () => {
         color="brg-primary"
         button-class="!rounded-[10px] "
         outline
+        @click="emit('closeform')"
       />
     </div>
   </div>

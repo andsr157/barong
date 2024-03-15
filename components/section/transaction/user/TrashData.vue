@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { TRANSACTION } from "~/constants/trash.constants"
+
+const trashFormVisible = ref(false)
 </script>
 
 <template>
@@ -43,8 +45,16 @@ import { TRANSACTION } from "~/constants/trash.constants"
       </div>
     </div>
 
-    <ButtonLarge label="Tambah Sampah" class="mx-auto" />
+    <ButtonLarge
+      label="Tambah Sampah"
+      class="mx-auto"
+      @click="trashFormVisible = true"
+    />
 
-    <SectionTransactionUserTrashForm class="mt-3" />
+    <SectionTransactionUserTrashForm
+      class="mt-3"
+      v-if="trashFormVisible"
+      @closeform="trashFormVisible = false"
+    />
   </section>
 </template>
