@@ -44,6 +44,8 @@ const subcategory = [
   },
 ]
 
+const emit = defineEmits()
+
 const optionSubCategory = computed((): subcategory[] => {
   if (!selectedCategory.value) return []
   return subcategory.filter(
@@ -52,7 +54,11 @@ const optionSubCategory = computed((): subcategory[] => {
 })
 
 const selectedCategory = ref<category>()
-const selectedSubCategory = ref<category>()
+const selectedSubCategory = ref<category | null>()
+
+watch(selectedCategory, () => {
+  selectedSubCategory.value = null
+})
 </script>
 
 <template>
@@ -62,17 +68,40 @@ const selectedSubCategory = ref<category>()
     <div>
       <InputDropdown
         label="Kategori sampah"
-        label-class="!text-[10px] !font-medium"
+        label-class="!text-[10px] !font-medium text-brg-primary-dark"
         v-model="selectedCategory"
-        :option="category"
+        :options="category"
       />
     </div>
     <div>
       <InputDropdown
         label="SubKategori sampah"
-        label-class="!text-[10px] !font-medium"
+        label-class="!text-[10px] !font-medium text-brg-primary-dark"
         v-model="selectedSubCategory"
-        :option="optionSubCategory"
+        :options="optionSubCategory"
+      />
+    </div>
+    <div>
+      <Input
+        label="Berat Sampah"
+        label-class="text-[10px] text-brg-primary-dark !font-medium"
+        placeholder="0.0"
+        input-class="text-brg-primary-dark"
+      />
+    </div>
+
+    <div class="mt-3">
+      <ButtonDefault
+        label="Simpan"
+        color="brg-primary"
+        button-class="!rounded-[10px] mb-2"
+      />
+      <ButtonDefault
+        label="Batal"
+        color="brg-primary"
+        button-class="!rounded-[10px] "
+        outline
+        @click="emit('closeform')"
       />
     </div>
   </div>

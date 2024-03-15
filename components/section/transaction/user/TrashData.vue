@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { TRANSACTION } from "~/constants/trash.constants"
+
+const trashFormVisible = ref(false)
 </script>
 
 <template>
-  <section class="mt-6 pb-48">
+  <section class="my-6">
     <h2 class="text-brg-primary-dark font-semibold">Data Sampah</h2>
     <div class="my-2">
       <div
@@ -14,7 +16,7 @@ import { TRANSACTION } from "~/constants/trash.constants"
           class="w-48 h-[38px] border-[1px] border-brg-light-gray rounded-[10px] px-3 py-[10px] shrink-0"
         >
           <p class="text-xs text-brg-primary-dark font-medium">
-            {{ trash.category }} ! {{ trash.subcategory }}
+            {{ trash.category }} | {{ trash.subcategory }}
           </p>
         </div>
         <Input
@@ -43,8 +45,16 @@ import { TRANSACTION } from "~/constants/trash.constants"
       </div>
     </div>
 
-    <ButtonLarge label="Tambah Sampah" class="mx-auto" />
+    <ButtonLarge
+      label="Tambah Sampah"
+      class="mx-auto"
+      @click="trashFormVisible = true"
+    />
 
-    <SectionTransactionUserTrashForm class="mt-3" />
+    <SectionTransactionUserTrashForm
+      class="mt-3"
+      v-if="trashFormVisible"
+      @closeform="trashFormVisible = false"
+    />
   </section>
 </template>
