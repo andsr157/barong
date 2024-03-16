@@ -14,7 +14,7 @@ defineProps<{
   >
     <NuxtImg
       src="/assets/dummy-trash.png"
-      class="object-cover"
+      class="object-cover w-full"
       width="312"
       height="159"
     />

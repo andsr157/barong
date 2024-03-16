@@ -13,10 +13,13 @@ useHead({
 
 <style>
 html,
-body,
-#__nuxt {
+body{
   height: 100vh;
-  width: 360px;
-  max-width: 375px;
+}
+#__nuxt {
+ 
+  max-width: 450px;
+  margin-right: auto;
+  margin-left: auto;
 }
 </style>

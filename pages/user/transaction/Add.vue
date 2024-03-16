@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "blank",
-})
+});
 </script>
 
 <template>
@@ -23,7 +23,8 @@ definePageMeta({
     <SectionTransactionUserTrashAddress />
 
     <SectionTransactionUserTrashNote />
-
-    <ButtonLarge label="Selanjutnya" class="my-12" />
+    <div class="flex">
+      <ButtonLarge label="Selanjutnya" class="my-12 mx-auto" />
+    </div>
   </div>
 </template>
