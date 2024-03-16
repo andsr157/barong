@@ -72,3 +72,55 @@ export const TRANSACTION = [
         },
     },
 ]
+export const TRANSACTIONSELESAI = [
+    {
+        detailSampah: [
+            { category: "Alumunium", subcategory: 'Perabot' },
+            { category: "Plastik", subcategory: 'Plastik Bening' },
+            { category: "Kertas", subcategory: 'Hvs' },
+        ],
+        status: "selesai",
+        review: {
+            rate: null,
+            ulasan: null,
+        },
+    },
+    {
+        detailSampah: [
+            { category: "Plastik", subcategory: 'Plastik Bening' },
+            { category: "Alumunium", subcategory: 'Perabot' },
+            { category: "Kertas", subcategory: 'Hvs' },
+        ],
+        status: "selesai",
+        review: {
+            rate: null,
+            ulasan: null,
+        },
+    },
+]
+export const TRANSACTIONDIBATALKAN = [
+    {
+        detailSampah: [
+            { category: "Alumunium", subcategory: 'Perabot' },
+            { category: "Plastik", subcategory: 'Plastik Bening' },
+            { category: "Kertas", subcategory: 'Hvs' },
+        ],
+        status: "dibatalkan",
+        review: {
+            rate: null,
+            ulasan: null,
+        },
+    },
+    {
+        detailSampah: [
+            { category: "Plastik", subcategory: 'Plastik Bening' },
+            { category: "Alumunium", subcategory: 'Perabot' },
+            { category: "Kertas", subcategory: 'Hvs' },
+        ],
+        status: "dibatalkan",
+        review: {
+            rate: null,
+            ulasan: null,
+        },
+    },
+]
