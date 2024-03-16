@@ -4,12 +4,16 @@
     <div
       class="h-[238px] bg-brg-primary rounded-br-3xl rounded-bl-3xl flex flex-col justify-center items-center"
     >
-      <NuxtImg
-        src="/assets/dummy-profile-user.jpeg"
-        width="98"
-        height="98"
-        class="object-cover rounded-full border-[3px]"
-      />
+      <div
+        class="w-[98px] h-[98px] rounded-full border-[3px] overflow-y-hidden"
+      >
+        <NuxtImg
+          src="/assets/dummy-profile-user.jpeg"
+          width="98"
+          height="98"
+          class="object-cover w-full h-full"
+        />
+      </div>
       <h1 class="font-semibold text-white text-sm">Puan tek</h1>
       <h1 class="text-[11px] text-white font-light">+628965189113</h1>
       <h1 class="text-[11px] text-white font-light">puantek123@gmail.com</h1>
