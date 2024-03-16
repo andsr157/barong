@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "blank",
-});
+})
 </script>
 
 <template>
@@ -24,7 +24,9 @@ definePageMeta({
 
     <SectionTransactionUserTrashNote />
     <div class="flex">
-      <ButtonLarge label="Selanjutnya" class="my-12 mx-auto" />
+      <NuxtLink to="/user/transaction/confirmation">
+        <ButtonLarge label="Selanjutnya" class="my-12 mx-auto" />
+      </NuxtLink>
     </div>
   </div>
 </template>
