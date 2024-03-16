@@ -1,0 +1,68 @@
+<script setup lang="ts">
+import {
+  TRANSACTION,
+  TRANSACTIONDIBATALKAN,
+  TRANSACTIONSELESAI,
+} from "~/constants/trash.constants";
+import { ref } from "vue";
+
+const status = ref("saatIni");
+
+const buttonClick = (selectedStatus: string) => {
+  status.value = selectedStatus;
+};
+
+definePageMeta({
+  layout: "blank",
+});
+</script>
+<template>
+  <Header title="Riwayat Transaksi" />
+  <div class="flex justify-evenly mt-5">
+    <ButtonSmall
+      label="Saat ini"
+      @click="buttonClick('saatIni')"
+      :buttonClass="`${
+        status === 'saatIni' ? '!bg-brg-primary' : '!bg-brg-light-gray'
+      }`"
+    />
+    <ButtonSmall
+      label="Selesai"
+      @click="buttonClick('selesai')"
+      :buttonClass="`${
+        status === 'selesai' ? '!bg-brg-primary' : '!bg-brg-light-gray'
+      }`"
+    />
+    <ButtonSmall
+      label="Dibatalkan"
+      @click="buttonClick('dibatalkan')"
+      :buttonClass="`${
+        status === 'dibatalkan' ? '!bg-brg-primary' : '!bg-brg-light-gray'
+      }`"
+    />
+  </div>
+
+  <div class="px-6 mt-6">
+    <h1 class="font-semibold text-sm">Transaksi Saat ini:</h1>
+    <div class="flex flex-col gap-6 mt-4">
+      <CardTransactionUser
+        v-for="transaction in TRANSACTION"
+        :class="`${status === 'saatIni' ? 'block' : 'hidden'}`"
+        :detail-sampah="formatSampah(transaction.detailSampah)"
+        :status="transaction.status"
+      />
+      <CardTransactionUser
+        v-for="transactionselesai in TRANSACTIONSELESAI"
+        :class="`${status === 'selesai' ? 'block' : 'hidden'}`"
+        :detail-sampah="formatSampah(transactionselesai.detailSampah)"
+        :status="transactionselesai.status"
+      />
+      <CardTransactionUser
+        v-for="transactiondibatalkan in TRANSACTIONDIBATALKAN"
+        :class="`${status === 'dibatalkan' ? 'block' : 'hidden'}`"
+        :detail-sampah="formatSampah(transactiondibatalkan.detailSampah)"
+        :status="transactiondibatalkan.status"
+      />
+    </div>
+  </div>
+</template>

@@ -45,11 +45,13 @@ const trashFormVisible = ref(false)
       </div>
     </div>
 
-    <ButtonLarge
-      label="Tambah Sampah"
-      class="mx-auto"
-      @click="trashFormVisible = true"
-    />
+    <div class="max-w-max mx-auto">
+
+      <ButtonLarge
+        label="Tambah Sampah"
+        @click="trashFormVisible = true"
+      />
+    </div>
 
     <SectionTransactionUserTrashForm
       class="mt-3"
