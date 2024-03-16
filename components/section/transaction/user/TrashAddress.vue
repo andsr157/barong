@@ -8,7 +8,7 @@
       telp="+62876543219"
       address="Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561"
       label-button="Ubah Alamat"
-      path="/user/address/edit"
+      path="/user/profile/address/edit"
     />
   </section>
 </template>
