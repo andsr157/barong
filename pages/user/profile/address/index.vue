@@ -6,7 +6,7 @@ definePageMeta({
 <template>
   <Header title="Daftar Alamat" />
 
-  <div class="px-5 mt-[20px] flex flex-col gap-6">
+  <div class="px-5 mt-[20px] flex flex-col gap-7">
     <CardAddress
       label="Rumah"
       name="July Dwi Saputra"
@@ -14,7 +14,7 @@ definePageMeta({
       address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
       labelButton="Ubah Alamat"
       path="/user/profile/address/edit"
-      :status=true
+      :status="true"
     />
     <CardAddress
       label="Rumah"
@@ -23,7 +23,7 @@ definePageMeta({
       address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
       labelButton="Ubah Alamat"
       path="/user/profile/address/edit"
-      :status=false
+      :status="false"
     />
     <CardAddress
       label="Rumah"
@@ -32,11 +32,12 @@ definePageMeta({
       address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
       labelButton="Ubah Alamat"
       path="/user/profile/address/edit"
-      :status=false
+      :status="false"
     />
-    <NuxtLink
-      to="/user/profile/address/add"
-      class="mt-20 mx-auto bg-brg-primary w-[292px] h-[41px] flex justify-center items-center text-white font-medium rounded-3xl"
-      >Tambah Alamat</NuxtLink>
+    <div class="flex">
+      <NuxLink to="/user/profile/address/add" class="mx-auto mt-3 mb-14">
+        <ButtonLarge label="Tambah Alamat" />
+      </NuxLink>
+    </div>
   </div>
 </template>

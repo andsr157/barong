@@ -42,24 +42,31 @@ definePageMeta({
     />
   </div>
 
-  <div class="px-6 mt-6">
+  <div :class="`${status === 'saatIni' ? 'block px-6 mt-6' : 'hidden'}`">
     <h1 class="font-semibold text-sm">Transaksi Saat ini:</h1>
     <div class="flex flex-col gap-6 mt-4">
       <CardTransactionUser
         v-for="transaction in TRANSACTION"
-        :class="`${status === 'saatIni' ? 'block' : 'hidden'}`"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
       />
+    </div>
+  </div>
+  <div :class="`${status === 'selesai' ? 'block px-6 mt-6' : 'hidden'}`">
+    <h1 class="font-semibold text-sm">Transaksi Selesai:</h1>
+    <div class="flex flex-col gap-6 mt-4">
       <CardTransactionUser
         v-for="transactionselesai in TRANSACTIONSELESAI"
-        :class="`${status === 'selesai' ? 'block' : 'hidden'}`"
         :detail-sampah="formatSampah(transactionselesai.detailSampah)"
         :status="transactionselesai.status"
       />
+    </div>
+  </div>
+  <div :class="`${status === 'dibatalkan' ? 'block px-6 mt-6' : 'hidden'}`">
+    <h1 class="font-semibold text-sm">Transaksi Dibatalkan:</h1>
+    <div class="flex flex-col gap-6 mt-4">
       <CardTransactionUser
         v-for="transactiondibatalkan in TRANSACTIONDIBATALKAN"
-        :class="`${status === 'dibatalkan' ? 'block' : 'hidden'}`"
         :detail-sampah="formatSampah(transactiondibatalkan.detailSampah)"
         :status="transactiondibatalkan.status"
       />

@@ -24,8 +24,8 @@ definePageMeta({
 
     <SectionTransactionUserTrashNote />
     <div class="flex">
-      <NuxtLink to="/user/transaction/confirmation">
-        <ButtonLarge label="Selanjutnya" class="my-12 mx-auto" />
+      <NuxtLink to="/user/transaction/confirmation" class="mx-auto">
+        <ButtonLarge label="Selanjutnya" class="my-12" />
       </NuxtLink>
     </div>
   </div>
