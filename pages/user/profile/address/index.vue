@@ -35,9 +35,9 @@ definePageMeta({
       :status="false"
     />
     <div class="flex">
-      <NuxLink to="/user/profile/address/add" class="mx-auto mt-3 mb-14">
+      <NuxtLink to="/user/profile/address/add" class="mx-auto mt-3 mb-14">
         <ButtonLarge label="Tambah Alamat" />
-      </NuxLink>
+      </NuxtLink>
     </div>
   </div>
 </template>
