@@ -49,9 +49,9 @@ export const TRASH_CARD = [
 export const TRANSACTION = [
     {
         detailSampah: [
-            { category: "Alumunium", subcategory: 'Perabot' },
-            { category: "Plastik", subcategory: 'Plastik Bening' },
-            { category: "Kertas", subcategory: 'Hvs' },
+            { category: "Alumunium", subcategory: 'Perabot', maxPrice: 1000, minPrice: 1000, weight: 1.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', maxPrice: 500, minPrice: 1500, weight: 1.5 },
+            { category: "Kertas", subcategory: 'Hvs', maxPrice: 500, minPrice: 1500, weight: 2.0 },
         ],
         status: "mencari pengepul",
         review: {
@@ -61,9 +61,9 @@ export const TRANSACTION = [
     },
     {
         detailSampah: [
-            { category: "Plastik", subcategory: 'Plastik Bening' },
-            { category: "Alumunium", subcategory: 'Perabot' },
-            { category: "Kertas", subcategory: 'Hvs' },
+            { category: "Plastik", subcategory: 'Plastik Bening', maxPrice: 500, minPrice: 1500, weight: 1.5 },
+            { category: "Alumunium", subcategory: 'Perabot', maxPrice: 1000, minPrice: 1000, weight: 1.0 },
+            { category: "Kertas", subcategory: 'Hvs', maxPrice: 500, minPrice: 1500, weight: 2.0 },
         ],
         status: "diambil",
         review: {
