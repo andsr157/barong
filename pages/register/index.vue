@@ -19,7 +19,7 @@ const switchVisibilityConfirmPassword = () =>
 </script>
 
 <template>
-  <section class="relative px-8 h-[800px] pt-[119px] translate-y-1">
+  <section class="px-8 h-[800px] pt-[119px] translate-y-1">
     <div class="text-center font-semibold text-brg-primary-dark text-lg">
       <h1>Daftar</h1>
       <p class="font-normal text-[11px]">
@@ -116,17 +116,8 @@ const switchVisibilityConfirmPassword = () =>
         </Input>
       </div>
     </div>
-
-    <NuxtLink
-      to="/forgot_password"
-      class="text-brg-primary-dark absolute text-[11px] right-0 mt-2 mr-8"
-      >Lupa kata sandi ?</NuxtLink
-    >
-
-    <button
-      class="absolute bg-brg-primary rounded-3xl text-white h-10 w-[292px] items-center bottom-3"
-    >
-      Kirim
-    </button>
+    <div class="flex">
+      <ButtonLarge label="Masuk" class="text-base mx-auto mt-14"/>
+    </div>
   </section>
 </template>

@@ -13,7 +13,7 @@ const switchVisibility = () =>
 </script>
 
 <template>
-  <section class="relative px-8 h-full pt-[119px] translate-y-1">
+  <section class="px-8 h-screen pt-[119px] translate-y-1">
     <div class="text-center font-semibold text-brg-primary-dark text-lg">
       <h1>Masuk</h1>
       <p class="font-normal text-[11px]">
@@ -62,16 +62,16 @@ const switchVisibility = () =>
         </Input>
       </div>
     </div>
-    <NuxtLink
-      to="/forgot_password"
-      class="text-brg-primary-dark absolute text-[11px] right-0 mt-2 mr-8"
-      >Lupa kata sandi ?</NuxtLink
-    >
+    <div class="flex justify-end">
+      <NuxtLink
+        to="/forgot_password"
+        class="text-brg-primary-dark text-[11px]"
+        >Lupa kata sandi ?</NuxtLink
+      >
+    </div>
 
-    <button
-      class="absolute bg-brg-primary rounded-3xl text-white h-10 w-[292px] items-center bottom-3"
-    >
-      Masuk
-    </button>
+    <div class="flex">
+      <ButtonLarge label="Masuk" class="text-base mx-auto mt-14"/>
+    </div>
   </section>
 </template>
