@@ -4,7 +4,7 @@ definePageMeta({
 });
 </script>
 <template>
-  <section class="relative px-8 h-full pt-[119px] translate-y-1">
+  <section class="px-8 h-full pt-[119px] translate-y-1">
     <h1 class="text-brg-primary-dark text-lg font-semibold text-center">
       Lupa Kata Sandi
     </h1>
@@ -28,11 +28,9 @@ definePageMeta({
         </div>
       </div>
     </div>
+    <div class="flex">
+      <ButtonLarge label="Kirim" class="text-base mx-auto mt-10"/>
+    </div>
 
-    <button
-      class="absolute bg-brg-primary rounded-3xl text-white h-10 w-[292px] items-center bottom-3"
-    >
-      Kirim
-    </button>
   </section>
 </template>

@@ -18,7 +18,7 @@ const switchVisibilityConfirmPassword = () =>
     confirmPasswordFieldType.value === "password" ? "text" : "password");
 </script>
 <template>
-  <section class="relative px-8 h-full pt-[119px] translate-y-1">
+  <section class="px-8 h-full pt-[119px] translate-y-1">
     <h1 class="text-brg-primary-dark text-lg font-semibold text-center">
       Ubah Kata Sandi
     </h1>
@@ -80,10 +80,8 @@ const switchVisibilityConfirmPassword = () =>
         </Input>
       </div>
     </div>
-    <button
-      class="absolute bg-brg-primary rounded-3xl text-white h-10 w-[292px] items-center bottom-3"
-    >
-      Kirim
-    </button>
+    <div class="flex">
+      <ButtonLarge label="Kirim" class="text-base mx-auto mt-10"/>
+    </div>
   </section>
 </template>
