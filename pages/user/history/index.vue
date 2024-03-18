@@ -6,13 +6,13 @@ const status = ref("saatIni")
 
 const doneTransaction = computed(() => {
   return TRANSACTION.filter((data) => {
-    return data.status.name === "selesai"
+    return data.status.name === "finish"
   })
 })
 
 const canceledTransaction = computed(() => {
   return TRANSACTION.filter((data) => {
-    return data.status.name === "dibatalkan"
+    return data.status.name === "canceled"
   })
 })
 

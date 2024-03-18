@@ -3,10 +3,12 @@ interface Step {
   icon: string
   name: string
   status: string
+  label: string
 }
 
 const props = defineProps<{
   status: {
+    label: string
     name: string
     status: string
   }
@@ -15,18 +17,21 @@ const props = defineProps<{
 const steps = ref<Step[]>([
   {
     icon: "tabler:user-search",
-    name: "mencari pengepul",
+    name: "searching",
     status: "default",
+    label: "mencari pengepul",
   },
   {
     icon: "ri:takeaway-fill",
-    name: "diambil",
+    name: "taking",
     status: "default",
+    label: "diambil",
   },
   {
     icon: "fa6-solid:handshake-simple",
-    name: "selesai",
+    name: "finish",
     status: "default",
+    label: "selesai",
   },
 ])
 
@@ -100,7 +105,7 @@ watchEffect(() => {
         <div
           class="w-12 ms-1 mt-1 text-center text-[10px] text-brg-primary-dark font-semibold"
         >
-          {{ step.name }}
+          {{ step.label }}
         </div>
       </li>
     </ol>

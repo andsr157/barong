@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { formatSampah } from "~/composables/helpers"
 import { TRANSACTION } from "~/constants/trash.constants"
+
+const activeTransaction = computed(() => {
+  return TRANSACTION.filter((data) => {
+    return data.status.name === "taking" || data.status.name === "searching"
+  })
+})
 </script>
 
 <template>
@@ -10,7 +16,7 @@ import { TRANSACTION } from "~/constants/trash.constants"
     </h2>
     <div class="flex flex-col gap-5">
       <CardTransactionUser
-        v-for="transaction in TRANSACTION"
+        v-for="transaction in activeTransaction"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
         :review="transaction.review.rate"
