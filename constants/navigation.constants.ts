@@ -31,7 +31,7 @@ export const NAVIGATION_PENGEPUL = [
     {
         name: 'home',
         icon: 'majesticons:home',
-        path: '/user',
+        path: '/partner',
     },
     {
         name: 'history',
@@ -41,7 +41,7 @@ export const NAVIGATION_PENGEPUL = [
     {
         name: 'partner-transaction',
         icon: 'lets-icons:order-fill',
-        path: '/transaction/add',
+        path: 'partner/transaction',
     },
     {
         name: 'chat',
