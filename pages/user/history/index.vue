@@ -23,7 +23,7 @@ const canceledTransaction = computed(() => {
 
 const data = ref<any>({
   name: "saat ini",
-  data: null,
+  data: activeTransaction,
 })
 const filterTransaction = (status: string) => {
   if (status === "active") {
