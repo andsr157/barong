@@ -9,6 +9,7 @@ const trashFormVisible = ref(false)
     <h2 class="text-brg-primary-dark font-semibold">Data Sampah</h2>
     <div class="my-2">
       <div
+        v-if="true"
         class="flex gap-x-1 mb-2 h-[38px]"
         v-for="trash in TRANSACTION[0].detailSampah"
       >
@@ -36,6 +37,16 @@ const trashFormVisible = ref(false)
         </button>
       </div>
 
+      <div class="w-full" v-if="false">
+        <div
+          class="w-full h-[38px] border-[1px] border-brg-light-gray rounded-[10px] px-3 py-[10px] shrink-0"
+        >
+          <p class="text-xs text-brg-primary-dark font-medium text-opacity-80">
+            Belum ada sampah yang ditambahkan
+          </p>
+        </div>
+      </div>
+
       <div
         class="flex gap-x-2 justify-end text-xs text-brg-primary-dark font-medium mt-3"
       >
@@ -46,11 +57,7 @@ const trashFormVisible = ref(false)
     </div>
 
     <div class="max-w-max mx-auto">
-
-      <ButtonLarge
-        label="Tambah Sampah"
-        @click="trashFormVisible = true"
-      />
+      <ButtonLarge label="Tambah Sampah" @click="trashFormVisible = true" />
     </div>
 
     <SectionTransactionUserTrashForm
