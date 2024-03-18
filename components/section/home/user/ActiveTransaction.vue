@@ -20,6 +20,7 @@ const activeTransaction = computed(() => {
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
         :review="transaction.review.rate"
+        :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>
   </section>
