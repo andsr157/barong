@@ -1,7 +1,10 @@
 <script setup lang="ts">
 defineProps<{
   detailSampah: string
-  status: string
+  status: {
+    name: string
+    status: string
+  }
   review?: number | null
 }>()
 </script>
@@ -16,12 +19,12 @@ defineProps<{
       </h3>
       <span
         class="text-[11px] text-brg-primary font-semibold text-end w-[105px]"
-        >{{ status }}</span
+        >{{ status.name }}</span
       >
     </div>
     <div>
       <div
-        v-if="status === 'diambil' || status === 'selesai'"
+        v-if="status.name === 'diambil' || status.name === 'selesai'"
         class="flex gap-x-2 items-center"
       >
         <NuxtImg
@@ -36,10 +39,10 @@ defineProps<{
         </span>
       </div>
       <div>
-        <p class="text-[13px]" v-if="status === 'mencari pengepul'">
+        <p class="text-[13px]" v-if="status.name === 'mencari pengepul'">
           Permintaanmu sedang diproses. Silahkan menunggu.
         </p>
-        <p class="text-[13px]" v-else-if="status === 'dibatalkan'">
+        <p class="text-[13px]" v-else-if="status.name === 'dibatalkan'">
           Transaksi anda telah dibatalkan. Anda bisa mengajukan kembali.
         </p>
       </div>
@@ -48,28 +51,28 @@ defineProps<{
     <div class="flex justify-between items-end">
       <span
         class="text-xs text-[#72798E] font-medium"
-        v-if="status === 'selesai' || status === 'dibatalkan'"
+        v-if="status.name === 'selesai' || status.name === 'dibatalkan'"
         >12 Januari 2024</span
       >
       <span v-else class="text-xs text-[#72798E] font-medium">12:30</span>
       <ButtonSmall
-        v-if="status === 'diambil'"
+        v-if="status.name === 'diambil'"
         label="lacak"
         color="bg-brg-secondary"
       />
       <ButtonSmall
-        v-else-if="status === 'mencari pengepul'"
+        v-else-if="status.name === 'mencari pengepul'"
         label="batalkan"
         color="bg-brg-red"
       />
       <ButtonSmall
-        v-else-if="status === 'dibatalkan'"
+        v-else-if="status.name === 'dibatalkan'"
         label="Buat Transaksi"
         color="bg-brg-secondary"
         class="px-3"
       />
       <ButtonSmall
-        v-else-if="status === 'selesai' && review !== null"
+        v-else-if="status.name === 'selesai' && review !== null"
         label="Beri Nilai"
         color="bg-brg-secondary"
         class="px-3"
