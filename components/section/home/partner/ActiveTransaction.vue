@@ -4,7 +4,7 @@ import { TRANSACTION } from "~/constants/trash.constants"
 
 const activeTransaction = computed(() => {
   return TRANSACTION.filter((data) => {
-    return data.status.name === "diambil"
+    return data.status.name === "taking"
   })
 })
 </script>

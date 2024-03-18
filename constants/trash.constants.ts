@@ -59,7 +59,7 @@ export const TRANSACTION = [
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
             { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
         ],
-        status: { name: 'mencari pengepul', status: 'active' },
+        status: { name: 'searching', label: 'mencari pengepul', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
@@ -77,7 +77,7 @@ export const TRANSACTION = [
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
         ],
-        status: { name: 'diambil', status: 'active' },
+        status: { name: 'taking', label: 'diambil', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
@@ -96,7 +96,7 @@ export const TRANSACTION = [
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
             { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
         ],
-        status: { name: 'selesai', status: 'active' },
+        status: { name: 'finish', label: 'selesai', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
@@ -114,7 +114,7 @@ export const TRANSACTION = [
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
             { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
         ],
-        status: { name: 'selesai', status: 'active' },
+        status: { name: 'finish', label: 'selesai', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
@@ -133,7 +133,7 @@ export const TRANSACTION = [
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
         ],
-        status: { name: 'dibatalkan', status: 'active' },
+        status: { name: 'canceled', label: 'dibatalkan', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
@@ -151,7 +151,7 @@ export const TRANSACTION = [
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
             { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
         ],
-        status: { name: 'dibatalkan', status: 'active' },
+        status: { name: 'canceled', label: 'dibatalkan', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
