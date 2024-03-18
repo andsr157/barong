@@ -1,20 +1,28 @@
 <script setup lang="ts">
-import {
-  TRANSACTION,
-  TRANSACTIONDIBATALKAN,
-  TRANSACTIONSELESAI,
-} from "~/constants/trash.constants";
-import { ref } from "vue";
+import { TRANSACTION } from "~/constants/trash.constants"
+import { ref } from "vue"
 
-const status = ref("saatIni");
+const status = ref("saatIni")
+
+const doneTransaction = computed(() => {
+  return TRANSACTION.filter((data) => {
+    return data.status.name === "selesai"
+  })
+})
+
+const canceledTransaction = computed(() => {
+  return TRANSACTION.filter((data) => {
+    return data.status.name === "dibatalkan"
+  })
+})
 
 const buttonClick = (selectedStatus: string) => {
-  status.value = selectedStatus;
-};
+  status.value = selectedStatus
+}
 
 definePageMeta({
   layout: "blank",
-});
+})
 </script>
 <template>
   <Header title="Riwayat Transaksi" />
@@ -56,7 +64,7 @@ definePageMeta({
     <h1 class="font-semibold text-sm">Transaksi Selesai:</h1>
     <div class="flex flex-col gap-6 mt-4">
       <CardTransactionUser
-        v-for="transactionselesai in TRANSACTIONSELESAI"
+        v-for="transactionselesai in doneTransaction"
         :detail-sampah="formatSampah(transactionselesai.detailSampah)"
         :status="transactionselesai.status"
       />
@@ -66,7 +74,7 @@ definePageMeta({
     <h1 class="font-semibold text-sm">Transaksi Dibatalkan:</h1>
     <div class="flex flex-col gap-6 mt-4">
       <CardTransactionUser
-        v-for="transactiondibatalkan in TRANSACTIONDIBATALKAN"
+        v-for="transactiondibatalkan in canceledTransaction"
         :detail-sampah="formatSampah(transactiondibatalkan.detailSampah)"
         :status="transactiondibatalkan.status"
       />
