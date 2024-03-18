@@ -48,15 +48,16 @@ export const TRASH_CARD = [
 
 export const TRANSACTION = [
     {
+        id: 1,
         user: {
             name: 'July Dwi Saputra',
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
         detailSampah: [
-            { category: "Alumunium", subcategory: 'Perabot', maxPrice: 1000, minPrice: 1000, weight: 1.0 },
-            { category: "Plastik", subcategory: 'Plastik Bening', maxPrice: 500, minPrice: 1500, weight: 1.5 },
-            { category: "Kertas", subcategory: 'Hvs', maxPrice: 500, minPrice: 1500, weight: 2.0 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
         ],
         status: { name: 'mencari pengepul', status: 'active' },
         review: {
@@ -65,15 +66,16 @@ export const TRANSACTION = [
         },
     },
     {
+        id: 2,
         user: {
             name: 'July Dwi Saputra',
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
         detailSampah: [
-            { category: "Plastik", subcategory: 'Plastik Bening', maxPrice: 500, minPrice: 1500, weight: 1.5 },
-            { category: "Alumunium", subcategory: 'Perabot', maxPrice: 1000, minPrice: 1000, weight: 1.0 },
-            { category: "Kertas", subcategory: 'Hvs', maxPrice: 500, minPrice: 1500, weight: 2.0 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
         ],
         status: { name: 'diambil', status: 'active' },
         review: {
@@ -83,15 +85,16 @@ export const TRANSACTION = [
     },
 
     {
+        id: 3,
         user: {
             name: 'July Dwi Saputra',
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
         detailSampah: [
-            { category: "Plastik", subcategory: 'Plastik Bening', maxPrice: 500, minPrice: 1500, weight: 1.5 },
-            { category: "Alumunium", subcategory: 'Perabot', maxPrice: 1000, minPrice: 1000, weight: 1.0 },
-            { category: "Kertas", subcategory: 'Hvs', maxPrice: 500, minPrice: 1500, weight: 2.0 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
         ],
         status: { name: 'selesai', status: 'active' },
         review: {
@@ -100,15 +103,16 @@ export const TRANSACTION = [
         },
     },
     {
+        id: 4,
         user: {
             name: 'July Dwi Saputra',
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
         detailSampah: [
-            { category: "Plastik", subcategory: 'Plastik Bening', maxPrice: 500, minPrice: 1500, weight: 1.5 },
-            { category: "Alumunium", subcategory: 'Perabot', maxPrice: 1000, minPrice: 1000, weight: 1.0 },
-            { category: "Kertas", subcategory: 'Hvs', maxPrice: 500, minPrice: 1500, weight: 2.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
         ],
         status: { name: 'selesai', status: 'active' },
         review: {
@@ -118,15 +122,16 @@ export const TRANSACTION = [
     },
 
     {
+        id: 5,
         user: {
             name: 'July Dwi Saputra',
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
         detailSampah: [
-            { category: "Plastik", subcategory: 'Plastik Bening', maxPrice: 500, minPrice: 1500, weight: 1.5 },
-            { category: "Alumunium", subcategory: 'Perabot', maxPrice: 1000, minPrice: 1000, weight: 1.0 },
-            { category: "Kertas", subcategory: 'Hvs', maxPrice: 500, minPrice: 1500, weight: 2.0 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
         ],
         status: { name: 'dibatalkan', status: 'active' },
         review: {
@@ -135,15 +140,16 @@ export const TRANSACTION = [
         },
     },
     {
+        id: 6,
         user: {
             name: 'July Dwi Saputra',
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
         detailSampah: [
-            { category: "Plastik", subcategory: 'Plastik Bening', maxPrice: 500, minPrice: 1500, weight: 1.5 },
-            { category: "Alumunium", subcategory: 'Perabot', maxPrice: 1000, minPrice: 1000, weight: 1.0 },
-            { category: "Kertas", subcategory: 'Hvs', maxPrice: 500, minPrice: 1500, weight: 2.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
         ],
         status: { name: 'dibatalkan', status: 'active' },
         review: {
