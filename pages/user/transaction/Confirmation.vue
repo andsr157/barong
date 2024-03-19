@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { TRANSACTION } from "~/constants/trash.constants"
+import { estimateTotal } from "~/composables/helpers"
 const note = ref("ini catatan")
 
 definePageMeta({
@@ -8,17 +9,8 @@ definePageMeta({
 
 const transactionData = TRANSACTION[0].detailSampah
 
-const estimateTotal = computed(() => {
-  const min = transactionData.reduce(
-    (total, data) => total + data.minPrice * data.weight,
-    0
-  )
-  const max = transactionData.reduce(
-    (total, data) => total + data.maxPrice * data.weight,
-    0
-  )
-
-  return [min, max]
+const estimate = computed(() => {
+  return estimateTotal(transactionData)
 })
 </script>
 
@@ -54,7 +46,7 @@ const estimateTotal = computed(() => {
         />
       </div>
 
-      <CardTrashTotal :estimate-total="estimateTotal" />
+      <CardTrashTotal :estimate-total="estimate" />
     </section>
 
     <section class="mt-6">
