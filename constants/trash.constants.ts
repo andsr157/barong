@@ -61,6 +61,7 @@ export const TRANSACTION = [
             telp: '+685842106413',
             detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
         },
+        trashImage: '/assets/dummy-trash.png',
         detailSampah: [
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
@@ -95,6 +96,7 @@ export const TRANSACTION = [
             telp: '+685842106413',
             detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
         },
+        trashImage: '/assets/dummy-trash.png',
         detailSampah: [
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
@@ -130,6 +132,7 @@ export const TRANSACTION = [
             telp: '+685842106413',
             detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
         },
+        trashImage: '/assets/dummy-trash.png',
         detailSampah: [
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
@@ -164,6 +167,7 @@ export const TRANSACTION = [
             telp: '+685842106413',
             detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
         },
+        trashImage: '/assets/dummy-trash.png',
         detailSampah: [
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
             { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
@@ -194,6 +198,7 @@ export const TRANSACTION = [
             telp: '+685842106413',
             detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
         },
+        trashImage: '/assets/dummy-trash.png',
         detailSampah: [
             { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
@@ -216,13 +221,14 @@ export const TRANSACTION = [
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
+        pengepul: {},
         address: {
             label: 'Rumah',
             name: 'Ranuuu',
             telp: '+685842106413',
             detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
         },
-        pengepul: {},
+        trashImage: '/assets/dummy-trash.png',
         detailSampah: [
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
@@ -245,13 +251,14 @@ export const TRANSACTION = [
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
+        pengepul: {},
         address: {
             label: 'Rumah',
             name: 'Ranuuu',
             telp: '+685842106413',
             detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
         },
-        pengepul: {},
+        trashImage: '/assets/dummy-trash.png',
         detailSampah: [
             { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
             { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },

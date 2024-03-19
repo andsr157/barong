@@ -17,7 +17,7 @@ defineProps<{
     <NuxtImg
       v-if="url"
       :src="url"
-      class="object-cover h-[159px] w-full"
+      class="object-cover h-48 w-full"
       width="312"
       height="159"
     />
