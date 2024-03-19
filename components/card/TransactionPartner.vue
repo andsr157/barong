@@ -22,7 +22,7 @@ defineProps<{
           {{ detailSampah }}
         </h3>
         <span
-          v-if="status.name === 'taking'"
+          v-if="status.name === 'taking' || status.name ==='searching'"
           class="text-xs text-brg-primary-dark font-medium text-end w-[126px] truncate"
           >{{ user.address }}</span
         >
