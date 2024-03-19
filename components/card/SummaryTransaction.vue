@@ -3,10 +3,10 @@ import type { Prop } from "vue"
 import { toCurrency } from "~/composables/helpers"
 
 interface Props {
-  total: number
-  totalMonthly: number
-  serviceBill: number
-  type: string
+  total?: number
+  totalMonthly?: number
+  serviceBill?: number
+  type?: string
 }
 
 withDefaults(defineProps<Props>(), {
