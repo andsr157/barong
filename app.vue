@@ -5,6 +5,7 @@ useHead({
 </script>
 
 <template>
+  <VitePwaManifest />
   <NuxtLayout>
     <NuxtLoadingIndicator />
     <NuxtPage />
@@ -13,11 +14,10 @@ useHead({
 
 <style>
 html,
-body{
+body {
   height: 100vh;
 }
 #__nuxt {
- 
   max-width: 450px;
   margin-right: auto;
   margin-left: auto;

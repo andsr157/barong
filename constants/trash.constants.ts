@@ -54,16 +54,27 @@ export const TRANSACTION = [
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
+        pengepul: {},
+        address: {
+            label: 'Rumah',
+            name: 'Andika satrio',
+            telp: '+685842106413',
+            detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
+        },
         detailSampah: [
-            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
-            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
-            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
         ],
+        totalPrice: null,
+        servicePrice: null,
+        finalTotalPrice: null,
         status: { name: 'searching', label: 'mencari pengepul', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
         },
+        note: 'ini catatan'
     },
     {
         id: 2,
@@ -72,16 +83,32 @@ export const TRANSACTION = [
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
+        pengepul: {
+            name: 'july dwi',
+            telp: "+628965189113",
+            rating: 4.5,
+            photo: '/assets/dummy-profile.png'
+        },
+        address: {
+            label: 'Kos',
+            name: 'Alfiana',
+            telp: '+685842106413',
+            detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
+        },
         detailSampah: [
-            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
-            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
-            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
         ],
+        totalPrice: null,
+        servicePrice: null,
+        finalTotalPrice: null,
         status: { name: 'taking', label: 'diambil', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
         },
+        note: 'ini catatan'
     },
 
     {
@@ -91,16 +118,32 @@ export const TRANSACTION = [
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
+        pengepul: {
+            name: 'Hasan ',
+            telp: "+628965189113",
+            rating: 5,
+            photo: '/assets/dummy-profile.png'
+        },
+        address: {
+            label: 'Rumah',
+            name: 'Andika satrio',
+            telp: '+685842106413',
+            detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
+        },
         detailSampah: [
-            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
-            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
-            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
         ],
+        totalPrice: 3500,
+        servicePrice: 500,
+        finalTotalPrice: 3000,
         status: { name: 'finish', label: 'selesai', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
         },
+        note: 'ini catatan'
     },
     {
         id: 4,
@@ -109,16 +152,32 @@ export const TRANSACTION = [
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
+        pengepul: {
+            name: 'ervan',
+            telp: "+628965189113",
+            rating: 4.5,
+            photo: '/assets/dummy-profile.png'
+        },
+        address: {
+            label: 'Kantor',
+            name: 'Ben ben',
+            telp: '+685842106413',
+            detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
+        },
         detailSampah: [
-            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
-            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
-            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
         ],
+        totalPrice: 3500,
+        servicePrice: 500,
+        finalTotalPrice: 3000,
         status: { name: 'finish', label: 'selesai', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
         },
+        note: 'ini catatan'
     },
 
     {
@@ -128,16 +187,27 @@ export const TRANSACTION = [
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
+        pengepul: {},
+        address: {
+            label: 'Rumah',
+            name: 'Andika satrio',
+            telp: '+685842106413',
+            detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
+        },
         detailSampah: [
-            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
-            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
-            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
         ],
+        totalPrice: null,
+        servicePrice: null,
+        finalTotalPrice: null,
         status: { name: 'canceled', label: 'dibatalkan', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
         },
+        note: 'ini catatan'
     },
     {
         id: 6,
@@ -146,15 +216,55 @@ export const TRANSACTION = [
             telp: '6289627222',
             address: "Tompe, Lorog, Tawangsari",
         },
+        address: {
+            label: 'Rumah',
+            name: 'Ranuuu',
+            telp: '+685842106413',
+            detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
+        },
+        pengepul: {},
         detailSampah: [
-            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5 },
-            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0 },
-            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
         ],
+        totalPrice: null,
+        servicePrice: null,
+        finalTotalPrice: null,
         status: { name: 'canceled', label: 'dibatalkan', status: 'active' },
         review: {
             rate: null,
             ulasan: null,
         },
+        note: 'ini catatan'
+    },
+    {
+        id: 7,
+        user: {
+            name: 'July Dwi Saputra',
+            telp: '6289627222',
+            address: "Tompe, Lorog, Tawangsari",
+        },
+        address: {
+            label: 'Rumah',
+            name: 'Ranuuu',
+            telp: '+685842106413',
+            detail: 'Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561'
+        },
+        pengepul: {},
+        detailSampah: [
+            { category: "Alumunium", subcategory: 'Perabot', minPrice: 1000, maxPrice: 1500, weight: 1.0, finalPrice: 1000 },
+            { category: "Plastik", subcategory: 'Plastik Bening', minPrice: 500, maxPrice: 1500, weight: 1.5, finalPrice: 1000 },
+            { category: "Kertas", subcategory: 'Hvs', minPrice: 500, maxPrice: 1500, weight: 2.0, finalPrice: 500 },
+        ],
+        totalPrice: 3500,
+        servicePrice: 500,
+        finalTotalPrice: 3000,
+        status: { name: 'finish', label: 'selesai', status: 'success' },
+        review: {
+            rate: 4.5,
+            ulasan: null,
+        },
+        note: 'ini catatan'
     },
 ]

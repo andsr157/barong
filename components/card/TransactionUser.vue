@@ -67,6 +67,7 @@ defineProps<{
           v-else-if="status.name === 'searching'"
           label="batalkan"
           color="bg-brg-red"
+          @click.prevent="console.log('click')"
         />
         <ButtonSmall
           v-else-if="status.name === 'canceled'"
@@ -75,7 +76,7 @@ defineProps<{
           class="px-3"
         />
         <ButtonSmall
-          v-else-if="status.name === 'finish' && review !== null"
+          v-else-if="status.name === 'finish' && review === null"
           label="Beri Nilai"
           color="bg-brg-secondary"
           class="px-3"
