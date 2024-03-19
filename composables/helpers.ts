@@ -16,3 +16,16 @@ export function formatSampah(detailSampah: any) {
         return `${firstSampah}, dan ${remainingCount} lainnya`;
     }
 }
+
+export function estimateTotal(TrashData: any): number[] {
+    const min = TrashData.reduce(
+        (total: number, data: any) => total + data.minPrice * data.weight,
+        0
+    )
+    const max = TrashData.reduce(
+        (total: number, data: any) => total + data.maxPrice * data.weight,
+        0
+    )
+
+    return [min, max]
+}

@@ -4,7 +4,7 @@ interface Props {
   total?: number
   serivcePrice?: number
   finalTotal?: number
-  type: string
+  type?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
