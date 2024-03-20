@@ -1,11 +1,23 @@
 <script setup lang="ts">
+import { useToastStore } from "~/stores/Toast.store"
+
 definePageMeta({
   layout: "blank",
 })
+
+const toastStore = useToastStore()
+const successToast = () => {
+  console.log("clicked")
+  toastStore.warning({
+    text: "Berhasil munculin toast success",
+  })
+}
 </script>
 
 <template>
+  <Toast />
   <Header title="Transaksi" />
+  <button @click="successToast">Tes toastttt</button>
   <div class="px-6">
     <section>
       <div class="text-brg-primary-dark mt-[30px] mb-6">
