@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { TRANSACTION } from "~/constants/trash.constants"
 import { estimateTotal } from "~/composables/helpers"
-const note = ref("ini catatan")
 
 definePageMeta({
   layout: "blank",
 })
 
+const router = useRouter()
+
+const note = ref("ini catatan")
 const transactionData = TRANSACTION[0].detailSampah
 
 const estimate = computed(() => {
   return estimateTotal(transactionData)
 })
+
+const handleConfirmationTransaction = () => {
+  router.push("/user/transaction/1/searching")
+}
 </script>
 
 <template>
@@ -64,7 +70,7 @@ const estimate = computed(() => {
     </section>
 
     <div class="max-w-max mx-auto py-12">
-      <ButtonLarge label="Konfirmasi" />
+      <ButtonLarge label="Konfirmasi" @click="handleConfirmationTransaction" />
     </div>
   </div>
 </template>

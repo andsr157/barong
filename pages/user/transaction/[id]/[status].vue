@@ -7,12 +7,17 @@ definePageMeta({
 })
 
 const route = useRoute()
+const router = useRouter()
 const transaction = ref<any>()
+const isModalOpen = ref(false)
 
 const estimate = computed(() => {
   return estimateTotal(transaction.value.detailSampah)
 })
 
+const handleFinishTransaction = () => {
+  router.push(`/user/transaction/success`)
+}
 onMounted(() => {
   let id: string
   if (Array.isArray(route.params.id)) {
@@ -128,7 +133,7 @@ onMounted(() => {
         transaction.status.name === 'finish' && transaction.review.rate === null
       "
     >
-      <ButtonLarge label="Selesaikan Transaksi" />
+      <ButtonLarge label="Selesaikan Transaksi" @click="isModalOpen = true" />
     </div>
 
     <div
@@ -139,4 +144,15 @@ onMounted(() => {
     </div>
   </div>
   <div v-else="">lagi loading</div>
+
+  <ModalDefault
+    title="Selesaikan Transaksi"
+    desc="apakah anda yakin ingin menyelesaikan transaksi"
+    label-confirmation="Selesaikan"
+    label-color="text-brg-primary"
+    :is-show="isModalOpen"
+    emit-function="finishTransaction"
+    @closeModal="isModalOpen = false"
+    @finishTransaction="handleFinishTransaction"
+  />
 </template>
