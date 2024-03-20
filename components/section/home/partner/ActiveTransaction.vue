@@ -21,6 +21,7 @@ const activeTransaction = computed(() => {
         :status="transaction.status"
         :review="transaction.review.rate"
         :user="transaction.user"
+        :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>
   </section>

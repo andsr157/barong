@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { TRANSACTION } from "~/constants/trash.constants"
+import { type Transaction } from "~/types/transaction.type"
 definePageMeta({
   layout: "blank",
 })
 
 const route = useRoute()
-const transaction = ref<any>()
+const router = useRouter()
+const transaction = ref<Transaction>()
 
 const estimate = computed(() => {
-  return estimateTotal(transaction.value.detailSampah)
+  return estimateTotal(transaction.value?.detailSampah)
 })
 
+const handleFinishTransaction = () => {
+  router.push(`/partner/transaction/${transaction.value?.id}/report`)
+}
 onMounted(() => {
   let id: string
   if (Array.isArray(route.params.id)) {
@@ -72,9 +77,9 @@ onMounted(() => {
 
       <CardTrashTotal
         v-if="transaction.status.name === 'finish'"
-        :total="transaction.totalPrice"
-        :serivce-price="transaction.servicePrice"
-        :final-total="transaction.finalTotalPrice"
+        :total="transaction.totalPrice ?? 0"
+        :serivce-price="transaction.servicePrice ?? 0"
+        :final-total="transaction.finalTotalPrice ?? 0"
         type="finish"
       />
       <CardTrashTotal v-else :estimate-total="estimate" />
@@ -104,7 +109,7 @@ onMounted(() => {
       class="w-full flex flex-col items-center py-12"
       v-else-if="transaction.status.name === 'taking'"
     >
-      <ButtonLarge label="Selesaikan" />
+      <ButtonLarge label="Selesaikan" @click="handleFinishTransaction" />
       <ButtonLarge label="Batalkan" class="mt-4" color="bg-brg-red" />
     </div>
   </div>
