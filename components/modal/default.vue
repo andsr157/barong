@@ -22,7 +22,7 @@ const emit = defineEmits()
     <transition name="fade-overlay">
       <div
         v-if="isShow"
-        class="w-full h-screen fixed z-40 bg-black bg-opacity-20 flex justify-center items-center"
+        class="w-full h-screen fixed top-0 z-40 bg-black bg-opacity-20"
       ></div>
     </transition>
 
@@ -57,7 +57,7 @@ const emit = defineEmits()
 <style>
 .fade-overlay-enter-active,
 .fade-overlay-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.5s ease;
 }
 
 .fade-overlay-enter-from,
