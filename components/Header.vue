@@ -1,20 +1,24 @@
 <script setup lang="ts">
 defineProps<{
-  title: string;
-}>();
-const router = useRouter();
+  title?: string
+  shadow?: boolean
+}>()
+const router = useRouter()
 const goBack = () => {
   if (window.history.state.back !== null) {
-    router.back();
+    router.back()
   } else {
-    router.push("/user");
+    router.push("/user")
   }
-};
+}
 </script>
 
 <template>
   <header>
-    <div class="grid grid-cols-5 px-6 py-4 items-center">
+    <div
+      class="grid grid-cols-5 px-6 py-4 items-center"
+      :class="`${shadow ? 'shadow-lg' : ''}`"
+    >
       <Icon
         name="mdi:arrow-back"
         size="24px"
@@ -22,10 +26,14 @@ const goBack = () => {
         @click="goBack()"
       />
       <h1
+        v-if="title"
         class="text-brg-primary-dark font-semibold text-[20px] text-center col-span-3"
       >
         {{ title }}
       </h1>
+      <div v-if="!title" class="col-span-3">
+        <slot name="content" />
+      </div>
       <slot />
     </div>
   </header>

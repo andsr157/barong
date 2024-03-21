@@ -18,7 +18,7 @@ export const NAVIGATION = [
     {
         name: 'chat',
         icon: 'mingcute:chat-1-fill',
-        path: '/user/chat',
+        path: '/chat',
     },
     {
         name: 'user',
@@ -46,7 +46,7 @@ export const NAVIGATION_PENGEPUL = [
     {
         name: 'chat',
         icon: 'mingcute:chat-1-fill',
-        path: '/partner/chat',
+        path: '/chat',
     },
     {
         name: 'user',
