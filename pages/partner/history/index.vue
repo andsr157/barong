@@ -2,22 +2,13 @@
 import { TRANSACTION } from "~/constants/trash.constants"
 const activeTransaction = computed(() => {
   return TRANSACTION.filter((data) => {
-    return (
-      (data.status.name === "taking" || data.status.name === "searching") ??
-      null
-    )
+    return data.status.name === "taking" ?? null
   })
 })
 
 const doneTransaction = computed(() => {
   return TRANSACTION.filter((data) => {
     return data.status.name === "finish" ?? null
-  })
-})
-
-const canceledTransaction = computed(() => {
-  return TRANSACTION.filter((data) => {
-    return data.status.name === "canceled" ?? null
   })
 })
 
@@ -32,9 +23,6 @@ const filterTransaction = (status: string) => {
   } else if (status === "finish") {
     data.value.name = "selesai"
     data.value.data = doneTransaction
-  } else if (status === "canceled") {
-    data.value.name = "dibatalkan"
-    data.value.data = canceledTransaction
   }
 }
 
@@ -44,7 +32,7 @@ definePageMeta({
 </script>
 <template>
   <Header title="Riwayat Transaksi" />
-  <div class="flex justify-evenly mt-5">
+  <div class="flex gap-x-5 mt-5 px-6">
     <ButtonSmall
       label="Saat ini"
       @click="filterTransaction('active')"
@@ -59,13 +47,6 @@ definePageMeta({
         data.name === 'selesai' ? '!bg-brg-primary' : '!bg-brg-light-gray'
       }`"
     />
-    <ButtonSmall
-      label="Dibatalkan"
-      @click="filterTransaction('canceled')"
-      :buttonClass="`${
-        data.name === 'dibatalkan' ? '!bg-brg-primary' : '!bg-brg-light-gray'
-      }`"
-    />
   </div>
 
   <div class="block px-6 mt-6 pt-6`">
@@ -76,6 +57,7 @@ definePageMeta({
         :detailSampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
         :user="transaction.user"
+        :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>
     <div v-else>
