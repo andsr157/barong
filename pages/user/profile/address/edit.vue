@@ -1,8 +1,8 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "blank",
-});
-const toggle = ref("off");
+})
+const toggle = ref("off")
 
 const data = reactive({
   label: "Kos",
@@ -10,11 +10,11 @@ const data = reactive({
   patokan: "depan masjid",
   name: "July Dwi Saputra",
   telp: "+6285865412191",
-});
+})
 
 const toggleSwitch = () => {
-  toggle.value = toggle.value === "off" ? "on" : "off";
-};
+  toggle.value = toggle.value === "off" ? "on" : "off"
+}
 </script>
 <template>
   <Header title="Edit Alamat" />
