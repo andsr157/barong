@@ -39,7 +39,7 @@ const filterTransaction = (status: string) => {
 }
 
 definePageMeta({
-  layout: "blank",
+  layout: "default",
 })
 </script>
 <template>

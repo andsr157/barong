@@ -41,7 +41,7 @@ export const NAVIGATION_PENGEPUL = [
     {
         name: 'partner-transaction',
         icon: 'lets-icons:order-fill',
-        path: 'partner/transaction',
+        path: '/partner/request',
     },
     {
         name: 'chat',
