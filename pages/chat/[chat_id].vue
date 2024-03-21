@@ -57,7 +57,7 @@ definePageMeta({
 </script>
 
 <template>
-  <Header shadow>
+  <Header shadow fixed>
     <template #content>
       <div class="flex gap-x-3 items-center">
         <div class="w-9 h-9 rounded-full">
@@ -73,7 +73,9 @@ definePageMeta({
     </template>
   </Header>
 
-  <section class="h-[75vh] pt-[30px] overflow-y-auto px-6 chat-container">
+  <section
+    class="h-[75vh] pt-[30px] mt-[70px] overflow-y-auto px-6 chat-container"
+  >
     <div class="flex flex-col gap-y-5">
       <div
         v-for="message in messages[0].messages"
