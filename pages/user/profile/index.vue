@@ -30,6 +30,13 @@
         />
         <h1 class="font-semibold text-sm text-brg-primary-dark">Alamat</h1>
       </NuxtLink>
+      <NuxtLink class="flex items-center gap-2" to="/user/profile/edit_kata_sandi">
+        <Icon
+          name="ooui:edit-lock"
+          class="w-5 h-5 text-brg-primary-dark"
+        />
+        <h1 class="font-semibold text-sm text-brg-primary-dark">Ubah Kata Sandi</h1>
+      </NuxtLink>
     </div>
     <div class="px-6 mt-[34px] flex flex-col gap-[15px]">
       <NuxtLink class="flex items-center gap-2" to="/term_n_condition">
