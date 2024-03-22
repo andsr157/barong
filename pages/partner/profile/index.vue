@@ -1,3 +1,8 @@
+<script setup lang="ts">
+    definePageMeta({
+        layout: "partner",
+    })
+</script>
 <template>
   <Header title="Profil" />
   <div class="h-[600px]">
@@ -19,18 +24,11 @@
       <h1 class="text-[11px] text-white font-light">puantek123@gmail.com</h1>
     </div>
     <div class="px-6 mt-[34px] flex flex-col gap-[15px]">
-      <NuxtLink class="flex items-center gap-2" to="/user/profile/edit">
+      <NuxtLink class="flex items-center gap-2" to="/partner/profile/edit">
         <Icon name="mdi:account-edit" class="w-5 h-5 text-brg-primary-dark" />
         <h1 class="font-semibold text-sm text-brg-primary-dark">Ubah Profil</h1>
       </NuxtLink>
-      <NuxtLink class="flex items-center gap-2" to="/user/profile/address">
-        <Icon
-          name="uil:map-marker-edit"
-          class="w-5 h-5 text-brg-primary-dark"
-        />
-        <h1 class="font-semibold text-sm text-brg-primary-dark">Alamat</h1>
-      </NuxtLink>
-      <NuxtLink class="flex items-center gap-2" to="/user/profile/changePassword">
+      <NuxtLink class="flex items-center gap-2" to="/partner/profile/changePassword">
         <Icon
           name="ooui:edit-lock"
           class="w-5 h-5 text-brg-primary-dark"

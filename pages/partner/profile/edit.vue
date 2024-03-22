@@ -2,9 +2,9 @@
 definePageMeta({
   layout: "blank",
 });
-const name = ref("July DwI Saputra");
-const email = ref("julydsp4@gmail.com");
-const telepon = ref("085865412191");
+const name = ref("Puan tek");
+const email = ref("puantek123@gmail.com");
+const telepon = ref("+628965189113");
 </script>
 <template>
   <Header title="Ubah Profil" />
