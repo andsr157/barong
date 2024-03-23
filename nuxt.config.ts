@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     '@vee-validate/nuxt',
     '@nuxt/image',
     'nuxt-swiper',
+    '@sidebase/nuxt-auth',
   ],
 
 
