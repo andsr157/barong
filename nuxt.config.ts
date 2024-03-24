@@ -15,9 +15,20 @@ export default defineNuxtConfig({
 
 
   runtimeConfig: {
+    app: {
+      appSecret: process.env.NUXT_ENV_SECRET,
+    },
     public: {
       appUrl: process.env.BASE_URL ?? 'http://localhost:3000',
-      apiurl: process.env.API_URL
+      apiurl: process.env.API_URL,
+    },
+
+  },
+
+  auth: {
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://barong-psi.vercel.app/api/v1/_auth' : 'http://localhost:3000/api/v1/_auth',
+    provider: {
+      type: 'authjs'
     }
   },
 
