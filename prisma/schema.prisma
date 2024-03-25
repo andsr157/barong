@@ -23,6 +23,7 @@ model users {
   date_created DateTime  @default(now())
   update_at    DateTime? @updatedAt
   address      address[]
+  password     String
 }
 
 model address {

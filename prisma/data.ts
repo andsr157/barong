@@ -1,5 +1,5 @@
 export const DATA = {
-    USER: [
+    USERS: [
         {
             name: 'andika',
             password: 'andika123',
