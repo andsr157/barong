@@ -64,25 +64,28 @@ model status {
 }
 
 model transaction {
-  id             Int      @id @default(autoincrement())
-  user_id        Int
-  partner_id     Int
-  address        address  @relation(fields: [address_id], references: [id])
-  address_id     Int      @unique
-  image          String
-  status         status   @relation(fields: [status_id], references: [id])
-  status_id      Int
-  partner_rate   Int
-  partner_review String
-  note           String
-  total          Int
-  date_created   DateTime @default(now())
+  id                 Int                  @id @default(autoincrement())
+  user_id            Int
+  partner_id         Int
+  address            address              @relation(fields: [address_id], references: [id])
+  address_id         Int                  @unique
+  image              String
+  status             status               @relation(fields: [status_id], references: [id])
+  status_id          Int
+  partner_rate       Int
+  partner_review     String
+  note               String
+  total              Int
+  date_created       DateTime             @default(now())
+  transaction_detail transaction_detail[]
 }
 
 model transaction_detail {
-  id       Int   @id @default(autoincrement())
-  trash    trash @relation(fields: [trash_id], references: [id])
-  trash_id Int
-  price    Int
-  weight   Int
+  id             Int         @id @default(autoincrement())
+  trash          trash       @relation(fields: [trash_id], references: [id])
+  transaction    transaction @relation(fields: [transaction_id], references: [id])
+  transaction_id Int
+  trash_id       Int
+  price          Int
+  weight         Int
 }
