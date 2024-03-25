@@ -24,19 +24,20 @@ model users {
   update_at    DateTime? @updatedAt
   address      address[]
   password     String
+  role         String
 }
 
 model address {
   id           Int          @id @default(autoincrement())
-  label        Int
+  label        String
   address_name String
   detail       String
   owner_name   String
   owner_telp   String
   latitude     String
   longitude    String
+  user         users    @relation(fields: [user_id], references: [id])
   user_id      Int
-  user         users        @relation(fields: [user_id], references: [id])
   transaction  transaction?
 }
 
