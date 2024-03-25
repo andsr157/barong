@@ -15,7 +15,7 @@ datasource db {
 
 model users {
   id           Int       @id @default(autoincrement())
-  uuid         String    @default(uuid()) @map("VARCHAR(36)")
+  uuid         String    @default(uuid())
   name         String
   email        String    @unique
   telp         String
