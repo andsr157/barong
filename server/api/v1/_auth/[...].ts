@@ -1,6 +1,6 @@
 import { NuxtAuthHandler } from '#auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { prisma } from "~/composables/prisma"
+import prisma from "@/composables/prisma"
 import bcrypt from 'bcrypt'
 
 export default NuxtAuthHandler({
