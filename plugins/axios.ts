@@ -1,13 +1,15 @@
 // Axios
+
 import defaultAxios from 'axios'
 
 export default defineNuxtPlugin(() => {
     const config = useRuntimeConfig()
     const axios = defaultAxios.create({
-        baseURL: config.public.apiurl,
+        baseURL: '/api/v1/',
         timeout: 5000,
     })
 
+    axios.defaults.headers.common['Authorization'] = null
     // Add a request interceptor
     axios.interceptors.request.use(
         (config) => {
