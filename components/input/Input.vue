@@ -1,5 +1,6 @@
 <script setup lang="ts">
 interface Props {
+  name: string
   label?: string
   labelClass?: string
   wrapperClass?: string
@@ -13,7 +14,7 @@ interface Props {
   suffixIcon?: string
   suffixIconSize?: string
   suffixIconColor?: string
-  errorMessage?: string
+  // errorMessage?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -23,20 +24,21 @@ const props = withDefaults(defineProps<Props>(), {
   suffixIconSize: "20px",
 })
 
-const emit = defineEmits()
-const updateInput = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  let value = <any>target.value
+const { value, errorMessage } = useField(() => props.name)
+// const emit = defineEmits()
+// const updateInput = (event: Event) => {
+//   const target = event.target as HTMLInputElement
+//   let value = <any>target.value
 
-  if (props.type === "number") {
-    if (value === "" || parseFloat(value) < 0) {
-      value = 0
-    }
-    emit("update:modelValue", parseFloat(value))
-  } else {
-    emit("update:modelValue", value)
-  }
-}
+//   if (props.type === "number") {
+//     if (value === "" || parseFloat(value) < 0) {
+//       value = 0
+//     }
+//     emit("update:modelValue", parseFloat(value))
+//   } else {
+//     emit("update:modelValue", value)
+//   }
+// }
 </script>
 
 <template>
@@ -54,11 +56,19 @@ const updateInput = (event: Event) => {
       :class="props.prefixIconColor"
     />
     <slot name="prefix" />
-    <input
+    <!-- <input
       :step="props.type === 'number' ? 'any' : undefined"
       :type="props.type"
       :value="props.modelValue"
       @input="updateInput"
+      class="w-full h-full focus:outline-none focus:text-xs text-xs"
+      :class="props.inputClass"
+      :placeholder="props.placeholder"
+    /> -->
+    <input
+      :step="props.type === 'number' ? 'any' : undefined"
+      :type="props.type"
+      v-model="value"
       class="w-full h-full focus:outline-none focus:text-xs text-xs"
       :class="props.inputClass"
       :placeholder="props.placeholder"
@@ -71,7 +81,7 @@ const updateInput = (event: Event) => {
     />
     <slot name="suffix" />
   </div>
-  <p v-if="props.errorMessage" class="text-brg-red text-[10px] px-5 mt-[5px]">
-    {{ props.errorMessage }}
+  <p v-if="errorMessage" class="text-brg-red text-[10px] px-5 mt-[5px]">
+    {{ errorMessage }}
   </p>
 </template>
