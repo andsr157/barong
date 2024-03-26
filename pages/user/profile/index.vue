@@ -1,3 +1,15 @@
+<script setup lang="ts">
+const { signOut } = useAuth()
+
+const handleLogout = async () => {
+  await signOut()
+}
+
+definePageMeta({
+  middleware: "auth",
+})
+</script>
+
 <template>
   <Header title="Profil" />
   <div class="h-[600px]">
@@ -30,12 +42,14 @@
         />
         <h1 class="font-semibold text-sm text-brg-primary-dark">Alamat</h1>
       </NuxtLink>
-      <NuxtLink class="flex items-center gap-2" to="/user/profile/changePassword">
-        <Icon
-          name="ooui:edit-lock"
-          class="w-5 h-5 text-brg-primary-dark"
-        />
-        <h1 class="font-semibold text-sm text-brg-primary-dark">Ubah Kata Sandi</h1>
+      <NuxtLink
+        class="flex items-center gap-2"
+        to="/user/profile/changePassword"
+      >
+        <Icon name="ooui:edit-lock" class="w-5 h-5 text-brg-primary-dark" />
+        <h1 class="font-semibold text-sm text-brg-primary-dark">
+          Ubah Kata Sandi
+        </h1>
       </NuxtLink>
     </div>
     <div class="px-6 mt-[34px] flex flex-col gap-[15px]">
@@ -45,10 +59,10 @@
           Syarat dan Ketentuan
         </h1>
       </NuxtLink>
-      <NuxtLink class="flex items-center gap-2">
+      <div class="flex items-center gap-2" @click="handleLogout">
         <Icon name="mdi:logout" class="w-5 h-5 text-brg-red" />
         <h1 class="font-semibold text-sm text-brg-red">Keluar</h1>
-      </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
