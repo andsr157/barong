@@ -17,7 +17,9 @@ const schema = object({
   password: string().required().label("Password"),
 })
 
-const { values, handleSubmit } = useForm()
+const { values, handleSubmit } = useForm({
+  validationSchema: schema,
+})
 
 const handleLogin = handleSubmit(async (values) => {
   try {

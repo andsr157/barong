@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useField } from "vee-validate"
 interface Props {
-  name: string
+  name?: string
   label?: string
   labelClass?: string
   wrapperClass?: string
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   suffixIconSize: "20px",
 })
 
-const { value, errorMessage } = useField(() => props.name)
+const { value, errorMessage } = useField(() => props.name ?? "")
 // const emit = defineEmits()
 // const updateInput = (event: Event) => {
 //   const target = event.target as HTMLInputElement
