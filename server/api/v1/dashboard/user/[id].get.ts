@@ -53,9 +53,8 @@ export default defineEventHandler(async (event) => {
                     trashes[isAlreadyExist].weight += transaction_detail[i].weight
                 }
             }
-
         }
     }
 
-    return { data: { ...trashes, totalAmount }, status: 200 }
+    return { data: { trash: trashes, totalAmount }, status: 200 }
 })
