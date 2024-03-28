@@ -1,17 +1,18 @@
 <script setup lang="ts">
-const { data: user } = <any>useAuth()
 import axios from "axios"
 const total = ref()
 
+const { data: user } = <any>useAuth()
+const id = user.value?.user?.id
+
 onMounted(async () => {
   try {
-    const res = await axios.get("/api/v1/dashboard/user/1")
+    const res = await axios.get(`/api/v1/dashboard/user/${id}`)
     if (res) {
       total.value = res.data.data.totalAmount
     } else {
       console.error("failed fetch api")
     }
-    console.log(total.value)
   } catch (error) {
     console.error(error)
   }

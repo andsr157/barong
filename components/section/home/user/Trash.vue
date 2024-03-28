@@ -105,7 +105,7 @@ onMounted(async () => {
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Total sampahmu
     </h2>
-    <div v-if="true">
+    <div v-if="newTrashData.length > 0">
       <Swiper :breakpoints="BREAKSPOINTS" :loop="true">
         <SwiperSlide v-for="data in newTrashData">
           <CardTrash
@@ -117,7 +117,7 @@ onMounted(async () => {
         </SwiperSlide>
       </Swiper>
     </div>
-    <div class="w-full pe-6" v-if="false">
+    <div class="w-full pe-6" v-else>
       <p
         class="text-xs font-medium text-brg-primary-dark text-opacity-70 text-center"
       >
