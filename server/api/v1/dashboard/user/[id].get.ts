@@ -1,15 +1,20 @@
 import { prisma } from '~/composables/prisma'
+import { getServerSession } from '#auth'
+import { AuthorizationCheck } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
-
     const user_id = await getRouterParam(event, 'id') ?? ''
+    const session = await getServerSession(event) as any
 
+
+    if (AuthorizationCheck(session, user_id).status !== 200) {
+        return AuthorizationCheck(session, user_id);
+    }
 
     const res = await prisma.transaction.findMany({
         where: {
             user_id: parseInt(user_id),
             status_id: 3 || 4,
-
         },
         include: {
             transaction_detail: {
@@ -24,10 +29,7 @@ export default defineEventHandler(async (event) => {
         }
 
     })
-    // return res
 
-
-    // Hitung total uang transaksi pengguna
     let totalAmount = 0;
     res.forEach(transaction => {
         totalAmount += transaction.total;

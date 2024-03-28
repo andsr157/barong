@@ -88,7 +88,10 @@ interface CARD {
 
 onMounted(async () => {
   try {
-    const res = await axios.get(`/api/v1/dashboard/user/${id}`)
+    const headers = { Cookie: document.cookie }
+    const res = await axios.get(`/api/v1/dashboard/user/${id}`, {
+      headers: headers,
+    })
     if (res) {
       const { totalAmount, ...resData } = res.data.data
       trashData.value = resData.trash

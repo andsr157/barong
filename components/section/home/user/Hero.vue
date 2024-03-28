@@ -7,7 +7,10 @@ const id = user.value?.user?.id
 
 onMounted(async () => {
   try {
-    const res = await axios.get(`/api/v1/dashboard/user/${id}`)
+    const headers = { Cookie: document.cookie }
+    const res = await axios.get(`/api/v1/dashboard/user/${id}`, {
+      headers: headers,
+    })
     if (res) {
       total.value = res.data.data.totalAmount
     } else {
