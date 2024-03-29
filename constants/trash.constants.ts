@@ -269,8 +269,8 @@ export const TRANSACTION = [
         finalTotalPrice: 3000,
         status: { name: 'finish', label: 'selesai', status: 'success' },
         review: {
-            rate: 4.5,
-            ulasan: null,
+            rate: 4,
+            ulasan: "pengepul sangat ramah",
         },
         note: 'ini catatan'
     },
