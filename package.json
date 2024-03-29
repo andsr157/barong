@@ -18,8 +18,6 @@
     "@prisma/client": "^5.11.0",
     "@types/bcrypt": "^5.0.2",
     "@types/uuid": "^9.0.8",
-    "@vee-validate/nuxt": "^4.12.6",
-    "@vee-validate/yup": "^4.12.6",
     "@vueuse/nuxt": "^10.9.0",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
@@ -29,6 +27,7 @@
     "nuxt-rating": "^0.0.15",
     "nuxt-swiper": "^1.2.2",
     "uuid": "^9.0.1",
+    "vee-validate": "^4.12.6",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "yup": "^1.4.0"

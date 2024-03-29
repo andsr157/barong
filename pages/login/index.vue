@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useToastStore } from "~/stores/Toast.store"
-import { object, string } from "Yup"
+import { useForm } from "vee-validate"
+import { object, string } from "yup"
 
 const toastStore = useToastStore()
 const { signIn } = useAuth()
@@ -16,7 +17,9 @@ const schema = object({
   password: string().required().label("Password"),
 })
 
-const { values, handleSubmit } = useForm()
+const { values, handleSubmit } = useForm({
+  validationSchema: schema,
+})
 
 const handleLogin = handleSubmit(async (values) => {
   try {

@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@vueuse/nuxt",
     "nuxt-icon",
-    "@vee-validate/nuxt",
+    //"@vee-validate/nuxt",
     "@nuxt/image",
     "nuxt-swiper",
     "@sidebase/nuxt-auth",
@@ -34,9 +34,9 @@ export default defineNuxtConfig({
     },
   },
 
-  veeValidate: {
-    autoImports: true,
-  },
+  // veeValidate: {
+  //   autoImports: true
+  // },
 
   image: {
     inject: true,

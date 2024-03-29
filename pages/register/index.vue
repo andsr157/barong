@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/stores/Auth.store"
-const toastStore = useToastStore()
-
+import { useForm } from "vee-validate"
 import * as Yup from "yup"
 
+const toastStore = useToastStore()
 const authStore = useAuthStore()
 const router = useRouter()
 
