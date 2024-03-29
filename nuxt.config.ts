@@ -1,35 +1,37 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { defineNuxtConfig } from 'nuxt/config'
+import { defineNuxtConfig } from "nuxt/config";
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/google-fonts',
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    'nuxt-icon',
-    // '@vee-validate/nuxt',
-    '@nuxt/image',
-    'nuxt-swiper',
-    '@sidebase/nuxt-auth',
+    "@nuxtjs/google-fonts",
+    "@pinia/nuxt",
+    "@vueuse/nuxt",
+    "nuxt-icon",
+    //"@vee-validate/nuxt",
+    "@nuxt/image",
+    "nuxt-swiper",
+    "@sidebase/nuxt-auth",
+    "nuxt-rating",
   ],
-
 
   runtimeConfig: {
     app: {
       appSecret: process.env.NUXT_ENV_SECRET,
     },
     public: {
-      appUrl: process.env.BASE_URL ?? 'http://localhost:3000',
+      appUrl: process.env.BASE_URL ?? "http://localhost:3000",
       apiurl: process.env.API_URL,
     },
-
   },
 
   auth: {
-    baseURL: process.env.NODE_ENV === 'production' ? 'https://barong-psi.vercel.app/api/v1/_auth' : 'http://localhost:3000/api/v1/_auth',
+    baseURL:
+      process.env.NODE_ENV === "production"
+        ? "https://barong-psi.vercel.app/api/v1/_auth"
+        : "http://localhost:3000/api/v1/_auth",
     provider: {
-      type: 'authjs'
-    }
+      type: "authjs",
+    },
   },
 
   // veeValidate: {
@@ -38,8 +40,8 @@ export default defineNuxtConfig({
 
   image: {
     inject: true,
-    format: ['webp'],
-    domains: []
+    format: ["webp"],
+    domains: [],
   },
 
   googleFonts: {
@@ -51,14 +53,14 @@ export default defineNuxtConfig({
   },
 
   pinia: {
-    storesDirs: ['./stores/**'],
+    storesDirs: ["./stores/**"],
   },
 
-  css: ['@/assets/css/main.css'],
+  css: ["@/assets/css/main.css"],
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
-})
+});

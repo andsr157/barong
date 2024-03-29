@@ -1,34 +1,39 @@
 <script setup lang="ts">
-import { TRANSACTION } from "~/constants/trash.constants"
-import { estimateTotal } from "~/composables/helpers"
+import { TRANSACTION } from "~/constants/trash.constants";
+import { estimateTotal } from "~/composables/helpers";
 
 definePageMeta({
   layout: "blank",
-})
+});
 
-const route = useRoute()
-const router = useRouter()
-const transaction = ref<any>()
-const isModalOpen = ref(false)
+const route = useRoute();
+const router = useRouter();
+const transaction = ref<any>();
+const isModalOpen = ref(false);
+// const rating = ref();
 
 const estimate = computed(() => {
-  return estimateTotal(transaction.value.detailSampah)
-})
+  return estimateTotal(transaction.value.detailSampah);
+});
 
 const handleFinishTransaction = () => {
-  router.push(`/user/transaction/success`)
-}
+  router.push(`/user/transaction/success`);
+};
 onMounted(() => {
-  let id: string
+  let id: string;
   if (Array.isArray(route.params.id)) {
-    id = route.params.id[0]
+    id = route.params.id[0];
   } else {
-    id = route.params.id
+    id = route.params.id;
   }
   transaction.value = TRANSACTION.filter((data) => {
-    return data.id === parseInt(id)
-  })[0]
-})
+    return data.id === parseInt(id);
+  })[0];
+});
+
+// const logRating = async (event: number) => {
+//       rating.value = event;
+//     }
 </script>
 
 <template>
@@ -48,8 +53,60 @@ onMounted(() => {
         :rating="transaction.pengepul.rating"
         :photo="transaction.pengepul.photo"
       />
-      <div v-else class="mt-[30px]">
-        ini nanti tampilan user review tugas july
+      <CardPartnerProfile
+        class="mt-14"
+        v-if="
+          transaction.status.name === 'finish' &&
+          transaction.review.rate === null
+        "
+        :name="transaction.pengepul.name"
+        :telp="transaction.pengepul.telp"
+        :rating="transaction.pengepul.rating"
+        :photo="transaction.pengepul.photo"
+      />
+      <div
+        v-if="
+          transaction.status.name === 'finish' &&
+          transaction.review.rate !== null
+        "
+        class="mt-[30px] flex flex-col"
+      >
+        <h2
+          v-if="
+            transaction.status.name === 'finish' &&
+            transaction.review.rate !== null
+          "
+          class="text-brg-primary-dark font-semibold mb-4"
+        >
+          Nilai Pengepul
+        </h2>
+        <div class="mx-auto">
+          <NuxtRating
+            :rating-value="transaction.review.rate"
+            :read-only="false"
+            class="w-[209px]"
+            :rating-size="'50px'"
+            :active-color="'#307FF5'"
+          />
+        </div>
+        <label
+          v-if="
+            transaction.status.name === 'finish' &&
+            transaction.review.rate !== null
+          "
+          class="text-brg-primary-dark font-semibold mb-4"
+          >Ulasan</label
+        >
+        <ClientOnly>
+          <textarea
+            cols="10"
+            rows="8"
+            class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
+            placeholder="isi ulasan anda"
+            v-model="transaction.review.ulasan"
+          >
+          </textarea>
+        </ClientOnly>
       </div>
     </section>
 
@@ -133,7 +190,10 @@ onMounted(() => {
         transaction.status.name === 'finish' && transaction.review.rate === null
       "
     >
-      <ButtonLarge label="Selesaikan Transaksi" @click="isModalOpen = true" />
+      <NuxtLink :to="`/user/transaction/${transaction.id}/review`">
+        <ButtonLarge label="Selesaikan Transaksi" />
+        <!-- @click="isModalOpen = true" -->
+      </NuxtLink>
     </div>
 
     <div
