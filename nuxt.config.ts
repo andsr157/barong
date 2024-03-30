@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "nuxt-rating",
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
+    // '@nuxtjs/supabase',
   ],
 
   runtimeConfig: {
@@ -23,6 +24,7 @@ export default defineNuxtConfig({
     public: {
       appUrl: process.env.BASE_URL ?? "http://localhost:3000",
       apiurl: process.env.API_URL,
+      bucketUrl: process.env.BUCKET_URL,
     },
   },
 
