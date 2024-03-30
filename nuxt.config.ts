@@ -12,6 +12,8 @@ export default defineNuxtConfig({
     "nuxt-swiper",
     "@sidebase/nuxt-auth",
     "nuxt-rating",
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
 
   runtimeConfig: {

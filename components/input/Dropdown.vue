@@ -5,9 +5,13 @@ interface Props {
   labelClass?: string
   modelValue?: TrashCategory | null
   options?: TrashCategory[]
+  disable?: boolean
+  isLoading?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  disable: false,
+})
 
 const dropDown = ref<HTMLElement | null>(null)
 const emit = defineEmits()
@@ -66,7 +70,13 @@ watch(
         />
       </div>
       <div
-        v-if="isOpen"
+        v-if="isOpen && isLoading"
+        class="absolute z-40 top-12 bg-white border-[1px] border-brg-light-gray border-opacity-40 rounded-lg p-3"
+      >
+        <p class="text-xs text-brg-gray font-medium">loading...</p>
+      </div>
+      <div
+        v-else-if="isOpen && !disable"
         class="flex flex-col gap-y-4 absolute z-40 top-12 bg-white border-[1px] border-brg-light-gray border-opacity-40 rounded-lg p-3"
       >
         <div

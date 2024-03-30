@@ -24,3 +24,31 @@ export interface Transaction {
     }
     note: string
 }
+
+
+//transaction form data type
+export interface Transaction {
+    id: number;
+    user: {
+        name: string;
+        telp: string;
+        address: string;
+    };
+}
+
+export interface TransactionDetail {
+    trash_id: number;
+    category: string,
+    subcategory: string,
+    weight: number;
+}
+export interface TransactionData {
+    transaction: {
+        user_id: number;
+        address_id: number;
+        image: string;
+        status_id: number;
+        note: string;
+    };
+    transaction_detail: TransactionDetail[];
+}
