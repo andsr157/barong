@@ -1,63 +1,32 @@
 <script setup lang="ts">
-import { type category, type subcategory } from "./category.type"
-
-const category = [
-  {
-    value: 1,
-    text: "plastik",
-  },
-  {
-    value: 2,
-    text: "kaca",
-  },
-  {
-    value: 3,
-    text: "alumunium",
-  },
-]
-
-const subcategory = [
-  {
-    category_id: 1,
-    value: 1,
-    text: "botol",
-  },
-  {
-    category_id: 1,
-    value: 2,
-    text: "palstik bening",
-  },
-  {
-    category_id: 2,
-    value: 1,
-    text: "botol kaca",
-  },
-  {
-    category_id: 3,
-    value: 1,
-    text: "perabot",
-  },
-  {
-    category_id: 3,
-    value: 2,
-    text: "alumium berat",
-  },
-]
+import { useTrashStore } from "~/stores/Trash.store"
+import { type TrashCategory } from "~/types/trash.type"
+const trashStore = useTrashStore()
+const { category, subcategory } = storeToRefs(trashStore)
 
 const emit = defineEmits()
 
-const optionSubCategory = computed((): subcategory[] => {
+const optionSubCategory = computed((): TrashCategory[] => {
   if (!selectedCategory.value) return []
-  return subcategory.filter(
-    (subcat) => subcat.category_id === selectedCategory.value?.value
+  return subcategory.value.filter(
+    (subcat) => subcat.id === selectedCategory.value?.id
   )
 })
 
-const selectedCategory = ref<category>()
-const selectedSubCategory = ref<category | null>()
+const selectedCategory = ref<TrashCategory>()
+const selectedSubCategory = ref<TrashCategory | null>()
+
+watchEffect(() => {
+  console.log(selectedCategory.value)
+  console.log(selectedSubCategory.value)
+})
 
 watch(selectedCategory, () => {
   selectedSubCategory.value = null
+})
+
+onMounted(() => {
+  trashStore.getTrashCategory()
 })
 </script>
 

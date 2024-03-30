@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { type category } from "../section/transaction/user/category.type"
+import { type TrashCategory } from "~/types/trash.type"
 interface Props {
   label?: string
   labelClass?: string
-  modelValue?: category | null
-  options?: category[]
+  modelValue?: TrashCategory | null
+  options?: TrashCategory[]
 }
 
 const props = defineProps<Props>()
@@ -19,14 +19,13 @@ const handleSelect = (value: any) => {
   isOpen.value = false
 }
 
-const selectedOption = ref<category | null>()
+const selectedOption = ref<TrashCategory | null>()
 
 const mappedSelectedOption = computed(() => {
-  return selectedOption.value?.text || selectedOption.value || "Pilih Sampah"
+  return selectedOption.value?.name || selectedOption.value || "Pilih Sampah"
 })
 
 const closeDropdown = (element: any) => {
-  console.log(dropDown.value?.contains(element.target))
   if (!dropDown.value?.contains(element.target)) {
     isOpen.value = false
   }
@@ -76,7 +75,7 @@ watch(
           @click="handleSelect(option)"
           class="text-xs text-brg-gray font-medium w-56"
         >
-          {{ option.text }}
+          {{ option.name }}
         </div>
       </div>
     </div>
