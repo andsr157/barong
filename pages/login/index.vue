@@ -68,7 +68,7 @@ const switchVisibility = () => {
     </div>
     <div class="mt-8 flex flex-col gap-5 right-0">
       <div>
-        <Input
+        <InputValidation
           name="email"
           type="email"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
@@ -81,7 +81,7 @@ const switchVisibility = () => {
       </div>
 
       <div>
-        <Input
+        <InputValidation
           name="password"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
           placeholder="Password"
@@ -102,7 +102,7 @@ const switchVisibility = () => {
               class="text-brg-primary text-2xl text-end cursor-pointer"
             />
           </template>
-        </Input>
+        </InputValidation>
       </div>
     </div>
     <div class="flex justify-end">

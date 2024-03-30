@@ -10,20 +10,12 @@ interface auth_state {
         password: string,
         password_confirmation: string
     }
-    access_token: string,
-    token_expired_date: number | null,
     loading: boolean
 }
 
 
 export const useAuthStore = defineStore('Auth-store', {
     state: () => ({
-        name: '',
-        email: '',
-        telp: '',
-        role: '',
-        access_token: '',
-        token_expired_date: null,
         loading: false
     }),
 

@@ -80,7 +80,7 @@ const switchVisibilityConfirmPassword = () =>
     </div>
     <div class="mt-8 flex flex-col gap-5">
       <div>
-        <Input
+        <InputValidation
           name="name"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
           placeholder="Nama Lengkap"
@@ -92,7 +92,7 @@ const switchVisibilityConfirmPassword = () =>
       </div>
 
       <div>
-        <Input
+        <InputValidation
           name="email"
           type="email"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
@@ -105,7 +105,7 @@ const switchVisibilityConfirmPassword = () =>
       </div>
 
       <div>
-        <Input
+        <InputValidation
           name="telp"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
           placeholder="Telepon"
@@ -117,7 +117,7 @@ const switchVisibilityConfirmPassword = () =>
       </div>
 
       <div>
-        <Input
+        <InputValidation
           name="password"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
           placeholder="Kata Sandi"
@@ -138,7 +138,7 @@ const switchVisibilityConfirmPassword = () =>
               class="text-brg-primary text-2xl text-end cursor-pointer"
             />
           </template>
-        </Input>
+        </InputValidation>
       </div>
 
       <div>

@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { type category } from "../section/transaction/user/category.type"
+import { type TrashCategory } from "~/types/trash.type"
 interface Props {
   label?: string
   labelClass?: string
-  modelValue?: category | null
-  options?: category[]
+  modelValue?: TrashCategory | null
+  options?: TrashCategory[]
+  disable?: boolean
+  isLoading?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  disable: false,
+})
 
 const dropDown = ref<HTMLElement | null>(null)
 const emit = defineEmits()
@@ -19,14 +23,13 @@ const handleSelect = (value: any) => {
   isOpen.value = false
 }
 
-const selectedOption = ref<category | null>()
+const selectedOption = ref<TrashCategory | null>()
 
 const mappedSelectedOption = computed(() => {
-  return selectedOption.value?.text || selectedOption.value || "Pilih Sampah"
+  return selectedOption.value?.name || selectedOption.value || "Pilih Sampah"
 })
 
 const closeDropdown = (element: any) => {
-  console.log(dropDown.value?.contains(element.target))
   if (!dropDown.value?.contains(element.target)) {
     isOpen.value = false
   }
@@ -67,7 +70,13 @@ watch(
         />
       </div>
       <div
-        v-if="isOpen"
+        v-if="isOpen && isLoading"
+        class="absolute z-40 top-12 bg-white border-[1px] border-brg-light-gray border-opacity-40 rounded-lg p-3"
+      >
+        <p class="text-xs text-brg-gray font-medium">loading...</p>
+      </div>
+      <div
+        v-else-if="isOpen && !disable"
         class="flex flex-col gap-y-4 absolute z-40 top-12 bg-white border-[1px] border-brg-light-gray border-opacity-40 rounded-lg p-3"
       >
         <div
@@ -76,7 +85,7 @@ watch(
           @click="handleSelect(option)"
           class="text-xs text-brg-gray font-medium w-56"
         >
-          {{ option.text }}
+          {{ option.name }}
         </div>
       </div>
     </div>
