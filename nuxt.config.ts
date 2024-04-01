@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "nuxt-rating",
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
+    'nuxt3-leaflet',
     // '@nuxtjs/supabase',
   ],
 

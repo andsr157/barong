@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "blank",
-});
+})
 </script>
 <template>
   <Header title="Daftar Alamat" />
@@ -13,7 +13,7 @@ definePageMeta({
       telp="0858669121"
       address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
       labelButton="Ubah Alamat"
-      path="/user/profile/address/edit"
+      :path="`/user/profile/address/edit/${1}`"
       :status="true"
     />
     <CardAddress
@@ -22,7 +22,7 @@ definePageMeta({
       telp="0858669121"
       address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
       labelButton="Ubah Alamat"
-      path="/user/profile/address/edit"
+      :path="`/user/profile/address/edit/${1}`"
       :status="false"
     />
     <CardAddress
@@ -31,7 +31,7 @@ definePageMeta({
       telp="0858669121"
       address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
       labelButton="Ubah Alamat"
-      path="/user/profile/address/edit"
+      :path="`/user/profile/address/edit/${1}`"
       :status="false"
     />
     <div class="flex">
