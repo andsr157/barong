@@ -17,6 +17,9 @@ dependencies:
   '@prisma/client':
     specifier: ^5.11.0
     version: 5.11.0(prisma@5.11.0)
+  '@supabase/supabase-js':
+    specifier: ^2.41.1
+    version: 2.41.1
   '@types/bcrypt':
     specifier: ^5.0.2
     version: 5.0.2
@@ -73,9 +76,6 @@ devDependencies:
   '@nuxtjs/google-fonts':
     specifier: ^3.1.3
     version: 3.2.0
-  '@nuxtjs/supabase':
-    specifier: ^1.2.0
-    version: 1.2.0
   '@pinia-plugin-persistedstate/nuxt':
     specifier: ^1.2.0
     version: 1.2.0(@pinia/nuxt@0.5.1)(pinia@2.1.7)
@@ -1456,20 +1456,6 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxtjs/supabase@1.2.0:
-    resolution: {integrity: sha512-HYII/FX4+39Rt+KLc9zlidNf43OGHvEf4xW+cKyL84Jky0BFuw7wYmCoHZdj7euBrKPnsp0lzPbrnvS+fE6kNA==}
-    dependencies:
-      '@nuxt/kit': 3.11.1
-      '@supabase/supabase-js': 2.41.1
-      defu: 6.1.4
-      pathe: 1.1.2
-    transitivePeerDependencies:
-      - bufferutil
-      - rollup
-      - supports-color
-      - utf-8-validate
-    dev: true
-
   /@panva/hkdf@1.1.1:
     resolution: {integrity: sha512-dhPeilub1NuIG0X5Kvhh9lH4iW3ZsHlnzwgwbOlgwQ2wG1IqFzsgHqmKPk3WzsdWAeaxKJxgM0+W433RmN45GA==}
 
@@ -2045,26 +2031,26 @@ packages:
     resolution: {integrity: sha512-yIgcHnlgv24GxHtVGUhwGqAFDyJkPIC/xjx7HostN08A8yCy8HIfl4JEkTKyBqD1v1L05jNEJOUke4Lf4O1+Qg==}
     dependencies:
       '@supabase/node-fetch': 2.6.15
-    dev: true
+    dev: false
 
   /@supabase/functions-js@2.2.2:
     resolution: {integrity: sha512-sJGq1nludmi7pY/fdtCpyY/pYonx7MfHdN408bqb736guWcVI1AChYVbI4kUM978EuOE4Ci6l7bUudfGg07QRw==}
     dependencies:
       '@supabase/node-fetch': 2.6.15
-    dev: true
+    dev: false
 
   /@supabase/node-fetch@2.6.15:
     resolution: {integrity: sha512-1ibVeYUacxWYi9i0cf5efil6adJ9WRyZBLivgjs+AUpewx1F3xPi7gLgaASI2SmIQxPoCEjAsLAzKPgMJVgOUQ==}
     engines: {node: 4.x || >=6.0.0}
     dependencies:
       whatwg-url: 5.0.0
-    dev: true
+    dev: false
 
   /@supabase/postgrest-js@1.9.2:
     resolution: {integrity: sha512-I6yHo8CC9cxhOo6DouDMy9uOfW7hjdsnCxZiaJuIVZm1dBGTFiQPgfMa9zXCamEWzNyWRjZvupAUuX+tqcl5Sw==}
     dependencies:
       '@supabase/node-fetch': 2.6.15
-    dev: true
+    dev: false
 
   /@supabase/realtime-js@2.9.3:
     resolution: {integrity: sha512-lAp50s2n3FhGJFq+wTSXLNIDPw5Y0Wxrgt44eM5nLSA3jZNUUP3Oq2Ccd1CbZdVntPCWLZvJaU//pAd2NE+QnQ==}
@@ -2076,13 +2062,13 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-    dev: true
+    dev: false
 
   /@supabase/storage-js@2.5.5:
     resolution: {integrity: sha512-OpLoDRjFwClwc2cjTJZG8XviTiQH4Ik8sCiMK5v7et0MDu2QlXjCAW3ljxJB5+z/KazdMOTnySi+hysxWUPu3w==}
     dependencies:
       '@supabase/node-fetch': 2.6.15
-    dev: true
+    dev: false
 
   /@supabase/supabase-js@2.41.1:
     resolution: {integrity: sha512-xmECLhYugMo/6SObpsOhu5xaxVfsk+JK/d4JSh055bpESmgmN3PLpzbfqejKCpaUeeUNF21+lrJp/U9HQzT9mA==}
@@ -2096,7 +2082,7 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-    dev: true
+    dev: false
 
   /@swc/helpers@0.5.2:
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
@@ -2173,7 +2159,7 @@ packages:
 
   /@types/phoenix@1.6.4:
     resolution: {integrity: sha512-B34A7uot1Cv0XtaHRYDATltAdKx0BvVKNgYNqE4WjtPUa4VQJM7kxeXcVKaH+KS+kCmZ+6w+QaUdcljiheiBJA==}
-    dev: true
+    dev: false
 
   /@types/resolve@1.20.2:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -2196,7 +2182,7 @@ packages:
     resolution: {integrity: sha512-vmQSUcfalpIq0R9q7uTo2lXs6eGIpt9wtnLdMv9LVpIjCA/+ufZRozlVoVelIYixx1ugCBKDhn89vnsEGOCx9A==}
     dependencies:
       '@types/node': 20.11.30
-    dev: true
+    dev: false
 
   /@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0)(eslint@8.57.0)(typescript@5.4.3):
     resolution: {integrity: sha512-oy9+hTPCUFpngkEZUSzbf9MxI65wbKFoQYsgPdILTfbUldp5ovUuphZVe4i30emU9M/kP+T64Di0mxl7dSw3MA==}
