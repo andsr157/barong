@@ -1,14 +1,15 @@
 <script setup lang="ts">
 defineProps<{
-  label: string;
-  name: string;
-  telp: string;
-  address: string;
-  noButton?: boolean;
-  labelButton?: string;
-  path?: string;
-  status?: boolean;
-}>();
+  label: string
+  name: string
+  telp: string
+  address: string
+  detail?: string
+  noButton?: boolean
+  labelButton?: string
+  path?: string
+  status?: boolean
+}>()
 </script>
 
 <template>
@@ -20,14 +21,14 @@ defineProps<{
         <Icon name="majesticons:home" size="20px" />
         <h3 class="text-sm font-semibold">{{ label }}</h3>
       </div>
-      <h3 class="font-semibold text-xs">{{status === true ? 'Utama' : ''}}</h3>
+      <h3 class="font-semibold text-xs">
+        {{ status === true ? "Utama" : "" }}
+      </h3>
     </div>
     <div class="text-xs flex flex-col gap-y-1">
       <p class="text-brg-primary-dark font-semibold">{{ name }}</p>
       <p class="text-brg-gray">{{ telp }}</p>
-      <p class="text-brg-gray">
-        {{ address }}
-      </p>
+      <p class="text-brg-gray">{{ address }} ({{ detail }})</p>
     </div>
     <div class="w-full flex justify-end mt-3" v-if="!noButton">
       <NuxtLink :to="path">
