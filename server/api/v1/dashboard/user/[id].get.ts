@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
     let totalAmount = 0;
     res.forEach(transaction => {
-        totalAmount += transaction.total;
+        totalAmount += transaction.total ?? 0;
     });
 
 
