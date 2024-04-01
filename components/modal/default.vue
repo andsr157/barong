@@ -9,9 +9,10 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  title: "modal",
+  title: "Konfirmasi",
   desc: "Apakah anda yakin ?",
   labelColor: "text-brg-primary-dark",
+  labelConfirmation: "Ya",
 })
 
 const emit = defineEmits()
@@ -41,12 +42,17 @@ const emit = defineEmits()
           <div
             class="grid grid-cols-2 w-full text-sm font-semibold mt-8 text-center"
           >
-            <span class="text-brg-light-gray" @click="emit('closeModal')"
+            <span
+              class="text-brg-light-gray cursor-pointer"
+              @click="emit('closeModal')"
               >Tidak</span
             >
-            <span :class="labelColor" @click="emit(emitFunction)">{{
-              labelConfirmation
-            }}</span>
+            <span
+              class="cursor-pointer"
+              :class="labelColor"
+              @click="emit(emitFunction)"
+              >{{ labelConfirmation }}</span
+            >
           </div>
         </div>
       </div>
