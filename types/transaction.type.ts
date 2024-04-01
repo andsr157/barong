@@ -46,7 +46,7 @@ export interface TransactionData {
     transaction: {
         user_id: number;
         address_id: number;
-        image: string;
+        image: string | any;
         status_id: number;
         note: string;
     };
