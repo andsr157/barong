@@ -77,43 +77,41 @@ export default defineEventHandler(async (event) => {
             partner = {}
         }
 
-
-        const { id: status_id, ...status } = transactions[0].status
-
-
-
         // Format data transaksi sesuai dengan struktur yang diinginkan
-        const formattedTransactions = transactions.map((data: any) => ({
-            id: data.id,
-            user: user,
-            pengepul: partner, // Informasi pengepul belum tersedia
-            address: {
-                label: data.address.label,
-                name: data.address.owner_name,
-                telp: data.address.owner_telp,
-                detail: data.address.detail,
-            },
-            trashImage: '/assets/dummy-trash.png', // Gambar sampah (placeholder)
-            detailSampah: data.transaction_detail.map((detail: any) => ({
-                id: detail.id,
-                category: detail.trash.category.name,
-                subcategory: detail.trash.name, // Subkategori (jika ada)
-                minPrice: detail.trash.minPrice,
-                maxPrice: detail.trash.maxPrice,
-                weight: detail.weight,
-                finalPrice: 0, // Harga akhir (misalnya setelah perhitungan)
-            })),
-            totalPrice: data.total,
+        const formattedTransactions = transactions.map((data: any) => {
+            const status = { id: data.status.id, ...data.status };
 
-            servicePrice: data.total ?? 0 * 10 / 100,
-            finalTotalPrice: data.total ?? 0 - (data.total ?? 0 * 10 / 100),
-            status: status,
-            review: {
-                rate: data.partner_rate,
-                ulasan: data.partner_review,
-            },
-            note: data.note,
-        }))
+            return {
+                id: data.id,
+                user: user,
+                pengepul: partner,
+                address: {
+                    label: data.address.label,
+                    name: data.address.owner_name,
+                    telp: data.address.owner_telp,
+                    detail: data.address.detail,
+                },
+                trashImage: '/assets/dummy-trash.png',
+                detailSampah: data.transaction_detail.map((detail: any) => ({
+                    id: detail.id,
+                    category: detail.trash.category.name,
+                    subcategory: detail.trash.name,
+                    minPrice: detail.trash.minPrice,
+                    maxPrice: detail.trash.maxPrice,
+                    weight: detail.weight,
+                    finalPrice: 0,
+                })),
+                totalPrice: data.total,
+                servicePrice: (data.total ?? 0) * 10 / 100,
+                finalTotalPrice: (data.total ?? 0) - ((data.total ?? 0) * 10 / 100),
+                status: status,
+                review: {
+                    rate: data.partner_rate,
+                    ulasan: data.partner_review,
+                },
+                note: data.note,
+            };
+        });
 
         return { data: formattedTransactions, status: 200 };
     } catch (error) {

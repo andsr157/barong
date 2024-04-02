@@ -56,7 +56,7 @@ onMounted(async () => {
 
   <div class="block px-6 mt-6 pt-6`">
     <h1 class="font-semibold text-sm mb-6">Transaksi {{ data.name }}</h1>
-    <div class="flex flex-col gap-6 mt-4" v-if="data.data.length > 0">
+    <div class="flex flex-col gap-y-6 mt-4" v-if="data.data.length > 0">
       <CardTransactionUser
         v-for="transaction in data.data"
         :detail-sampah="formatSampah(transaction.detailSampah)"

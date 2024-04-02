@@ -5,6 +5,7 @@ import { TRANSACTION } from "~/constants/trash.constants"
 
 const transactionStore = useTransactionStore()
 const transactionActive = ref<any>(null)
+const { isLoading } = storeToRefs(transactionStore)
 
 // const activeTransaction = computed(() => {
 //   return TRANSACTION.filter((data) => {
@@ -25,7 +26,8 @@ onMounted(async () => {
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Transaksi Aktif
     </h2>
-    <div class="flex flex-col gap-5" v-if="transactionActive">
+    <div v-if="isLoading">lagi loading sabar su</div>
+    <div class="flex flex-col gap-5" v-else-if="transactionActive">
       <CardTransactionUser
         v-for="transaction in transactionActive"
         :detail-sampah="formatSampah(transaction.detailSampah)"

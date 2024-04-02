@@ -34,6 +34,7 @@ const newTrashData = computed(() => {
   return updatedCard.value.filter((cardItem) => cardItem.weight !== 0)
 })
 
+const isLoading = ref(false)
 const card = <CARD[]>[
   {
     category: "Plastik",
@@ -88,6 +89,7 @@ interface CARD {
 
 onMounted(async () => {
   try {
+    isLoading.value = true
     const headers = { Cookie: document.cookie }
     const res = await axios.get(`/api/v1/dashboard/user/${id}`, {
       headers: headers,
@@ -95,6 +97,7 @@ onMounted(async () => {
     if (res) {
       const { totalAmount, ...resData } = res.data.data
       trashData.value = resData.trash
+      isLoading.value = false
     } else {
       console.log("failed fetch api")
     }
@@ -108,7 +111,8 @@ onMounted(async () => {
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Total sampahmu
     </h2>
-    <div v-if="newTrashData.length > 0">
+    <div v-if="isLoading">lagi loading sabar su</div>
+    <div v-else-if="newTrashData.length > 0">
       <Swiper :breakpoints="BREAKSPOINTS" :loop="true">
         <SwiperSlide v-for="data in newTrashData">
           <CardTrash

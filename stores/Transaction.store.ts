@@ -105,6 +105,8 @@ export const useTransactionStore = defineStore('transaction', {
                 const res = await axios.get('/api/v1/transaction/active')
                 if (res.data.status === 200) {
                     this.isLoading = false
+                } else {
+                    this.isLoading = false
                 }
                 return Promise.resolve(res.data)
             } catch (error) {
@@ -127,7 +129,21 @@ export const useTransactionStore = defineStore('transaction', {
             } catch (error) {
                 console.error(error)
             }
+        },
 
+        async getSingleTransaction(id: number) {
+            try {
+                this.isLoading = true
+                const res = await axios.get(`/api/v1/transaction/${id}`)
+                if (res.data.status === 200) {
+                    this.isLoading = false
+                } else {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                console.error(error)
+            }
         }
     }
 })
