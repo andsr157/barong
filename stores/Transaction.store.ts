@@ -1,5 +1,20 @@
 import { defineStore } from 'pinia'
-import { type TransactionData, type TransactionDetail } from '~/types/transaction.type'
+import axios from 'axios'
+import { type TransactionData, type TransactionDetail, type TransactionImage } from '~/types/transaction.type'
+
+interface PostData {
+    transaction: {
+        user_id: number,
+        address_id: number,
+        image: string,
+        status_id: number,
+        note: string,
+    },
+    transaction_detail: {
+        trash_id: number,
+        weight: number
+    }[]
+}
 
 export const useTransactionStore = defineStore('transaction', {
     state: () => {
@@ -8,12 +23,14 @@ export const useTransactionStore = defineStore('transaction', {
                 transaction: {
                     user_id: 0,
                     address_id: 0,
-                    image: '',
                     status_id: 0,
                     note: '',
                 },
                 transaction_detail: [],
             } as TransactionData),
+
+            transactionImage: null as any,
+            isLoading: false
         }
     },
 
@@ -45,5 +62,20 @@ export const useTransactionStore = defineStore('transaction', {
                 this.transactionData.transaction_detail.splice(index, 1);
             }
         },
+
+        async addTransaction(payload: PostData) {
+            console.log('jalan')
+            const res = await axios.post('/api/v1/transaction', payload)
+            this.isLoading = false
+            this.transactionData.transaction = {
+                user_id: 0,
+                address_id: 0,
+                status_id: 0,
+                note: '',
+            }
+            this.transactionData.transaction_detail = []
+            this.transactionImage = null
+            return Promise.resolve(res.data)
+        }
     }
 })

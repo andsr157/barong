@@ -1,12 +1,15 @@
 <script setup lang="ts">
-const data = ref<any>(null)
+import { useTransactionStore } from "~/stores/Transaction.store"
+
+const transactionStore = useTransactionStore()
+const { transactionImage: data } = storeToRefs(transactionStore)
 </script>
 <template>
   <section>
     <h2 class="text-brg-primary-dark font-semibold mb-2">Foto Sampah</h2>
     <CardImageGallery
       with-delete
-      :url="data?.imageUrl"
+      :url="data?.imageUrl ?? ''"
       @deleteImage="data = null"
     />
     <InputFile
@@ -17,4 +20,5 @@ const data = ref<any>(null)
       placeholder="Masukan foto disini"
     />
   </section>
+  <!-- {{ data.imageUrl }} -->
 </template>

@@ -1,23 +1,117 @@
 <script setup lang="ts">
-import { TRANSACTION } from "~/constants/trash.constants"
+import { createClient } from "@supabase/supabase-js"
+import { v4 as uuidv4 } from "uuid"
 import { estimateTotal } from "~/composables/helpers"
+import { useTransactionStore } from "~/stores/Transaction.store"
+
+const transactionStore = useTransactionStore()
+const {
+  transactionData: trash,
+  transactionImage: file,
+  isLoading,
+} = storeToRefs(transactionStore)
+
+const { data: user } = <any>useAuth()
 
 definePageMeta({
   layout: "blank",
 })
 
 const router = useRouter()
-
+const address = ref<any>(null)
 const note = ref("ini catatan")
-const transactionData = TRANSACTION[0].detailSampah
+const transactionData = trash.value.transaction_detail
 
 const estimate = computed(() => {
   return estimateTotal(transactionData)
 })
 
-const handleConfirmationTransaction = () => {
-  router.push("/user/transaction/1/searching")
+const config = useRuntimeConfig().app
+
+const supabase = createClient(config.supabaseUrl, config.supabaseKey)
+
+const uploadImage = async () => {
+  try {
+    if (!file.value.image) {
+      console.error("No file selected")
+      return
+    }
+
+    const { data, error } = await supabase.storage
+      .from("images")
+      .upload(`${uuidv4()}.jpg`, file.value.image)
+
+    console.log(data)
+    if (error) {
+      console.error("Error uploading image:", error.message)
+      return
+    }
+    console.log(data.path)
+    const { data: publicUrlData, error: publicUrlError }: any =
+      await supabase.storage.from("images").getPublicUrl(data.path)
+
+    if (publicUrlError) {
+      console.error("Error getting public URL:", publicUrlError.message)
+      return
+    }
+    console.log(publicUrlData.publicUrl)
+    file.value = null
+    return publicUrlData.publicUrl
+  } catch (error: any) {
+    console.error("Error uploading image:", error.message)
+  }
 }
+
+const onSubmit = async () => {
+  try {
+    const imageUrl = await uploadImage().catch((error) => {
+      console.error("Error in uploadImage:", error)
+    })
+
+    const transaction = {
+      ...trash.value.transaction,
+      user_id: user.value.user.id,
+      status_id: 1,
+      image: imageUrl,
+    }
+
+    const transaction_detail = trash.value.transaction_detail.map(
+      (data: any) => ({
+        trash_id: data.trash_id,
+        weight: data.weight,
+      })
+    )
+
+    const payload = {
+      transaction: transaction,
+      transaction_detail: transaction_detail,
+    }
+
+    console.log(payload)
+
+    const res = await transactionStore
+      .addTransaction(payload)
+      .catch((error) => {
+        console.error("Error in addTransaction:", error)
+      })
+
+    localStorage.removeItem("transaction")
+    useRouter().push("/user/transaction/success")
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+onMounted(async () => {
+  try {
+    const res = await useNuxtApp().$axios.get(
+      `address/${trash.value.transaction.address_id}`
+    )
+    if (res.data.status === 200) {
+      address.value = res.data.data
+    }
+  } catch (error) {}
+})
 </script>
 
 <template>
@@ -28,12 +122,12 @@ const handleConfirmationTransaction = () => {
         Alamat Pengambilan
       </h2>
       <CardAddress
-        label="Rumah"
-        name="July Dwi Saputra"
-        telp="+62876543219"
-        address="Dk. Tompe Rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa Tengah 57561"
+        v-if="address !== null"
+        :label="address.label"
+        :name="address.owner_name"
+        :telp="address.owner_telp"
+        :address="address.address_name"
         label-button="Ubah Alamat"
-        path="/user/profile/address/edit"
         no-button
       />
     </section>
@@ -42,7 +136,7 @@ const handleConfirmationTransaction = () => {
       <h2 class="text-brg-primary-dark font-semibold mb-4">Data penjualan</h2>
       <div class="flex flex-col gap-y-2 mb-9">
         <CardTrashEstimate
-          v-for="(data, index) in TRANSACTION[0].detailSampah"
+          v-for="(data, index) in trash.transaction_detail"
           :key="index"
           :category="data.category"
           :subcategory="data.subcategory"
@@ -63,14 +157,14 @@ const handleConfirmationTransaction = () => {
           rows="8"
           class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
           placeholder="isi catatan"
-          v-model="note"
+          v-model="trash.transaction.note"
         >
         </textarea>
       </ClientOnly>
     </section>
 
     <div class="max-w-max mx-auto py-12">
-      <ButtonLarge label="Konfirmasi" @click="handleConfirmationTransaction" />
+      <ButtonLarge label="Konfirmasi" @click="onSubmit" :disabled="isLoading" />
     </div>
   </div>
 </template>

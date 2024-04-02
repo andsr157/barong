@@ -13,7 +13,7 @@ export const useTrashStore = defineStore('trash', {
         async getTrashCategory() {
             try {
                 this.loading = true
-                const res = await axios.get('/api/v1/trash/category')
+                const res = await axios.get('/api/v1/trash')
                 if (res.data.status === 200) {
                     this.category = res.data.data.category
                     this.subcategory = res.data.data.subcategory

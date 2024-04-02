@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const data = ref("")
+import { useTransactionStore } from "~/stores/Transaction.store"
+
+const transactionStore = useTransactionStore()
+const { transactionData: data } = storeToRefs(transactionStore)
 </script>
 
 <template>
@@ -18,7 +21,7 @@ const data = ref("")
         rows="8"
         class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
         placeholder="isi catatan"
-        v-model="data"
+        v-model="data.transaction.note"
       >
       </textarea>
     </ClientOnly>
