@@ -16,7 +16,7 @@ const { transactionImage: data } = storeToRefs(transactionStore)
       wrapper-class="!border-dashed !border-brg-primary"
       prefix-icon="heroicons:paper-clip-solid"
       prefix-icon-color="text-brg-gray"
-      v-model="transactionStore.transactionData.transaction.image"
+      v-model="data"
       placeholder="Masukan foto disini"
     />
   </section>
