@@ -45,7 +45,26 @@ export const useTransactionStore = defineStore('transaction', {
             return this.transactionData.transaction_detail.reduce((total: number, currentValue) => {
                 return total + currentValue.weight;
             }, 0);
+        },
+
+        activeTransaction(): Transaction[] {
+            return this.transaction.filter((data) => {
+                return data.status.name === "taking" || data.status.name === "searching"
+            })
+        },
+
+        doneTransaction(): Transaction[] {
+            return this.transaction.filter((data) => {
+                return data.status.name === "finish"
+            })
+        },
+
+        canceledTransaction(): Transaction[] {
+            return this.transaction.filter((data) => {
+                return data.status.name === "canceled"
+            })
         }
+
     },
 
     actions: {
@@ -85,6 +104,23 @@ export const useTransactionStore = defineStore('transaction', {
                 this.isLoading = true
                 const res = await axios.get('/api/v1/transaction/active')
                 if (res.data.status === 200) {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                console.error(error)
+            }
+
+        },
+
+        async getAllTransaction() {
+            try {
+                this.isLoading = true
+                const res = await axios.get('/api/v1/transaction')
+                if (res.data.status === 200) {
+                    this.transaction = res.data.data
+                    this.isLoading = false
+                } else {
                     this.isLoading = false
                 }
                 return Promise.resolve(res.data)
