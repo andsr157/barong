@@ -15,7 +15,6 @@ interface Props {
   suffixIcon?: string
   suffixIconSize?: string
   suffixIconColor?: string
-  // errorMessage?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,22 +23,11 @@ const props = withDefaults(defineProps<Props>(), {
   prefixIconSize: "20px",
   suffixIconSize: "20px",
 })
+const fieldName = ref<string | undefined>(props.name)
 
-const { value, errorMessage } = useField(() => props.name ?? "")
-// const emit = defineEmits()
-// const updateInput = (event: Event) => {
-//   const target = event.target as HTMLInputElement
-//   let value = <any>target.value
-
-//   if (props.type === "number") {
-//     if (value === "" || parseFloat(value) < 0) {
-//       value = 0
-//     }
-//     emit("update:modelValue", parseFloat(value))
-//   } else {
-//     emit("update:modelValue", value)
-//   }
-// }
+const { value, errorMessage } = useField(fieldName.value ?? "", undefined, {
+  syncVModel: true,
+})
 </script>
 
 <template>

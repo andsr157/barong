@@ -148,6 +148,11 @@ export const DATA = {
       label: "selesai",
       status: "success",
     },
+    {
+      name: "canceled",
+      label: "dibatalkan",
+      status: "success",
+    },
   ],
   TRANSACTION: [
     {

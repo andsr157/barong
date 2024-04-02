@@ -32,6 +32,7 @@ async function seedUser() {
           latitude: address.latitude,
           longitude: address.longitude,
           user_id: address.user_id,
+          is_main: false,
         },
       })
     }

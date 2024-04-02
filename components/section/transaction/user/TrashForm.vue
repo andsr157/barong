@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTrashStore } from "~/stores/Trash.store"
 import { useTransactionStore } from "~/stores/Transaction.store"
-import { type TrashCategory } from "~/types/trash.type"
+import { type TrashCategory, type TrashSubCategory } from "~/types/trash.type"
 const trashStore = useTrashStore()
 const transactionStore = useTransactionStore()
 const { category, subcategory } = storeToRefs(trashStore)
@@ -16,7 +16,7 @@ const optionSubCategory = computed((): TrashCategory[] => {
 })
 
 const selectedCategory = ref<TrashCategory | null>()
-const selectedSubCategory = ref<TrashCategory | null>()
+const selectedSubCategory = ref<TrashSubCategory | null>()
 const trashWeight = ref(0)
 
 watch(selectedCategory, () => {
@@ -28,6 +28,9 @@ const trashForm = computed(() => {
     trash_id: selectedSubCategory.value?.id || 0,
     category: selectedCategory.value?.name || "",
     subcategory: selectedSubCategory.value?.name || "",
+    minPrice: selectedSubCategory.value?.minPrice || 0,
+    maxPrice: selectedSubCategory.value?.maxPrice || 0,
+    finalPrice: 0,
     weight: trashWeight.value,
   }
 })

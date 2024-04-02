@@ -2,14 +2,15 @@
 import { useTransactionStore } from "~/stores/Transaction.store"
 
 const transactionStore = useTransactionStore()
+const { transactionImage: data } = storeToRefs(transactionStore)
 </script>
 <template>
   <section>
     <h2 class="text-brg-primary-dark font-semibold mb-2">Foto Sampah</h2>
     <CardImageGallery
       with-delete
-      :url="transactionStore.transactionData.transaction.image?.imageUrl"
-      @deleteImage="transactionStore.transactionData.transaction.image = null"
+      :url="data?.imageUrl ?? ''"
+      @deleteImage="data = null"
     />
     <InputFile
       wrapper-class="!border-dashed !border-brg-primary"
@@ -19,4 +20,5 @@ const transactionStore = useTransactionStore()
       placeholder="Masukan foto disini"
     />
   </section>
+  <!-- {{ data.imageUrl }} -->
 </template>

@@ -41,14 +41,22 @@ export interface TransactionDetail {
     category: string,
     subcategory: string,
     weight: number;
+    minPrice?: number
+    maxPrice?: number
+    finalPrice?: number
 }
 export interface TransactionData {
     transaction: {
         user_id: number;
         address_id: number;
-        image: string | any;
+        // image: string;
         status_id: number;
         note: string;
     };
     transaction_detail: TransactionDetail[];
+}
+
+export interface TransactionImage {
+    image: null | any
+    imageUrl: string
 }

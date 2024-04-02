@@ -1,43 +1,46 @@
 <script setup lang="ts">
+import { useAddressStore } from "~/stores/Address.store"
+
+const addresStore = useAddressStore()
 definePageMeta({
   layout: "blank",
-});
+})
+
+const { address, isLoading } = storeToRefs(addresStore)
+
+onMounted(() => {
+  addresStore.getAddress()
+})
 </script>
 <template>
   <Header title="Daftar Alamat" />
-
-  <div class="px-5 mt-[20px] flex flex-col gap-7">
-    <CardAddress
-      label="Rumah"
-      name="July Dwi Saputra"
-      telp="0858669121"
-      address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
-      labelButton="Ubah Alamat"
-      path="/user/profile/address/edit"
-      :status="true"
-    />
-    <CardAddress
-      label="Rumah"
-      name="July Dwi Saputra"
-      telp="0858669121"
-      address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
-      labelButton="Ubah Alamat"
-      path="/user/profile/address/edit"
-      :status="false"
-    />
-    <CardAddress
-      label="Rumah"
-      name="July Dwi Saputra"
-      telp="0858669121"
-      address="Tompe rt.04/02, Lorog, Tawangsari, Sukoharjo, Jawa tengah 57561"
-      labelButton="Ubah Alamat"
-      path="/user/profile/address/edit"
-      :status="false"
-    />
-    <div class="flex">
-      <NuxtLink to="/user/profile/address/add" class="mx-auto mt-3 mb-14">
-        <ButtonLarge label="Tambah Alamat" />
+  <div v-if="!isLoading">
+    <div class="px-5 mt-[20px] flex flex-col gap-7">
+      <NuxtLink
+        v-for="data in address"
+        :key="data.id"
+        :to="`/user/profile/address/edit/${data.id}`"
+      >
+        <CardAddress
+          :label="data.label"
+          :name="data.owner_name"
+          :telp="data.owner_telp"
+          :address="data.address_name"
+          :detail="data.detail"
+          noButton
+          :status="data.is_main === true ? true : false"
+        />
+      </NuxtLink>
+    </div>
+    <div class="flex w-full justify-center mb-12">
+      <NuxtLink to="/user/profile/address/add">
+        <ButtonLarge
+          label="Tambah alamat"
+          class="mx-auto mt-10 mb-12"
+          to="/user/profile/address/add"
+        />
       </NuxtLink>
     </div>
   </div>
+  <div v-else>Lagi loading</div>
 </template>

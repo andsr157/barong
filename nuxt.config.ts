@@ -14,17 +14,21 @@ export default defineNuxtConfig({
     "nuxt-rating",
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
+    'nuxt3-leaflet',
     // '@nuxtjs/supabase',
   ],
 
   runtimeConfig: {
     app: {
       appSecret: process.env.NUXT_ENV_SECRET,
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
+      bucketUrl: process.env.BUCKET_URL,
     },
     public: {
       appUrl: process.env.BASE_URL ?? "http://localhost:3000",
       apiurl: process.env.API_URL,
-      bucketUrl: process.env.BUCKET_URL,
+
     },
   },
 

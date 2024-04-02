@@ -10,7 +10,6 @@ const trashFormVisible = ref(false)
 <template>
   <section class="my-6">
     <h2 class="text-brg-primary-dark font-semibold">Data Sampah</h2>
-    {{ transactionStore.transactionData.transaction_detail }}
     <div class="my-2">
       <div
         v-if="transactionData.transaction_detail.length > 0"
@@ -18,7 +17,7 @@ const trashFormVisible = ref(false)
         v-for="trash in transactionData.transaction_detail"
       >
         <div
-          class="w-48 h-[38px] border-[1px] border-brg-light-gray rounded-[10px] px-3 py-[10px] shrink-0"
+          class="w-52 h-[38px] border-[1px] border-brg-light-gray rounded-[10px] px-3 py-[10px] shrink-0"
         >
           <p class="text-xs text-brg-primary-dark font-medium">
             {{ trash.category }} | {{ trash.subcategory }}
@@ -27,7 +26,7 @@ const trashFormVisible = ref(false)
         <Input
           wrapper-class="!px-1"
           type="number"
-          input-class="text-brg-primary !text-sm !font-semibold text-end pe-1"
+          input-class="text-brg-primary !text-xs !font-semibold text-end pe-1"
           v-model="trash.weight"
         >
           <template #suffix>
@@ -38,7 +37,7 @@ const trashFormVisible = ref(false)
         </Input>
         <button
           @click="transactionStore.removeTrash(trash.trash_id)"
-          class="bg-transparent px-3 py-[1px] border-[1px] border-brg-red rounded-[10px] max-h-[38px]"
+          class="bg-transparent px-2 py-[1px] border-[1px] border-brg-red rounded-[10px] max-h-[38px]"
         >
           <Icon name="mdi:delete" class="text-brg-red" size="21px" />
         </button>
