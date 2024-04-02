@@ -1,45 +1,31 @@
 <script setup lang="ts">
-import { TRANSACTION } from "~/constants/trash.constants"
-const activeTransaction = computed(() => {
-  return TRANSACTION.filter((data) => {
-    return (
-      (data.status.name === "taking" || data.status.name === "searching") ??
-      null
-    )
-  })
-})
-
-const doneTransaction = computed(() => {
-  return TRANSACTION.filter((data) => {
-    return data.status.name === "finish" ?? null
-  })
-})
-
-const canceledTransaction = computed(() => {
-  return TRANSACTION.filter((data) => {
-    return data.status.name === "canceled" ?? null
-  })
-})
+import { useTransactionStore } from "~/stores/Transaction.store"
+const transactionStore = useTransactionStore()
+const { isLoading } = storeToRefs(transactionStore)
 
 const data = ref<any>({
   name: "saat ini",
-  data: activeTransaction,
+  data: transactionStore.activeTransaction,
 })
 const filterTransaction = (status: string) => {
   if (status === "active") {
     data.value.name = "saat ini"
-    data.value.data = activeTransaction
+    data.value.data = transactionStore.activeTransaction
   } else if (status === "finish") {
     data.value.name = "selesai"
-    data.value.data = doneTransaction
+    data.value.data = transactionStore.doneTransaction
   } else if (status === "canceled") {
     data.value.name = "dibatalkan"
-    data.value.data = canceledTransaction
+    data.value.data = transactionStore.canceledTransaction
   }
 }
 
 definePageMeta({
   layout: "default",
+})
+
+onMounted(async () => {
+  await transactionStore.getAllTransaction()
 })
 </script>
 <template>
@@ -69,8 +55,8 @@ definePageMeta({
   </div>
 
   <div class="block px-6 mt-6 pt-6`">
-    <h1 class="font-semibold text-sm">Transaksi {{ data.name }}</h1>
-    <div class="flex flex-col gap-6 mt-4" v-if="data.data !== null">
+    <h1 class="font-semibold text-sm mb-6">Transaksi {{ data.name }}</h1>
+    <div class="flex flex-col gap-y-6 mt-4" v-if="data.data.length > 0">
       <CardTransactionUser
         v-for="transaction in data.data"
         :detail-sampah="formatSampah(transaction.detailSampah)"
@@ -79,6 +65,7 @@ definePageMeta({
         :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>
+    <div v-else-if="isLoading">Lagi loading sabar</div>
     <div v-else>
       <p
         class="text-center text-sm font-medium text-brg-primary-dark text-opacity-70 mt-10"

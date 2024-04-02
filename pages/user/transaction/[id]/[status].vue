@@ -1,35 +1,37 @@
 <script setup lang="ts">
-import { TRANSACTION } from "~/constants/trash.constants";
-import { estimateTotal } from "~/composables/helpers";
+import { useTransactionStore } from "~/stores/Transaction.store"
+import { estimateTotal } from "~/composables/helpers"
 
-definePageMeta({
-  layout: "blank",
-});
+const transactionStore = useTransactionStore()
 
-const route = useRoute();
-const router = useRouter();
-const transaction = ref<any>();
-const isModalOpen = ref(false);
+const route = useRoute()
+const router = useRouter()
+const transaction = ref<any>()
+const isModalOpen = ref(false)
 // const rating = ref();
 
 const estimate = computed(() => {
-  return estimateTotal(transaction.value.detailSampah);
-});
+  return estimateTotal(transaction.value.detailSampah)
+})
 
 const handleFinishTransaction = () => {
-  router.push(`/user/transaction/success`);
-};
-onMounted(() => {
-  let id: string;
+  router.push(`/user/transaction/success`)
+}
+
+definePageMeta({
+  layout: "blank",
+})
+
+onMounted(async () => {
+  let id: string
   if (Array.isArray(route.params.id)) {
-    id = route.params.id[0];
+    id = route.params.id[0]
   } else {
-    id = route.params.id;
+    id = route.params.id
   }
-  transaction.value = TRANSACTION.filter((data) => {
-    return data.id === parseInt(id);
-  })[0];
-});
+  const res = await transactionStore.getSingleTransaction(parseInt(id))
+  transaction.value = res.data
+})
 
 // const logRating = async (event: number) => {
 //       rating.value = event;

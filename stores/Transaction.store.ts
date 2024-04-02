@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { type TransactionData, type TransactionDetail, type TransactionImage } from '~/types/transaction.type'
+import { type TransactionData, type TransactionDetail, type TransactionImage, type Transaction } from '~/types/transaction.type'
+import type { transaction } from '@prisma/client'
 
 interface PostData {
     transaction: {
@@ -30,7 +31,8 @@ export const useTransactionStore = defineStore('transaction', {
             } as TransactionData),
 
             transactionImage: null as any,
-            isLoading: false
+            isLoading: false,
+            transaction: [] as Transaction[]
         }
     },
 
@@ -43,7 +45,26 @@ export const useTransactionStore = defineStore('transaction', {
             return this.transactionData.transaction_detail.reduce((total: number, currentValue) => {
                 return total + currentValue.weight;
             }, 0);
+        },
+
+        activeTransaction(): Transaction[] {
+            return this.transaction.filter((data) => {
+                return data.status.name === "taking" || data.status.name === "searching"
+            })
+        },
+
+        doneTransaction(): Transaction[] {
+            return this.transaction.filter((data) => {
+                return data.status.name === "finish"
+            })
+        },
+
+        canceledTransaction(): Transaction[] {
+            return this.transaction.filter((data) => {
+                return data.status.name === "canceled"
+            })
         }
+
     },
 
     actions: {
@@ -76,6 +97,53 @@ export const useTransactionStore = defineStore('transaction', {
             this.transactionData.transaction_detail = []
             this.transactionImage = null
             return Promise.resolve(res.data)
+        },
+
+        async getActiveTransaction() {
+            try {
+                this.isLoading = true
+                const res = await axios.get('/api/v1/transaction/active')
+                if (res.data.status === 200) {
+                    this.isLoading = false
+                } else {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                console.error(error)
+            }
+
+        },
+
+        async getAllTransaction() {
+            try {
+                this.isLoading = true
+                const res = await axios.get('/api/v1/transaction')
+                if (res.data.status === 200) {
+                    this.transaction = res.data.data
+                    this.isLoading = false
+                } else {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+
+        async getSingleTransaction(id: number) {
+            try {
+                this.isLoading = true
+                const res = await axios.get(`/api/v1/transaction/${id}`)
+                if (res.data.status === 200) {
+                    this.isLoading = false
+                } else {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                console.error(error)
+            }
         }
     }
 })
