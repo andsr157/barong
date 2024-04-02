@@ -104,12 +104,11 @@ export default defineEventHandler(async (event) => {
                 minPrice: detail.trash.minPrice,
                 maxPrice: detail.trash.maxPrice,
                 weight: detail.weight,
-                finalPrice: 0, // Harga akhir (misalnya setelah perhitungan)
+                finalPrice: detail.price ?? 0, // Harga akhir (misalnya setelah perhitungan)
             })),
             totalPrice: transactions[0].total,
-
-            servicePrice: transactions[0].total ?? 0 * 10 / 100,
-            finalTotalPrice: transactions[0].total ?? 0 - (transactions[0].total ?? 0 * 10 / 100),
+            servicePrice: (transactions[0].total ?? 0) * 10 / 100,
+            finalTotalPrice: (transactions[0].total ?? 0) - ((transactions[0].total ?? 0) * 10 / 100),
             status: status,
             review: {
                 rate: transactions[0].partner_rate,

@@ -10,11 +10,14 @@ export default defineEventHandler(async (event) => {
     if (AuthorizationCheck(session, user_id).status !== 200) {
         return AuthorizationCheck(session, user_id);
     }
-
+    console.log(user_id)
     const res = await prisma.transaction.findMany({
         where: {
             user_id: parseInt(user_id),
-            status_id: 3 || 4,
+            OR: [
+                { status_id: 3 },
+                { status_id: 4 }
+            ]
         },
         include: {
             transaction_detail: {
@@ -27,8 +30,9 @@ export default defineEventHandler(async (event) => {
                 }
             }
         }
-
     })
+
+    console.log(res)
 
     let totalAmount = 0;
     res.forEach(transaction => {
