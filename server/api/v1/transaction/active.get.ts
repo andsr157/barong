@@ -8,14 +8,15 @@ export default defineEventHandler(async (event) => {
 
     try {
         // Ambil user_id dari parameter rute
-        const id = await getRouterParam(event, 'id') ?? '';
-
         const session = await getServerSession(event) as any
-
         // Dapatkan data transaksi dari Prisma
         const transactions = await prisma.transaction.findMany({
             where: {
-                id: parseInt(id),
+                user_id: session.user.id,
+                OR: [
+                    { status_id: 1 },
+                    { status_id: 2 }
+                ]
             },
             include: {
                 // users: true,
@@ -86,18 +87,18 @@ export default defineEventHandler(async (event) => {
 
 
         // Format data transaksi sesuai dengan struktur yang diinginkan
-        const formattedTransactions = {
-            id: transactions[0].id,
+        const formattedTransactions = transactions.map((data: any) => ({
+            id: data.id,
             user: user,
             pengepul: partner, // Informasi pengepul belum tersedia
             address: {
-                label: transactions[0].address.label,
-                name: transactions[0].address.owner_name,
-                telp: transactions[0].address.owner_telp,
-                detail: transactions[0].address.detail,
+                label: data.address.label,
+                name: data.address.owner_name,
+                telp: data.address.owner_telp,
+                detail: data.address.detail,
             },
             trashImage: '/assets/dummy-trash.png', // Gambar sampah (placeholder)
-            detailSampah: transactions[0].transaction_detail.map((detail) => ({
+            detailSampah: data.transaction_detail.map((detail: any) => ({
                 id: detail.id,
                 category: detail.trash.category.name,
                 subcategory: detail.trash.name, // Subkategori (jika ada)
@@ -106,17 +107,18 @@ export default defineEventHandler(async (event) => {
                 weight: detail.weight,
                 finalPrice: 0, // Harga akhir (misalnya setelah perhitungan)
             })),
-            totalPrice: transactions[0].total,
+            totalPrice: data.total,
 
-            servicePrice: transactions[0].total ?? 0 * 10 / 100,
-            finalTotalPrice: transactions[0].total ?? 0 - (transactions[0].total ?? 0 * 10 / 100),
+            servicePrice: data.total ?? 0 * 10 / 100,
+            finalTotalPrice: data.total ?? 0 - (data.total ?? 0 * 10 / 100),
             status: status,
             review: {
-                rate: transactions[0].partner_rate,
-                ulasan: transactions[0].partner_review,
+                rate: data.partner_rate,
+                ulasan: data.partner_review,
             },
-            note: transactions[0].note,
-        };
+            note: data.note,
+        }))
+
 
         // Kembalikan respons dengan data transaksi yang diformat
         return { data: formattedTransactions, status: 200 };

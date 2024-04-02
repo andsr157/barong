@@ -1,11 +1,22 @@
 <script setup lang="ts">
+import { useTransactionStore } from "~/stores/Transaction.store"
 import { formatSampah } from "~/composables/helpers"
 import { TRANSACTION } from "~/constants/trash.constants"
 
-const activeTransaction = computed(() => {
-  return TRANSACTION.filter((data) => {
-    return data.status.name === "taking" || data.status.name === "searching"
-  })
+const transactionStore = useTransactionStore()
+const transactionActive = ref<any>(null)
+
+// const activeTransaction = computed(() => {
+//   return TRANSACTION.filter((data) => {
+//     return data.status.name === "taking" || data.status.name === "searching"
+//   })
+// })
+
+onMounted(async () => {
+  const res = await transactionStore.getActiveTransaction()
+  if (res.status === 200) {
+    transactionActive.value = res.data
+  }
 })
 </script>
 
@@ -14,16 +25,16 @@ const activeTransaction = computed(() => {
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Transaksi Aktif
     </h2>
-    <div class="flex flex-col gap-5" v-if="true">
+    <div class="flex flex-col gap-5" v-if="transactionActive">
       <CardTransactionUser
-        v-for="transaction in activeTransaction"
+        v-for="transaction in transactionActive"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
         :review="transaction.review.rate"
         :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>
-    <div class="w-full pb-14" v-if="false">
+    <div class="w-full pb-14" v-else>
       <p
         class="text-xs font-medium text-brg-primary-dark text-opacity-70 text-center"
       >

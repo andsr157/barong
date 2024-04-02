@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { type TransactionData, type TransactionDetail, type TransactionImage } from '~/types/transaction.type'
+import { type TransactionData, type TransactionDetail, type TransactionImage, type Transaction } from '~/types/transaction.type'
+import type { transaction } from '@prisma/client'
 
 interface PostData {
     transaction: {
@@ -30,7 +31,8 @@ export const useTransactionStore = defineStore('transaction', {
             } as TransactionData),
 
             transactionImage: null as any,
-            isLoading: false
+            isLoading: false,
+            transaction: [] as Transaction[]
         }
     },
 
@@ -76,6 +78,20 @@ export const useTransactionStore = defineStore('transaction', {
             this.transactionData.transaction_detail = []
             this.transactionImage = null
             return Promise.resolve(res.data)
+        },
+
+        async getActiveTransaction() {
+            try {
+                this.isLoading = true
+                const res = await axios.get('/api/v1/transaction/active')
+                if (res.data.status === 200) {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                console.error(error)
+            }
+
         }
     }
 })
