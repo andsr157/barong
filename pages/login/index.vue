@@ -56,7 +56,7 @@ const switchVisibility = () => {
 
 <template>
   <Toast />
-  <section class="px-8 h-screen pt-[119px] translate-y-1">
+  <section class="px-8 pt-24 translate-y-1 w-full">
     <div class="text-center font-semibold text-brg-primary-dark text-lg">
       <h1>Masuk</h1>
       <p class="font-normal text-[11px]">
@@ -105,18 +105,15 @@ const switchVisibility = () => {
         </InputValidation>
       </div>
     </div>
-    <div class="flex justify-end">
-      <NuxtLink to="/forgot_password" class="text-brg-primary-dark text-[11px]"
+    <div class="flex justify-end mt-2">
+      <NuxtLink to="/forgot-password" class="text-brg-primary-dark text-[11px]"
         >Lupa kata sandi ?</NuxtLink
       >
     </div>
-
-    <div class="flex">
-      <ButtonLarge
-        @click="handleLogin"
-        label="Masuk"
-        class="text-base mx-auto mt-14"
-      />
-    </div>
   </section>
+  <div
+    class="w-full flex justify-center absolute bottom-0 right-1/2 translate-x-1/2 mb-16"
+  >
+    <ButtonLarge @click="handleLogin" label="Masuk" class="text-base mt-14" />
+  </div>
 </template>

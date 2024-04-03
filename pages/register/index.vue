@@ -70,7 +70,7 @@ const switchVisibilityConfirmPassword = () =>
 
 <template>
   <Toast />
-  <section class="px-8 h-[800px] pt-[119px] translate-y-1">
+  <section class="px-8 pt-24 translate-y-1">
     <div class="text-center font-semibold text-brg-primary-dark text-lg">
       <h1>Daftar</h1>
       <p class="font-normal text-[11px]">
@@ -142,7 +142,7 @@ const switchVisibilityConfirmPassword = () =>
       </div>
 
       <div>
-        <Input
+        <InputValidation
           name="password_confirmation"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
           placeholder="Konfirmasi Kata Sandi"
@@ -163,16 +163,17 @@ const switchVisibilityConfirmPassword = () =>
               class="text-brg-primary text-2xl text-end cursor-pointer"
             />
           </template>
-        </Input>
+        </InputValidation>
       </div>
     </div>
-    <div class="flex">
-      <ButtonLarge
-        @click="onSubmit"
-        :disabled="authStore.loading"
-        label="Masuk"
-        class="text-base mx-auto mt-14"
-      />
-    </div>
   </section>
+
+  <div class="absolute bottom-0 right-1/2 translate-x-1/2 mb-16">
+    <ButtonLarge
+      @click="onSubmit"
+      :disabled="authStore.loading"
+      label="Masuk"
+      class="text-base mt-14"
+    />
+  </div>
 </template>

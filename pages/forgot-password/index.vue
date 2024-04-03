@@ -1,10 +1,10 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "blank",
-});
+})
 </script>
 <template>
-  <section class="px-8 h-full pt-[119px] translate-y-1">
+  <section class="px-8 h-full pt-24 translate-y-1">
     <h1 class="text-brg-primary-dark text-lg font-semibold text-center">
       Lupa Kata Sandi
     </h1>
@@ -28,9 +28,8 @@ definePageMeta({
         </div>
       </div>
     </div>
-    <div class="flex">
-      <ButtonLarge label="Kirim" class="text-base mx-auto mt-10"/>
-    </div>
-
   </section>
+  <div class="absolute bottom-0 right-1/2 translate-x-1/2 mb-16">
+    <ButtonLarge label="Kirim" class="text-base mt-10" />
+  </div>
 </template>
