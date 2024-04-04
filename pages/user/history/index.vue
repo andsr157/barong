@@ -26,6 +26,7 @@ definePageMeta({
 
 onMounted(async () => {
   await transactionStore.getAllTransaction()
+  data.value.data = transactionStore.activeTransaction
 })
 </script>
 <template>
