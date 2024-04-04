@@ -33,6 +33,7 @@ export default defineEventHandler(async (event) => {
             },
         });
 
+
         if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
             return AuthorizationCheck(session, transactions[0].user_id.toString());
         }
@@ -99,6 +100,7 @@ export default defineEventHandler(async (event) => {
             trashImage: '/assets/dummy-trash.png', // Gambar sampah (placeholder)
             detailSampah: transactions[0].transaction_detail.map((detail) => ({
                 id: detail.id,
+                trash_id: detail.trash_id,
                 category: detail.trash.category.name,
                 subcategory: detail.trash.name, // Subkategori (jika ada)
                 minPrice: detail.trash.minPrice,

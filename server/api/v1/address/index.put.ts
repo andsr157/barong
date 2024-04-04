@@ -2,7 +2,6 @@ import { prisma } from '~/composables/prisma'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
-    const user_id = getRouterParam(event, 'id') ?? ''
 
 
     const res = await prisma.address.update({

@@ -8,7 +8,8 @@ const route = useRoute()
 const router = useRouter()
 const transaction = ref<any>()
 const isModalOpen = ref(false)
-// const rating = ref();
+const { data: user } = <any>useAuth()
+const userId = user.value?.user?.id
 
 const estimate = computed(() => {
   return estimateTotal(transaction.value.detailSampah)
@@ -16,6 +17,35 @@ const estimate = computed(() => {
 
 const handleFinishTransaction = () => {
   router.push(`/user/transaction/success`)
+}
+
+const handleSetCurrentTransaction = () => {
+  console.log(user.value)
+  const transactionData = {
+    id: transaction.value.id,
+    user_id: userId,
+    address_id: 0,
+    status_id: 0,
+    note: transaction.value.note,
+  }
+
+  const transaction_detail = transaction.value.detailSampah
+  const currentTransaction = {
+    transaction: transactionData,
+    transaction_detail: transaction_detail,
+  }
+  let transaction_id
+  if (Array.isArray(route.params.id)) {
+    transaction_id = route.params.id[0]
+  } else {
+    transaction_id = route.params.id
+  }
+  transactionStore.transactionData = currentTransaction
+  if (
+    transactionStore.transactionData.transaction.id === parseInt(transaction_id)
+  ) {
+    router.push("/user/transaction/add")
+  }
 }
 
 definePageMeta({
@@ -31,11 +61,8 @@ onMounted(async () => {
   }
   const res = await transactionStore.getSingleTransaction(parseInt(id))
   transaction.value = res.data
+  console.log(res.data)
 })
-
-// const logRating = async (event: number) => {
-//       rating.value = event;
-//     }
 </script>
 
 <template>
@@ -202,7 +229,10 @@ onMounted(async () => {
       class="max-w-max mx-auto py-12"
       v-else-if="transaction.status.name === 'canceled'"
     >
-      <ButtonLarge label="Buat Transaksi Lagi" />
+      <ButtonLarge
+        label="Buat Transaksi Lagi"
+        @click="handleSetCurrentTransaction"
+      />
     </div>
   </div>
   <div v-else="">lagi loading</div>

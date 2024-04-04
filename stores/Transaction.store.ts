@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { type TransactionData, type TransactionDetail, type TransactionImage, type Transaction } from '~/types/transaction.type'
-import type { transaction } from '@prisma/client'
+
 
 interface PostData {
     transaction: {
@@ -22,6 +22,7 @@ export const useTransactionStore = defineStore('transaction', {
         return {
             transactionData: reactive({
                 transaction: {
+                    id: 0,
                     user_id: 0,
                     address_id: 0,
                     status_id: 0,
@@ -29,7 +30,6 @@ export const useTransactionStore = defineStore('transaction', {
                 },
                 transaction_detail: [],
             } as TransactionData),
-
             transactionImage: null as any,
             isLoading: false,
             transaction: [] as Transaction[]
@@ -83,6 +83,8 @@ export const useTransactionStore = defineStore('transaction', {
                 this.transactionData.transaction_detail.splice(index, 1);
             }
         },
+
+
 
         async addTransaction(payload: PostData) {
             console.log('jalan')

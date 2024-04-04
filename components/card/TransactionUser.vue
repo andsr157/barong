@@ -9,6 +9,8 @@ defineProps<{
   review?: number | null
   path?: string
 }>()
+
+const emit = defineEmits()
 </script>
 
 <template>
@@ -74,6 +76,7 @@ defineProps<{
           label="Buat Transaksi"
           color="bg-brg-secondary"
           class="px-3"
+          @click="emit('reCreateTransaction')"
         />
         <ButtonSmall
           v-else-if="status.name === 'finish' && review === null"
