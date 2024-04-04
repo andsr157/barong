@@ -1,10 +1,12 @@
 import { prisma } from '~/composables/prisma'
+import { getServerSession } from '#auth'
+import { AuthorizationCheck } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
     const id = getRouterParam(event, 'id')
+    const session = await getServerSession(event) as any
 
     if (id === undefined) {
-        // Handle jika ID tidak ditemukan
         return { error: 'ID not found', status: 400 }
     }
 
@@ -18,6 +20,12 @@ export default defineEventHandler(async (event) => {
             id: idAsNumber
         }
     })
+
+    if (res) {
+        if (AuthorizationCheck(session, res.user_id.toString()).status !== 200) {
+            return AuthorizationCheck(session, res.user_id.toString());
+        }
+    }
 
     return { data: res, status: 200 }
 })

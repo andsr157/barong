@@ -102,6 +102,7 @@ export const useTransactionStore = defineStore('transaction', {
         },
 
         async updateTransaction(payload: PostData) {
+            console.log(payload)
             const res = await axios.put('/api/v1/transaction', payload)
             this.isLoading = false
             this.transactionData.transaction = {

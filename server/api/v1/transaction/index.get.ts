@@ -7,9 +7,7 @@ import { AuthorizationCheck } from '~/server/helpers'
 export default defineEventHandler(async (event) => {
 
     try {
-        // Ambil user_id dari parameter rute
         const session = await getServerSession(event) as any
-        // Dapatkan data transaksi dari Prisma
         const transactions = await prisma.transaction.findMany({
             where: {
                 user_id: session.user.id,

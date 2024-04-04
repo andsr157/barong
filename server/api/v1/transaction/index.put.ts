@@ -3,11 +3,7 @@ import { prisma } from '~/composables/prisma'
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
 
-    // return body
-
     try {
-        // const transactionId = body.transaction.id;
-
         const updatedTransaction = await prisma.transaction.update({
             where: {
                 id: body.transaction.id
@@ -21,51 +17,50 @@ export default defineEventHandler(async (event) => {
             },
         });
 
-        // return updatedTransaction
+        const detailData = {
+            transaction_id: body.transaction.id,
+            price: 0,
+        }
 
         const updatedTransactionDetails = await Promise.all(
             body.transaction_detail.map(async (detail: any) => {
-                const { trash_id, weight } = detail;
+                const { id, weight } = detail;
 
-                // Cek apakah trash_id ada dalam database
-                const existingTrash = await prisma.trash.findUnique({
-                    where: {
-                        id: trash_id,
-                    },
-                });
-
-                if (!existingTrash) {
-                    throw new Error(`Trash with trash_id ${trash_id} does not exist.`);
-                }
-
+                // Cek apakah detail transaksi sudah ada berdasarkan ID
                 const existingTransactionDetail = await prisma.transaction_detail.findFirst({
                     where: {
-                        trash_id: trash_id,
+                        id: id
                     },
                 });
 
                 if (!existingTransactionDetail) {
-                    throw new Error(`Transaction detail with trash_id ${trash_id} does not exist.`);
+                    // Jika detail transaksi belum ada, buat yang baru
+                    return await prisma.transaction_detail.create({
+                        data: { ...detail, ...detailData }
+                    });
+                } else {
+                    // Jika sudah ada, perbarui detail transaksi yang ada
+                    return await prisma.transaction_detail.update({
+                        where: { id: id },
+                        data: {
+                            weight,
+                        },
+                    });
                 }
 
-                // Mengupdate data detail transaksi
-                return prisma.transaction_detail.update({
-                    where: { id: existingTransactionDetail.id },
-                    data: {
-                        weight,
-                    },
-                });
             })
         );
 
-
-        // return updatedTransactionDetails
-
+        // Mengembalikan respons yang sesuai dengan permintaan
         return {
-            transaction: updatedTransaction,
-            transaction_detail: updatedTransactionDetails,
+            data: {
+                transaction: updatedTransaction,
+                transaction_detail: updatedTransactionDetails,
+            },
+            status: 200
         };
     } catch (error) {
+        // Menangani kesalahan yang mungkin terjadi selama pembaruan transaksi
         console.error('Error updating transaction:', error);
         throw new Error('Error updating transaction');
     }

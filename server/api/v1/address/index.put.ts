@@ -1,8 +1,10 @@
 import { prisma } from '~/composables/prisma'
+import { getServerSession } from '#auth'
+import { AuthorizationCheck } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
-
+    const session = await getServerSession(event) as any
 
     const res = await prisma.address.update({
         where: {
@@ -10,6 +12,7 @@ export default defineEventHandler(async (event) => {
         },
         data: body
     })
+
     if (res) {
         return { data: res, status: 200 }
     }
