@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { type TransactionData, type TransactionDetail, type TransactionImage, type Transaction } from '~/types/transaction.type'
-import type { transaction } from '@prisma/client'
+
 
 interface PostData {
     transaction: {
+        id?: number,
         user_id: number,
         address_id: number,
         image: string,
@@ -12,6 +13,7 @@ interface PostData {
         note: string,
     },
     transaction_detail: {
+        id?: number,
         trash_id: number,
         weight: number
     }[]
@@ -22,6 +24,7 @@ export const useTransactionStore = defineStore('transaction', {
         return {
             transactionData: reactive({
                 transaction: {
+                    id: 0,
                     user_id: 0,
                     address_id: 0,
                     status_id: 0,
@@ -29,7 +32,6 @@ export const useTransactionStore = defineStore('transaction', {
                 },
                 transaction_detail: [],
             } as TransactionData),
-
             transactionImage: null as any,
             isLoading: false,
             transaction: [] as Transaction[]
@@ -97,6 +99,30 @@ export const useTransactionStore = defineStore('transaction', {
             this.transactionData.transaction_detail = []
             this.transactionImage = null
             return Promise.resolve(res.data)
+        },
+
+        async updateTransaction(payload: PostData) {
+            const res = await axios.put('/api/v1/transaction', payload)
+            this.isLoading = false
+            this.transactionData.transaction = {
+                user_id: 0,
+                address_id: 0,
+                status_id: 0,
+                note: '',
+            }
+            this.transactionData.transaction_detail = []
+            this.transactionImage = null
+            return Promise.resolve(res.data)
+        },
+
+        async deleteTransactionTrash(id: number) {
+            this.isLoading = true
+            const res = await axios.delete(`/api/v1/transaction/trash/${id}`)
+            if (res.data.status === 200) {
+                this.transactionData.transaction_detail = this.transactionData.transaction_detail.filter(data => data.id !== id)
+            } else {
+                this.isLoading = false
+            }
         },
 
         async getActiveTransaction() {

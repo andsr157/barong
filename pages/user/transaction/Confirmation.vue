@@ -76,10 +76,14 @@ const onSubmit = async () => {
     }
 
     const transaction_detail = trash.value.transaction_detail.map(
-      (data: any) => ({
-        trash_id: data.trash_id,
-        weight: data.weight,
-      })
+      (data: any) => {
+        const detail = {
+          trash_id: data.trash_id,
+          weight: data.weight,
+          ...(data.id ? { id: data.id } : {}),
+        }
+        return detail
+      }
     )
 
     const payload = {
@@ -89,11 +93,16 @@ const onSubmit = async () => {
 
     console.log(payload)
 
-    const res = await transactionStore
-      .addTransaction(payload)
-      .catch((error) => {
+    let res
+    if (trash.value.transaction.id) {
+      res = await transactionStore.updateTransaction(payload).catch((error) => {
+        console.error("Error in updateTransaction:", error)
+      })
+    } else {
+      res = await transactionStore.addTransaction(payload).catch((error) => {
         console.error("Error in addTransaction:", error)
       })
+    }
 
     localStorage.removeItem("transaction")
     useRouter().push("/user/transaction/success")

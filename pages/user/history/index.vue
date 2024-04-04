@@ -63,6 +63,7 @@ onMounted(async () => {
         :status="transaction.status"
         :review="transaction.review.rate"
         :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
+        @reCreateTransaction=""
       />
     </div>
     <div v-else-if="isLoading">Lagi loading sabar</div>

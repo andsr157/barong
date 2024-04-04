@@ -36,10 +36,19 @@ const trashFormVisible = ref(false)
           </template>
         </Input>
         <button
-          @click="transactionStore.removeTrash(trash.trash_id)"
+          v-if="trash.id"
+          @click="transactionStore.deleteTransactionTrash(trash.id)"
           class="bg-transparent px-2 py-[1px] border-[1px] border-brg-red rounded-[10px] max-h-[38px]"
         >
           <Icon name="mdi:delete" class="text-brg-red" size="21px" />
+        </button>
+
+        <button
+          v-else
+          @click="transactionStore.removeTrash(trash.trash_id)"
+          class="bg-transparent px-2 py-[1px] border-[1px] border-brg-red rounded-[10px] max-h-[38px]"
+        >
+          <Icon name="mdi:delete" class="text-purple-400" size="21px" />
         </button>
       </div>
 

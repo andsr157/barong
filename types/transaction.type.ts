@@ -13,7 +13,16 @@ export interface Transaction {
         detail: string
     },
     trashImage: string
-    detailSampah: { category: string, subcategory: string, minPrice: number, maxPrice: number, weight: number, finalPrice: number }[]
+    detailSampah: {
+        id?: number,
+        trash_id: number;
+        category: string,
+        subcategory: string,
+        weight: number;
+        minPrice?: number
+        maxPrice?: number
+        finalPrice?: number
+    }[]
     totalPrice: number | null
     servicePrice: number | null
     finalTotalPrice: number | null
@@ -37,6 +46,7 @@ export interface Transaction {
 }
 
 export interface TransactionDetail {
+    id?: number,
     trash_id: number;
     category: string,
     subcategory: string,
@@ -47,6 +57,7 @@ export interface TransactionDetail {
 }
 export interface TransactionData {
     transaction: {
+        id?: number,
         user_id: number;
         address_id: number;
         // image: string;
