@@ -80,11 +80,13 @@ const onSubmit = async () => {
         const detail = {
           trash_id: data.trash_id,
           weight: data.weight,
-          ...(data.id ? { id: data.id } : {}),
+          ...(data.id ? { id: data.id } : { id: 0 }),
         }
         return detail
       }
     )
+
+    console.log("detail", transaction_detail)
 
     const payload = {
       transaction: transaction,
