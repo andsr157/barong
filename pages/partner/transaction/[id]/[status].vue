@@ -1,10 +1,20 @@
 <script setup lang="ts">
-import { TRANSACTION } from "~/constants/trash.constants"
+import { useTransactionStore } from "~/stores/Transaction.store"
+import { useToastStore } from "~/stores/Toast.store"
+import { estimateTotal } from "~/composables/helpers"
 import { type Transaction } from "~/types/transaction.type"
+
+const transactionStore = useTransactionStore()
+const toastStore = useToastStore()
+const { isLoading, statusLoading } = storeToRefs(transactionStore)
+const isModalOpen = ref(false)
+
 definePageMeta({
   layout: "blank",
 })
 
+const { data: user } = <any>useAuth()
+const partner_id = user.value?.user?.id
 const route = useRoute()
 const router = useRouter()
 const transaction = ref<Transaction>()
@@ -16,22 +26,65 @@ const estimate = computed(() => {
 const handleFinishTransaction = () => {
   router.push(`/partner/transaction/${transaction.value?.id}/report`)
 }
-onMounted(() => {
-  let id: string
-  if (Array.isArray(route.params.id)) {
-    id = route.params.id[0]
-  } else {
-    id = route.params.id
+
+const handleRequest = async (payload: any) => {
+  try {
+    const id = Array.isArray(route.params.id)
+      ? route.params.id[0]
+      : route.params.id
+
+    const res = await transactionStore.updateStatusTransaction(
+      parseInt(id),
+      payload
+    )
+    if (transaction.value) {
+      transaction.value.status = res.data.status ?? transaction.value.status
+    }
+    console.log(res)
+  } catch (error) {
+    console.error(error)
   }
-  transaction.value = TRANSACTION.filter((data) => {
-    return data.id === parseInt(id)
-  })[0]
+}
+
+const handleCancelRequest = () => {
+  const payload = {
+    partner_id: null,
+    status_id: 1,
+  }
+  handleRequest(payload)
+
+  isModalOpen.value = false
+  toastStore.success({
+    text: "Pengambilan dibatalkan ",
+  })
+}
+
+const handleTakeRequest = () => {
+  const payload = {
+    partner_id: partner_id,
+    status_id: 2,
+  }
+  handleRequest(payload)
+  toastStore.success({
+    text: "Berhasil diambil",
+  })
+}
+
+onMounted(async () => {
+  const id = Array.isArray(route.params.id)
+    ? route.params.id[0]
+    : route.params.id
+  const res = await transactionStore.getSingleTransaction(parseInt(id))
+  transaction.value = res.data
+  console.log(res)
 })
 </script>
 
 <template>
+  <Toast />
   <Header title="Detail" />
-  <div v-if="transaction">
+  <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
+  <div v-else-if="transaction">
     <section class="px-6 mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">
         Alamat Pengambilan
@@ -87,30 +140,44 @@ onMounted(() => {
 
     <section class="px-6 mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">catatan</h2>
-      <ClientOnly>
-        <textarea
-          cols="10"
-          rows="8"
-          class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
-          placeholder="isi catatan"
-          v-model="transaction.note"
-        >
-        </textarea>
-      </ClientOnly>
+      <div
+        class="w-full h-40 py-3 px-4 border-[1px] border-brg-light-gray rounded-[20px] text-[11px] text-brg-primary-dark font-medium"
+      >
+        {{ transaction.note }}
+      </div>
     </section>
 
     <div
       class="max-w-max mx-auto py-12"
       v-if="transaction.status.name === 'searching'"
+      @click="handleTakeRequest"
     >
-      <ButtonLarge label="Ambil" />
+      <ButtonLarge label="Ambil" :disabled="statusLoading" />
     </div>
     <div
       class="w-full flex flex-col items-center py-12"
       v-else-if="transaction.status.name === 'taking'"
     >
       <ButtonLarge label="Selesaikan" @click="handleFinishTransaction" />
-      <ButtonLarge label="Batalkan" class="mt-4" color="bg-brg-red" />
+      <ButtonLarge
+        label="Batalkan"
+        class="mt-4"
+        color="bg-brg-red"
+        :disabled="statusLoading"
+        @click="isModalOpen = true"
+      />
     </div>
   </div>
+  <div v-else class="px-6 mt-6">ada yang salah!!</div>
+
+  <ModalDefault
+    title="Batalkan Pengambilan"
+    desc="apakah anda yakin ingin membatalkan pengambilan"
+    label-confirmation="Batalkan"
+    label-color="text-brg-primary"
+    :is-show="isModalOpen"
+    emit-function="cancelTransaction"
+    @closeModal="isModalOpen = false"
+    @cancelTransaction="handleCancelRequest"
+  />
 </template>

@@ -34,6 +34,7 @@ export const useTransactionStore = defineStore('transaction', {
             } as TransactionData),
             transactionImage: null as any,
             isLoading: false,
+            statusLoading: false,
             transaction: [] as Transaction[]
         }
     },
@@ -169,6 +170,22 @@ export const useTransactionStore = defineStore('transaction', {
                 }
                 return Promise.resolve(res.data)
             } catch (error) {
+                console.error(error)
+            }
+        },
+
+        async updateStatusTransaction(id: number, payload: any) {
+            try {
+                this.statusLoading = true
+                const res = await axios.put(`/api/v1/transaction/partner/${id}`, payload)
+                if (res.data.status === 200) {
+                    this.statusLoading = false
+                } else {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                this.statusLoading = false
                 console.error(error)
             }
         }
