@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
         const session = await getServerSession(event) as any
         const transactions = await prisma.transaction.findMany({
             where: {
-                user_id: session.user.id,
+                partner_id: session.user.id,
             },
             include: {
                 // users: true,
@@ -28,8 +28,8 @@ export default defineEventHandler(async (event) => {
             },
         });
 
-        if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
-            return AuthorizationCheck(session, transactions[0].user_id.toString());
+        if (AuthorizationCheck(session, transactions[0].partner_id.toString()).status !== 200) {
+            return AuthorizationCheck(session, transactions[0].partner_id.toString());
         }
 
         const user = await prisma.users.findUnique({
@@ -85,8 +85,8 @@ export default defineEventHandler(async (event) => {
                 pengepul: partner,
                 address: {
                     label: data.address.label,
-                    name: data.address.owner_name,
                     address: data.address.address_name,
+                    name: data.address.owner_name,
                     telp: data.address.owner_telp,
                     detail: data.address.detail,
                 },

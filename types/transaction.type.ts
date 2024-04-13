@@ -8,6 +8,7 @@ export interface Transaction {
     pengepul: {},
     address: {
         label: string
+        address: string
         name: string
         telp: string
         detail: string

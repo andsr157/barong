@@ -8,7 +8,7 @@ const transactionActive = ref<any>(null)
 const { isLoading } = storeToRefs(transactionStore)
 
 onMounted(async () => {
-  const res = await transactionStore.getUserActiveTransaction()
+  const res = await transactionStore.getActiveTransaction()
   if (res.status === 200) {
     transactionActive.value = res.data
   }

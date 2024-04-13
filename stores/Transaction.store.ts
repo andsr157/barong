@@ -56,6 +56,12 @@ export const useTransactionStore = defineStore('transaction', {
             })
         },
 
+        takingTransaction(): Transaction[] {
+            return this.transaction.filter((data) => {
+                return data.status.name === "taking"
+            })
+        },
+
         doneTransaction(): Transaction[] {
             return this.transaction.filter((data) => {
                 return data.status.name === "finish"
@@ -127,10 +133,15 @@ export const useTransactionStore = defineStore('transaction', {
             }
         },
 
-        async getUserActiveTransaction() {
+        async getActiveTransaction(role: string = 'user') {
             try {
                 this.isLoading = true
-                const res = await axios.get('/api/v1/transaction/active')
+                let res
+                if (role === 'user') {
+                    res = await axios.get('/api/v1/transaction/user/active')
+                } else {
+                    res = await axios.get('/api/v1/transaction/partner/active')
+                }
                 if (res.data.status === 200) {
                     this.isLoading = false
                 } else {
@@ -174,10 +185,16 @@ export const useTransactionStore = defineStore('transaction', {
             }
         },
 
-        async getAllUserTransaction() {
+        async getAllUserTransaction(role: string = 'user') {
             try {
                 this.isLoading = true
-                const res = await axios.get('/api/v1/transaction/user')
+                let res
+                if (role === 'user') {
+                    res = await axios.get('/api/v1/transaction/user')
+                } else {
+                    res = await axios.get('/api/v1/transaction/partner')
+                }
+
                 if (res.data.status === 200) {
                     this.transaction = res.data.data
                     this.isLoading = false
