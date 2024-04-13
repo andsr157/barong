@@ -5,8 +5,8 @@ defineProps<{
   user: {
     name: string
     telp: string
-    address: string
   }
+  address: string
   review?: number | null
   path?: string
 }>()
@@ -22,9 +22,9 @@ defineProps<{
           {{ detailSampah }}
         </h3>
         <span
-          v-if="status.name === 'taking' || status.name ==='searching'"
+          v-if="status.name === 'taking' || status.name === 'searching'"
           class="text-xs text-brg-primary-dark font-medium text-end w-[126px] truncate"
-          >{{ user.address }}</span
+          >{{ address }}</span
         >
         <span
           v-else-if="status.name === 'canceled'"

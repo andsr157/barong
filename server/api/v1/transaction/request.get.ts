@@ -9,6 +9,9 @@ export default defineEventHandler(async (event) => {
     try {
         const session = await getServerSession(event) as any
         const transactions = await prisma.transaction.findMany({
+            where: {
+                status_id: 1
+            },
             include: {
                 address: true,
                 transaction_detail: {
@@ -82,7 +85,7 @@ export default defineEventHandler(async (event) => {
                 pengepul: partner,
                 address: {
                     label: data.address.label,
-                    address: data.address_name,
+                    address: data.address.address_name,
                     name: data.address.owner_name,
                     telp: data.address.owner_telp,
                     detail: data.address.detail,

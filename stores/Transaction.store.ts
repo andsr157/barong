@@ -127,10 +127,25 @@ export const useTransactionStore = defineStore('transaction', {
             }
         },
 
-        async getActiveTransaction() {
+        async getUserActiveTransaction() {
             try {
                 this.isLoading = true
                 const res = await axios.get('/api/v1/transaction/active')
+                if (res.data.status === 200) {
+                    this.isLoading = false
+                } else {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+
+        async getRequestTransaction() {
+            try {
+                this.isLoading = true
+                const res = await axios.get('/api/v1/transaction/request')
                 if (res.data.status === 200) {
                     this.isLoading = false
                 } else {
@@ -147,6 +162,22 @@ export const useTransactionStore = defineStore('transaction', {
             try {
                 this.isLoading = true
                 const res = await axios.get('/api/v1/transaction')
+                if (res.data.status === 200) {
+                    this.transaction = res.data.data
+                    this.isLoading = false
+                } else {
+                    this.isLoading = false
+                }
+                return Promise.resolve(res.data)
+            } catch (error) {
+                console.error(error)
+            }
+        },
+
+        async getAllUserTransaction() {
+            try {
+                this.isLoading = true
+                const res = await axios.get('/api/v1/transaction/user')
                 if (res.data.status === 200) {
                     this.transaction = res.data.data
                     this.isLoading = false

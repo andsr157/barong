@@ -14,6 +14,7 @@ interface Props {
   suffixIconSize?: string
   suffixIconColor?: string
   errorMessage?: string
+  readonly?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: "text",
   prefixIconSize: "20px",
   suffixIconSize: "20px",
+  readonly: false,
 })
 
 const emit = defineEmits()
@@ -62,6 +64,7 @@ const updateInput = (event: Event) => {
       class="w-full h-full focus:outline-none focus:text-xs text-xs"
       :class="props.inputClass"
       :placeholder="props.placeholder"
+      :readonly="props.readonly"
     />
 
     <Icon
