@@ -1,9 +1,12 @@
 import { prisma } from '~/composables/prisma';
+import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event) => {
 
     try {
         const transaction_id = getRouterParam(event, 'id') ?? '';
+        // const session = await getServerSession(event) as any
+        // const partnerId = session.user.id
         const body = await readBody(event)
 
         const res = await prisma.transaction.update({
@@ -11,29 +14,30 @@ export default defineEventHandler(async (event) => {
                 id: parseInt(transaction_id)
             },
             data: {
-                status_id: body.status_id,
-                partner_id: body.partner_id,
+                status_id: 3,
+                total: body.total
             }
         })
 
-        const transaction_status = await prisma.status.findUnique({
-            where: {
-                id: res.status_id
-            }
-        })
+        const updatedTransactionDetails = await Promise.all(
+            body.trash.map(async (detail: any) => {
+                const { id, weight, price } = detail;
 
-        const { id: statusId, ...status } = transaction_status ?? { id: undefined, name: '', label: '', status: '' };
+                return await prisma.transaction_detail.update({
+                    where: { id: id },
+                    data: {
+                        weight,
+                        price: parseInt(price)
+                    },
+                });
+            })
+        );
 
-        if (res) {
+        if (updatedTransactionDetails) {
             return {
-                data: {
-                    transaction: res,
-                    status: status
-                }, status: 200
-
+                status: 200
             }
         }
-
     } catch (error) {
         console.error('Error fetching transaction data:', error);
         return { error: 'Internal server error', status: 500 };
