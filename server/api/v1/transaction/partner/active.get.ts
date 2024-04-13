@@ -7,10 +7,14 @@ import { AuthorizationCheck } from '~/server/helpers'
 export default defineEventHandler(async (event) => {
 
     try {
+        // Ambil user_id dari parameter rute
         const session = await getServerSession(event) as any
+        // Dapatkan data transaksi dari Prisma
         const transactions = await prisma.transaction.findMany({
             where: {
-                user_id: session.user.id,
+                partner_id: session.user.id,
+                status_id: 2
+
             },
             include: {
                 // users: true,
@@ -28,8 +32,8 @@ export default defineEventHandler(async (event) => {
             },
         });
 
-        if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
-            return AuthorizationCheck(session, transactions[0].user_id.toString());
+        if (AuthorizationCheck(session, transactions[0].partner_id.toString()).status !== 200) {
+            return AuthorizationCheck(session, transactions[0].partner_id.toString());
         }
 
         const user = await prisma.users.findUnique({
@@ -85,8 +89,8 @@ export default defineEventHandler(async (event) => {
                 pengepul: partner,
                 address: {
                     label: data.address.label,
-                    name: data.address.owner_name,
                     address: data.address.address_name,
+                    name: data.address.owner_name,
                     telp: data.address.owner_telp,
                     detail: data.address.detail,
                 },
@@ -112,9 +116,12 @@ export default defineEventHandler(async (event) => {
             };
         });
 
+
+        // Kembalikan respons dengan data transaksi yang diformat
         return { data: formattedTransactions, status: 200 };
     } catch (error) {
         console.error('Error fetching transaction data:', error);
+        // Kembalikan respons dengan pesan error
         return { error: 'Internal server error', status: 500 };
     }
 });

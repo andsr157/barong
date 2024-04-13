@@ -96,6 +96,7 @@ export default defineEventHandler(async (event) => {
             address: {
                 label: transactions[0].address.label,
                 name: transactions[0].address.owner_name,
+                address: transactions[0].address.address_name,
                 telp: transactions[0].address.owner_telp,
                 detail: transactions[0].address.detail,
             },

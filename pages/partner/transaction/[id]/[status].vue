@@ -93,7 +93,8 @@ onMounted(async () => {
         :label="transaction.address.label"
         :name="transaction.address.name"
         :telp="transaction.address.telp"
-        :address="transaction.address.detail"
+        :address="transaction.address.address"
+        :detail="transaction.address.detail"
         label-button="Lihat Rute"
       />
     </section>
