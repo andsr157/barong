@@ -55,6 +55,10 @@ const onSubmit = handleSubmit(async (values) => {
 definePageMeta({
   layout: "blank",
 })
+
+onMounted(() => {
+  addresStore.setDefaultFormAddress()
+})
 </script>
 <template>
   <Header title="Tambah Alamat" />

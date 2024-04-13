@@ -109,7 +109,16 @@ export const useAddressStore = defineStore('Address-store', {
                 is_main: false
             };
 
-            this.formAdress = { ...defaultValues, ...this.formAdress };
+            this.formAdress.id = defaultValues.id ?? this.formAdress.id;
+            this.formAdress.label = defaultValues.label ?? this.formAdress.label;
+            this.formAdress.address_name = defaultValues.address_name ?? this.formAdress.address_name;
+            this.formAdress.detail = defaultValues.detail ?? this.formAdress.detail;
+            this.formAdress.owner_name = defaultValues.owner_name ?? this.formAdress.owner_name;
+            this.formAdress.owner_telp = defaultValues.owner_telp ?? this.formAdress.owner_telp;
+            this.formAdress.latitude = defaultValues.latitude ?? this.formAdress.latitude;
+            this.formAdress.longitude = defaultValues.longitude ?? this.formAdress.longitude;
+            this.formAdress.is_main = defaultValues.is_main ?? this.formAdress.is_main;
+            console.log(this.formAdress)
         },
 
 
