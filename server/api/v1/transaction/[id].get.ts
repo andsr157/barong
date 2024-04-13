@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
         });
 
         let partner
-
+        console.log(transactions[0])
         if (transactions[0].partner_id !== null) {
 
             const partnerData = await prisma.users.findUnique({

@@ -91,7 +91,7 @@ onMounted(async () => {
         :name="transaction.pengepul.name"
         :telp="transaction.pengepul.telp"
         :rating="transaction.pengepul.rating"
-        :photo="transaction.pengepul.photo"
+        :photo="transaction.pengepul.avatar"
       />
       <div
         v-if="

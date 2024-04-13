@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from "axios"
 import { useTransactionStore } from "~/stores/Transaction.store"
 import { type Transaction } from "~/types/transaction.type"
 
@@ -10,6 +11,7 @@ const transactionStore = useTransactionStore()
 const { isLoading } = storeToRefs(transactionStore)
 const route = useRoute()
 const router = useRouter()
+const transactionId = ref()
 const transaction = ref<Transaction>()
 
 const totalTrashWeight = computed(() => {
@@ -53,15 +55,43 @@ onMounted(async () => {
   const id = Array.isArray(route.params.id)
     ? route.params.id[0]
     : route.params.id
+
+  transactionId.value = parseInt(id)
   const res = await transactionStore.getSingleTransaction(parseInt(id))
   transaction.value = res.data
-  console.log(res)
 })
 
 const isModalOpen = ref(false)
 
-const handleFinishTransaction = () => {
-  router.push("/partner/transaction/success")
+const handleFinishTransaction = async () => {
+  const trash = computed(() => {
+    return (
+      transaction.value?.detailSampah.map((data: any) => {
+        return {
+          id: data.id,
+          price: data.finalPrice,
+          weight: data.weight,
+        }
+      }) ?? []
+    )
+  })
+  const payload = {
+    total: realTotal.value,
+    trash: trash.value,
+  }
+
+  try {
+    const res = await axios.put(
+      `/api/v1/transaction/report/${transactionId.value}`,
+      payload
+    )
+    isModalOpen.value = false
+    if (res.data.status === 200) {
+      router.push("/partner/transaction/success")
+    }
+  } catch (error) {
+    console.error(error)
+  }
 }
 </script>
 

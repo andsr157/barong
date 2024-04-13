@@ -45,7 +45,7 @@ onMounted(async () => {
     />
   </div>
   <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
-  <div class="block px-6 mt-6 pt-6`" v-else-if="data.data !== null">
+  <div class="block px-6 mt-6 pt-6`" v-else-if="data.data.length > 0">
     <h1 class="font-semibold text-sm">Transaksi {{ data.name }}</h1>
     <div class="flex flex-col gap-6 mt-4">
       <CardTransactionPartner
