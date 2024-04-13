@@ -3,17 +3,15 @@ import { getServerSession } from '#auth'
 import { AuthorizationCheck } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
-    const user_id = await getRouterParam(event, 'id') ?? ''
     const session = await getServerSession(event) as any
+    const userId = session.user.id
 
-
-    if (AuthorizationCheck(session, user_id).status !== 200) {
-        return AuthorizationCheck(session, user_id);
+    if (!userId) {
+        return { data: {}, status: 200 };
     }
-    console.log(user_id)
     const res = await prisma.transaction.findMany({
         where: {
-            user_id: parseInt(user_id),
+            user_id: parseInt(userId),
             OR: [
                 { status_id: 3 },
                 { status_id: 4 }

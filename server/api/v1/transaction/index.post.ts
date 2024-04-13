@@ -21,17 +21,18 @@ export default defineEventHandler(async (event) => {
 
     })
 
-
     // return res
 
-    const detaiData = {
+    const detailData = {
         transaction_id: res.id,
         price: 0,
     }
 
+    console.log('detail', body.transaction_detail)
     const transaction_detail = await prisma.transaction_detail.createMany({
+
         data: body.transaction_detail.map((data: any) => {
-            return { ...data, ...detaiData }
+            return { ...data, ...detailData }
         })
     })
     return transaction_detail

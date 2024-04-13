@@ -3,7 +3,6 @@ import { BREAKSPOINTS } from "@/constants/swiper.constants"
 import axios from "axios"
 
 const { data: user } = <any>useAuth()
-const id = user.value?.user?.id
 
 interface TrashItem {
   category: string
@@ -90,10 +89,7 @@ interface CARD {
 onMounted(async () => {
   try {
     isLoading.value = true
-    const headers = { Cookie: document.cookie }
-    const res = await axios.get(`/api/v1/dashboard/user/${id}`, {
-      headers: headers,
-    })
+    const res = await axios.get("/api/v1/dashboard/user")
     if (res) {
       const { totalAmount, ...resData } = res.data.data
       trashData.value = resData.trash

@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import axios from "axios"
-const total = ref()
 
+const total = ref()
 const { data: user } = <any>useAuth()
-const id = user.value?.user?.id
 
 onMounted(async () => {
   try {
-    const headers = { Cookie: document.cookie }
-    const res = await axios.get(`/api/v1/dashboard/user/${id}`, {
-      headers: headers,
-    })
+    const res = await axios.get("/api/v1/dashboard/user")
     if (res) {
       total.value = res.data.data.totalAmount
     } else {

@@ -1,7 +1,21 @@
 <script setup lang="ts">
+import axios from "axios"
 import { toCurrency } from "~/composables/helpers"
 const trashTotal = ref<number>(55)
 const unPaidService = ref<number>(0)
+const { data: user } = <any>useAuth()
+const data = ref<any>()
+
+onMounted(async () => {
+  try {
+    const res = await axios.get("/api/v1/dashboard/partner")
+    if (res) {
+      data.value = res.data.data
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
 </script>
 
 <template>
@@ -10,7 +24,7 @@ const unPaidService = ref<number>(0)
       <div>
         <div class="flex items-center gap-x-2">
           <h1 class="text-[20px] text-brg-primary-dark font-semibold">
-            Hai July
+            Hai {{ user.user.name }}
           </h1>
           <h2 class="!text-brg-primary">
             <span class="text-sm font-semibold">4.5</span>
@@ -32,10 +46,11 @@ const unPaidService = ref<number>(0)
 
     <div class="mt-9">
       <CardSummaryTransaction
+        v-if="data"
         type="partner"
-        :total="1500000"
-        :total-monthly="400000"
-        :service-bill="10000"
+        :total="data.totalAmount ?? 0"
+        :total-monthly="data.monthlyTotal ?? 0"
+        :service-bill="data.serviceBill ?? 0"
       />
     </div>
 
@@ -44,8 +59,8 @@ const unPaidService = ref<number>(0)
         class="flex flex-col justify-between w-full h-[86px] p-4 rounded-[10px] bg-brg-primary"
       >
         <span class="text-[10px] font-medium">Total sampah</span>
-        <h3 class="text-[20px] font-semibold">
-          {{ trashTotal }} <span class="!text-base">Kg</span>
+        <h3 class="text-[20px] font-semibold" v-if="data">
+          {{ data.trashTotal }} <span class="!text-base">Kg</span>
         </h3>
       </div>
       <div
@@ -54,8 +69,8 @@ const unPaidService = ref<number>(0)
         <span class="text-[10px] font-medium"
           >Biaya layanan belum disetorkan</span
         >
-        <h3 class="font-semibold">
-          {{ toCurrency(unPaidService) }}
+        <h3 class="font-semibold" v-if="data">
+          {{ toCurrency(data.lackServiceBill) }}
         </h3>
       </div>
     </div>
