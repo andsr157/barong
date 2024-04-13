@@ -37,7 +37,7 @@ const handleLogin = handleSubmit(async (values) => {
         text: "Login berhasil",
       })
       setTimeout(() => {
-        router.push("/user")
+        router.push("/")
       }, 1500)
     }
   } catch (error) {

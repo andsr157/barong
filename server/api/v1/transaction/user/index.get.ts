@@ -9,7 +9,11 @@ export default defineEventHandler(async (event) => {
     try {
         const session = await getServerSession(event) as any
         const transactions = await prisma.transaction.findMany({
+            where: {
+                user_id: session.user.id,
+            },
             include: {
+                // users: true,
                 address: true,
                 transaction_detail: {
                     include: {
@@ -25,9 +29,7 @@ export default defineEventHandler(async (event) => {
         });
 
         if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
-            if (session.user.role !== 'partner') {
-                return AuthorizationCheck(session, transactions[0].user_id.toString());
-            }
+            return AuthorizationCheck(session, transactions[0].user_id.toString());
         }
 
         const user = await prisma.users.findUnique({
@@ -72,6 +74,7 @@ export default defineEventHandler(async (event) => {
         } else {
             partner = {}
         }
+
         // Format data transaksi sesuai dengan struktur yang diinginkan
         const formattedTransactions = transactions.map((data: any) => {
             const status = { id: data.status.id, ...data.status };
@@ -82,7 +85,6 @@ export default defineEventHandler(async (event) => {
                 pengepul: partner,
                 address: {
                     label: data.address.label,
-                    address: data.address_name,
                     name: data.address.owner_name,
                     telp: data.address.owner_telp,
                     detail: data.address.detail,

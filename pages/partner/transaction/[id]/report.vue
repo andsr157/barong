@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { TRANSACTION } from "~/constants/trash.constants"
+import { useTransactionStore } from "~/stores/Transaction.store"
 import { type Transaction } from "~/types/transaction.type"
 
 definePageMeta({
   layout: "blank",
 })
+
+const transactionStore = useTransactionStore()
+const { isLoading } = storeToRefs(transactionStore)
 const route = useRoute()
 const router = useRouter()
 const transaction = ref<Transaction>()
@@ -24,16 +27,35 @@ const totalTrashWeight = computed(() => {
   return 0
 })
 
-onMounted(() => {
-  let id: string
-  if (Array.isArray(route.params.id)) {
-    id = route.params.id[0]
+const realTotal = computed(() => {
+  if (transaction.value && transaction.value.detailSampah) {
+    return transaction.value.detailSampah.reduce((total, item) => {
+      if (item.finalPrice !== undefined) {
+        return total + item.finalPrice * item.weight
+      } else {
+        return total
+      }
+    }, 0)
   } else {
-    id = route.params.id
+    return 0
   }
-  transaction.value = TRANSACTION.filter((data) => {
-    return data.id === parseInt(id)
-  })[0]
+})
+
+const servicePrice = computed(() => {
+  return (realTotal.value * 10) / 100
+})
+
+const finalTotalPrice = computed(() => {
+  return realTotal.value - servicePrice.value
+})
+
+onMounted(async () => {
+  const id = Array.isArray(route.params.id)
+    ? route.params.id[0]
+    : route.params.id
+  const res = await transactionStore.getSingleTransaction(parseInt(id))
+  transaction.value = res.data
+  console.log(res)
 })
 
 const isModalOpen = ref(false)
@@ -45,7 +67,8 @@ const handleFinishTransaction = () => {
 
 <template>
   <Header title="Pelaporan" />
-  <div class="px-6" v-if="transaction">
+  <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
+  <div class="px-6" v-else-if="transaction">
     <div class="mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">Data Sampah</h2>
       <div
@@ -99,7 +122,7 @@ const handleFinishTransaction = () => {
       <div class="mt-3 flex flex-col gap-y-3">
         <div>
           <Input
-            v-model="transaction.totalPrice"
+            v-model="realTotal"
             type="number"
             input-class="ps-2"
             label="Total"
@@ -111,6 +134,7 @@ const handleFinishTransaction = () => {
         </div>
         <div>
           <Input
+            v-model="servicePrice"
             type="number"
             input-class="ps-2"
             label="Biaya Layanan"
@@ -118,10 +142,12 @@ const handleFinishTransaction = () => {
             prefix-icon="eos-icons:service"
             prefix-icon-color="text-brg-light-gray"
             placeholder="0"
+            readonly
           />
         </div>
         <div>
           <Input
+            v-model="finalTotalPrice"
             type="number"
             input-class="ps-2"
             label="Pendapatan"
@@ -129,6 +155,7 @@ const handleFinishTransaction = () => {
             prefix-icon="mdi:money"
             prefix-icon-color="text-brg-light-gray"
             placeholder="0"
+            readonly
           />
         </div>
       </div>

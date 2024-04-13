@@ -9,19 +9,26 @@ definePageMeta({
 })
 
 onMounted(async () => {
-  await transactionStore.getAllTransaction()
-  data.value = transactionStore.activeTransaction
+  try {
+    const res = await transactionStore.getRequestTransaction()
+    if (res.status === 200) {
+      data.value = res.data
+    }
+  } catch (error) {
+    console.error(error)
+  }
 })
 </script>
 
 <template>
   <Header title="Permintaan" />
-  <section class="px-6 mt-[30px]">
+  <section class="px-6 pt-[30px] pb-24 overflow-auto">
     <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
     <div v-else-if="data !== null" class="flex flex-col gap-y-5">
       <CardTransactionPartner
         v-for="transaction in data"
         :detailSampah="formatSampah(transaction.detailSampah)"
+        :address="transaction.address.address"
         :status="transaction.status"
         :user="transaction.user"
         :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"

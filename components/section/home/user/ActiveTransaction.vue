@@ -7,14 +7,8 @@ const transactionStore = useTransactionStore()
 const transactionActive = ref<any>(null)
 const { isLoading } = storeToRefs(transactionStore)
 
-// const activeTransaction = computed(() => {
-//   return TRANSACTION.filter((data) => {
-//     return data.status.name === "taking" || data.status.name === "searching"
-//   })
-// })
-
 onMounted(async () => {
-  const res = await transactionStore.getActiveTransaction()
+  const res = await transactionStore.getUserActiveTransaction()
   if (res.status === 200) {
     transactionActive.value = res.data
   }
@@ -26,7 +20,7 @@ onMounted(async () => {
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Transaksi Aktif
     </h2>
-    <div v-if="isLoading">lagi loading sabar su</div>
+    <div v-if="isLoading">lagi loading sabar</div>
     <div class="flex flex-col gap-5" v-else-if="transactionActive">
       <CardTransactionUser
         v-for="transaction in transactionActive"

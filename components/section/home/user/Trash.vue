@@ -111,7 +111,7 @@ onMounted(async () => {
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Total sampahmu
     </h2>
-    <div v-if="isLoading">lagi loading sabar su</div>
+    <div v-if="isLoading">lagi loading sabar</div>
     <div v-else-if="newTrashData.length > 0">
       <Swiper :breakpoints="BREAKSPOINTS" :loop="true">
         <SwiperSlide v-for="data in newTrashData">

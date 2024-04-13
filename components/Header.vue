@@ -9,7 +9,13 @@ const goBack = () => {
   if (window.history.state.back !== null) {
     router.back()
   } else {
-    router.push("/user")
+    const { data: user } = <any>useAuth()
+    const role = user.value?.user?.role
+    if (role === "user") {
+      useRouter().push("/user")
+    } else if (role === "partner") {
+      useRouter().push("/partner")
+    }
   }
 }
 </script>
