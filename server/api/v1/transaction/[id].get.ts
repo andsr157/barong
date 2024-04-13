@@ -35,7 +35,9 @@ export default defineEventHandler(async (event) => {
 
 
         if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
-            return AuthorizationCheck(session, transactions[0].user_id.toString());
+            if (session.user.role !== 'partner') {
+                return AuthorizationCheck(session, transactions[0].user_id.toString());
+            }
         }
 
         const user = await prisma.users.findUnique({
@@ -97,7 +99,7 @@ export default defineEventHandler(async (event) => {
                 telp: transactions[0].address.owner_telp,
                 detail: transactions[0].address.detail,
             },
-            trashImage: '/assets/dummy-trash.png', // Gambar sampah (placeholder)
+            trashImage: transactions[0].image, // Gambar sampah (placeholder)
             detailSampah: transactions[0].transaction_detail.map((detail) => ({
                 id: detail.id,
                 trash_id: detail.trash_id,
