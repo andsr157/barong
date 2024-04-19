@@ -1,15 +1,15 @@
 import { Server, Socket, type ServerOptions } from 'socket.io';
 import type { H3Event } from 'h3'
 import moment from 'moment'
-const options: Partial<ServerOptions> = {
-    path: `/api/socket-chat`,
-    serveClient: false
-}
 
-const io = new Server(options);
 
 export function initSocket(event: H3Event, nameSpace: string) {
+    const options: Partial<ServerOptions> = {
+        path: `/api/socket-chat`,
+        serveClient: false
+    }
 
+    const io = new Server(options);
     // @ts-ignore
     io.attach(event.node.res.socket?.server);
 
