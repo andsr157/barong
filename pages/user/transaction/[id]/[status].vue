@@ -66,7 +66,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Header title="Detail" />
+  <Header title="Detail">
+    test
+    <Icon
+      name="mingcute:chat-1-fill"
+      size="32px"
+      class="text-brg-primary-dark text-right"
+    />
+  </Header>
   <div v-if="transaction" class="px-6">
     <section class="mt-[30px]">
       <Stepper
