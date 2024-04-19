@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import axios from "axios"
 import { io, Socket } from "socket.io-client"
+import { createClient } from "@supabase/supabase-js"
 import { CHAT_DATA } from "~/constants/chat.constants"
 const AUTH_USER_ID = 201
 const AUTH_USER_ROLE: string = "partner"
@@ -12,6 +14,10 @@ const messages = computed(() => {
   })
 })
 
+const config = useRuntimeConfig().app
+const supabase = createClient(config.supabaseUrl, config.supabaseKey)
+
+const realTimeMessage = ref<any>([])
 const socket = ref<Socket>()
 const newMessage = ref<string>("")
 
@@ -22,59 +28,78 @@ const scrollToBottom = () => {
   }
 }
 
-const sendMessage = () => {
-  console.log("clicked")
+// const sendMessage = () => {
+//   console.log("clicked")
 
-  if (!newMessage.value.trim()) {
-    console.warn("Message cannot be empty")
-    return
-  }
-  const conversation = messages.value[0]
-  if (conversation && conversation.messages instanceof Array) {
-    conversation.messages.push({
-      message_id:
-        messages.value[0].messages[messages.value[0].messages.length - 1]
-          .message_id + 1,
-      content: newMessage.value,
-      sender: AUTH_USER_ID,
-      timestamp: "2024-04-20T12:31:00Z",
-      unread: true,
-    })
-    newMessage.value = ""
-    nextTick(() => {
-      scrollToBottom()
-    })
-  } else {
-    console.error(
-      "Unable to send message: Invalid conversation or messages array"
-    )
-  }
-}
+//   if (!newMessage.value.trim()) {
+//     console.warn("Message cannot be empty")
+//     return
+//   }
+//   const conversation = messages.value[0]
+//   if (conversation && conversation.messages instanceof Array) {
+//     conversation.messages.push({
+//       message_id:
+//         messages.value[0].messages[messages.value[0].messages.length - 1]
+//           .message_id + 1,
+//       content: newMessage.value,
+//       sender: AUTH_USER_ID,
+//       timestamp: "2024-04-20T12:31:00Z",
+//       unread: true,
+//     })
+//     newMessage.value = ""
+//     nextTick(() => {
+//       scrollToBottom()
+//     })
+//   } else {
+//     console.error(
+//       "Unable to send message: Invalid conversation or messages array"
+//     )
+//   }
+// }
 
 definePageMeta({
   layout: "blank",
 })
-const testSocket = (id: number) => {
-  console.log("emit jalan")
-  console.log(socket.value)
-  socket.value?.emit("testChat", id)
+
+const sendChat = async (id: number) => {
+  try {
+    console.log(newMessage.value)
+    const res = await axios.post("/api/v1/chat", { message: newMessage.value })
+    if (res) {
+      newMessage.value = ""
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-const connected = ref(false)
-const indexx = ref()
-onMounted(async () => {
-  socket.value = io("/chat", {
-    path: "/api/socket-chat",
-  })
+const chat = supabase
+  .channel("test-chat")
+  .on(
+    "postgres_changes",
+    { event: "*", schema: "public", table: "chat" },
+    (payload) => {
+      console.log(payload)
+      realTimeMessage.value.push(payload)
+    }
+  )
+  .subscribe()
 
-  socket.value.on("message", (response: any) => {
-    connected.value = true
-    indexx.value = response
-    setTimeout(() => {
-      connected.value = false
-    }, 1000)
-  })
-})
+// const connected = ref(false)
+// const indexx = ref()
+// onMounted(async () => {
+//   socket.value = io("/chat", {
+//     path: "/api/socket-chat",
+//   })
+
+//   socket.value.on("message", (response: any) => {
+//     connected.value = true
+//     indexx.value = response
+//     setTimeout(() => {
+//       connected.value = false
+//     }, 1000)
+//   })
+// })
 </script>
 
 <template>
@@ -97,9 +122,9 @@ onMounted(async () => {
   <section
     class="h-[75vh] pt-[30px] mt-[70px] overflow-y-auto px-6 chat-container"
   >
-    <div v-if="connected">{{ indexx }} joined</div>
+    <!-- <div v-if="connected">{{ indexx }} joined</div> -->
     <div class="flex flex-col gap-y-5">
-      <div
+      <!-- <div
         v-for="message in messages[0].messages"
         class="w-full flex"
         :class="`${
@@ -116,6 +141,9 @@ onMounted(async () => {
         >
           <p>{{ message.content }}</p>
         </div>
+      </div> -->
+      <div v-for="data in realTimeMessage">
+        {{ data.new.message }}
       </div>
     </div>
   </section>
@@ -133,7 +161,7 @@ onMounted(async () => {
       name="iconamoon:send-fill"
       class="text-brg-primary"
       size="32px"
-      @click="testSocket(USER_INDEX)"
+      @click="sendChat"
     />
   </div>
 </template>

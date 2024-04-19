@@ -1,22 +1,15 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Users` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-DROP TABLE "Users";
-
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
-    "VARCHAR(36)" TEXT NOT NULL,
+    "uuid" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "telp" TEXT NOT NULL,
     "avatar" TEXT NOT NULL,
     "date_created" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3),
+    "password" TEXT NOT NULL,
+    "role" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -24,14 +17,15 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "address" (
     "id" SERIAL NOT NULL,
-    "label" INTEGER NOT NULL,
+    "label" TEXT NOT NULL,
     "address_name" TEXT NOT NULL,
-    "detail" TEXT NOT NULL,
+    "detail" TEXT,
     "owner_name" TEXT NOT NULL,
     "owner_telp" TEXT NOT NULL,
     "latitude" TEXT NOT NULL,
     "longitude" TEXT NOT NULL,
     "user_id" INTEGER NOT NULL,
+    "is_main" BOOLEAN NOT NULL,
 
     CONSTRAINT "address_pkey" PRIMARY KEY ("id")
 );
@@ -69,14 +63,14 @@ CREATE TABLE "status" (
 CREATE TABLE "transaction" (
     "id" SERIAL NOT NULL,
     "user_id" INTEGER NOT NULL,
-    "partner_id" INTEGER NOT NULL,
+    "partner_id" INTEGER,
     "address_id" INTEGER NOT NULL,
     "image" TEXT NOT NULL,
     "status_id" INTEGER NOT NULL,
-    "partner_rate" INTEGER NOT NULL,
-    "partner_review" TEXT NOT NULL,
+    "partner_rate" INTEGER,
+    "partner_review" TEXT,
     "note" TEXT NOT NULL,
-    "total" INTEGER NOT NULL,
+    "total" INTEGER,
     "date_created" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "transaction_pkey" PRIMARY KEY ("id")
@@ -85,18 +79,24 @@ CREATE TABLE "transaction" (
 -- CreateTable
 CREATE TABLE "transaction_detail" (
     "id" SERIAL NOT NULL,
+    "transaction_id" INTEGER NOT NULL,
     "trash_id" INTEGER NOT NULL,
-    "price" INTEGER NOT NULL,
+    "price" INTEGER,
     "weight" INTEGER NOT NULL,
 
     CONSTRAINT "transaction_detail_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+-- CreateTable
+CREATE TABLE "chat" (
+    "id" SERIAL NOT NULL,
+    "message" TEXT NOT NULL,
+
+    CONSTRAINT "chat_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateIndex
-CREATE UNIQUE INDEX "transaction_address_id_key" ON "transaction"("address_id");
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- AddForeignKey
 ALTER TABLE "address" ADD CONSTRAINT "address_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -112,3 +112,6 @@ ALTER TABLE "transaction" ADD CONSTRAINT "transaction_status_id_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "transaction_detail" ADD CONSTRAINT "transaction_detail_trash_id_fkey" FOREIGN KEY ("trash_id") REFERENCES "trash"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transaction_detail" ADD CONSTRAINT "transaction_detail_transaction_id_fkey" FOREIGN KEY ("transaction_id") REFERENCES "transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
