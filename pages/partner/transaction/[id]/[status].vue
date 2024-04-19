@@ -76,13 +76,20 @@ onMounted(async () => {
     : route.params.id
   const res = await transactionStore.getSingleTransaction(parseInt(id))
   transaction.value = res.data
+
   console.log(res)
 })
 </script>
 
 <template>
   <Toast />
-  <Header title="Detail" />
+  <Header title="Detail">
+    <Icon
+      name="mingcute:chat-1-fill"
+      size="32px"
+      class="w-full text-brg-primary-dark"
+    />
+  </Header>
   <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
   <div v-else-if="transaction">
     <section class="px-6 mt-[30px]">

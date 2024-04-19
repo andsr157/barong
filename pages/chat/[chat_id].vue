@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { io, Socket } from "socket.io-client"
 import { CHAT_DATA } from "~/constants/chat.constants"
 const AUTH_USER_ID = 201
 const AUTH_USER_ROLE: string = "partner"
@@ -11,8 +12,7 @@ const messages = computed(() => {
   })
 })
 
-console.log("computed", messages)
-
+const socket = ref<Socket>()
 const newMessage = ref<string>("")
 
 const scrollToBottom = () => {
@@ -54,6 +54,27 @@ const sendMessage = () => {
 definePageMeta({
   layout: "blank",
 })
+const testSocket = (id: number) => {
+  console.log("emit jalan")
+  console.log(socket.value)
+  socket.value?.emit("testChat", id)
+}
+
+const connected = ref(false)
+const indexx = ref()
+onMounted(async () => {
+  socket.value = io("/chat", {
+    path: "/api/socket-chat",
+  })
+
+  socket.value.on("message", (response: any) => {
+    connected.value = true
+    indexx.value = response
+    setTimeout(() => {
+      connected.value = false
+    }, 1000)
+  })
+})
 </script>
 
 <template>
@@ -76,6 +97,7 @@ definePageMeta({
   <section
     class="h-[75vh] pt-[30px] mt-[70px] overflow-y-auto px-6 chat-container"
   >
+    <div v-if="connected">{{ indexx }} joined</div>
     <div class="flex flex-col gap-y-5">
       <div
         v-for="message in messages[0].messages"
@@ -111,7 +133,7 @@ definePageMeta({
       name="iconamoon:send-fill"
       class="text-brg-primary"
       size="32px"
-      @click="sendMessage"
+      @click="testSocket(USER_INDEX)"
     />
   </div>
 </template>
