@@ -3,6 +3,13 @@ import { BREAKSPOINTS } from "@/constants/swiper.constants"
 import axios from "axios"
 
 const { data: user } = <any>useAuth()
+const nuxt = useNuxtApp()
+
+const { data, pending, status } = useFetch("/api/v1/dashboard/user", {
+  getCachedData(key) {
+    return nuxt.payload.data[key] || nuxt.static.data[key]
+  },
+})
 
 interface TrashItem {
   category: string
@@ -18,15 +25,18 @@ const test = computed(() => {
 
 const updatedCard = computed(() => {
   const updatedCardData = [...card]
-  trashData.value.forEach((trashItem) => {
-    const index = updatedCardData.findIndex(
-      (cardItem) => cardItem.category === trashItem.category
-    )
-    if (index !== -1) {
-      updatedCardData[index].weight = trashItem.weight
-    }
-  })
-  return updatedCardData
+  if (status.value === "success") {
+    data.value.data.trash.forEach((trashItem: TrashItem) => {
+      const index = updatedCardData.findIndex(
+        (cardItem) => cardItem.category === trashItem.category
+      )
+      if (index !== -1) {
+        updatedCardData[index].weight = trashItem.weight
+      }
+    })
+    return updatedCardData
+  }
+  return []
 })
 
 const newTrashData = computed(() => {
@@ -87,19 +97,19 @@ interface CARD {
 }
 
 onMounted(async () => {
-  try {
-    isLoading.value = true
-    const res = await axios.get("/api/v1/dashboard/user")
-    if (res) {
-      const { totalAmount, ...resData } = res.data.data
-      trashData.value = resData.trash
-      isLoading.value = false
-    } else {
-      console.log("failed fetch api")
-    }
-  } catch (error) {
-    console.error(error)
-  }
+  // try {
+  //   isLoading.value = true
+  //   const res = await axios.get("/api/v1/dashboard/user")
+  //   if (res) {
+  //     const { totalAmount, ...resData } = res.data.data
+  //     trashData.value = resData.trash
+  //     isLoading.value = false
+  //   } else {
+  //     console.log("failed fetch api")
+  //   }
+  // } catch (error) {
+  //   console.error(error)
+  // }
 })
 </script>
 <template>
@@ -107,8 +117,8 @@ onMounted(async () => {
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Total sampahmu
     </h2>
-    <div v-if="isLoading">lagi loading sabar</div>
-    <div v-else-if="newTrashData.length > 0">
+    <div v-if="pending">lagi loading sabar</div>
+    <div v-else-if="newTrashData.length > 0 && status === 'success'">
       <Swiper :breakpoints="BREAKSPOINTS" :loop="true">
         <SwiperSlide v-for="data in newTrashData">
           <CardTrash
