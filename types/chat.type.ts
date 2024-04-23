@@ -1,24 +1,23 @@
 export interface User {
-    user_id: number;
-    nama: string;
+    id: number;
+    name: string;
     avatar: string;
 }
 
 export interface Message {
     message_id: number;
-    sender: number;
+    sender_id: number;
     content: string;
-    timestamp: string;
+    date_created: string;
 }
 
-export interface Conversation {
-    conversation_id: number;
-    user: User[];
-    last_message: string;
-    last_message_time: string;
+export interface Chat {
+    chats_id: number;
+    users: User[];
     messages: Message[];
 }
 
-export interface ApiResponse {
-    conversations: Conversation[];
+export interface ApiResponseChat {
+    data: Chat,
+    status: number
 }

@@ -26,6 +26,7 @@ export const useTransactionStore = defineStore('transaction', {
                 transaction: {
                     id: 0,
                     user_id: 0,
+                    chats_id: 0,
                     address_id: 0,
                     status_id: 0,
                     note: '',

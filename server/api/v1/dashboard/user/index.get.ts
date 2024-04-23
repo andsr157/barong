@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const userId = session.user.id
 
     if (!userId) {
-        return { data: {}, status: 200 };
+        return { data: {}, status: 400 };
     }
     const res = await prisma.transaction.findMany({
         where: {

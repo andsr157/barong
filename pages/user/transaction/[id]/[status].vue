@@ -67,15 +67,26 @@ onMounted(async () => {
 
 <template>
   <Header title="Detail">
-    test
-    <Icon
-      name="mingcute:chat-1-fill"
-      size="32px"
-      class="text-brg-primary-dark text-right"
-    />
+    <div
+      class="flex w-full justify-end cursor-pointer"
+      v-if="
+        transaction &&
+        (transaction.status.name === 'taking' ||
+          transaction.status.name === 'finish')
+      "
+    >
+      <NuxtLink :to="`/chat/${transaction.chats_id}`">
+        <Icon
+          name="mingcute:chat-1-fill"
+          size="32px"
+          class="text-brg-primary-dark text-right"
+        />
+      </NuxtLink>
+    </div>
   </Header>
   <div v-if="transaction" class="px-6">
     <section class="mt-[30px]">
+      {{ transaction }}
       <Stepper
         :status="transaction.status"
         v-if="transaction.status.name !== 'canceled'"

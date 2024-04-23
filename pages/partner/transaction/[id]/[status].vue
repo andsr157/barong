@@ -84,11 +84,20 @@ onMounted(async () => {
 <template>
   <Toast />
   <Header title="Detail">
-    <Icon
-      name="mingcute:chat-1-fill"
-      size="32px"
-      class="w-full text-brg-primary-dark"
-    />
+    <div
+      class="flex w-full justify-end"
+      v-if="
+        transaction &&
+        (transaction.status.name === 'taking' ||
+          transaction.status.name === 'finish')
+      "
+    >
+      <Icon
+        name="mingcute:chat-1-fill"
+        size="32px"
+        class="text-brg-primary-dark text-right"
+      />
+    </div>
   </Header>
   <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
   <div v-else-if="transaction">

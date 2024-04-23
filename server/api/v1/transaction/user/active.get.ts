@@ -87,6 +87,7 @@ export default defineEventHandler(async (event) => {
 
             return {
                 id: data.id,
+                chats_id: data.chats_id,
                 user: user,
                 pengepul: partner,
                 address: {
