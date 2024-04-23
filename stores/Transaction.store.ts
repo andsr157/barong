@@ -8,6 +8,7 @@ interface PostData {
         id?: number,
         user_id: number,
         address_id: number,
+        chats_id?: number,
         image: string,
         status_id: number,
         note: string,
@@ -26,6 +27,7 @@ export const useTransactionStore = defineStore('transaction', {
                 transaction: {
                     id: 0,
                     user_id: 0,
+                    chats_id: 0,
                     address_id: 0,
                     status_id: 0,
                     note: '',
@@ -95,6 +97,11 @@ export const useTransactionStore = defineStore('transaction', {
 
         async addTransaction(payload: PostData) {
             console.log('jalan')
+            const chat = await axios.post('/api/v1/chat', { user_id: payload.transaction.user_id })
+            if (chat.data && chat.data.status !== 200) {
+                return
+            }
+            payload.transaction.chats_id = chat.data.data.id
             const res = await axios.post('/api/v1/transaction', payload)
             this.isLoading = false
             this.transactionData.transaction = {

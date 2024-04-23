@@ -1,18 +1,19 @@
 import { prisma } from '~/composables/prisma'
 
 export default defineEventHandler(async (event) => {
+
     const body = await readBody(event)
-    console.log(body)
-    const res = await prisma.chats.create({
+    const chats = await prisma.chats.update({
+        where: {
+            id: parseInt(body.chats_id)
+        },
         data: {
-            user_id: body.user_id,
-            partner_id: null
+            partner_id: body.partner_id
         }
     })
 
-    if (!res) {
+    if (!chats) {
         return { data: {}, status: 400 }
     }
-
-    return { data: res, status: 200 }
+    return { data: chats, status: 200 }
 })

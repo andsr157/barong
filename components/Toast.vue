@@ -15,7 +15,7 @@ const toastBorderColorMap: Record<ToastStatus, string> = {
     <Transition name="toast">
       <div
         v-if="toastStore.toasts.length"
-        class="fixed bottom-[10%] right-1/2 translate-x-1/2 z-50 w-full"
+        class="fixed bottom-[10%] right-1/2 translate-x-1/2 z-50 w-full max-w-96"
       >
         <TransitionGroup name="toast" tag="ul">
           <li

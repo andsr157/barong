@@ -11,5 +11,7 @@ definePageMeta({
     <SectionHomeUserTrash />
 
     <SectionHomeUserActiveTransaction />
+
+    <ButtonAddTransaction />
   </div>
 </template>

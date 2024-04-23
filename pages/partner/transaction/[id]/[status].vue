@@ -3,6 +3,7 @@ import { useTransactionStore } from "~/stores/Transaction.store"
 import { useToastStore } from "~/stores/Toast.store"
 import { estimateTotal } from "~/composables/helpers"
 import { type Transaction } from "~/types/transaction.type"
+import axios from "axios"
 
 const transactionStore = useTransactionStore()
 const toastStore = useToastStore()
@@ -27,11 +28,32 @@ const handleFinishTransaction = () => {
   router.push(`/partner/transaction/${transaction.value?.id}/report`)
 }
 
-const handleRequest = async (payload: any) => {
+// const createChat = async (payload: any) => {
+//   try {
+//     const res = await axios.post("/api/v1/chat", payload)
+//     if (res.data.status === 200) {
+//       return true
+//     }
+//   } catch (error) {}
+// }
+
+// const clearChat = async (chat_id) => {}
+
+const handleRequest = async (payload: any, request: string) => {
   try {
     const id = Array.isArray(route.params.id)
       ? route.params.id[0]
       : route.params.id
+
+    const clearMessage = await axios.delete(
+      `/api/v1/chat/message/${transaction.value?.chats_id}`
+    )
+
+    if (!clearMessage.data || clearMessage.data.status === 400) {
+      return
+    }
+
+    console.log(clearMessage.data)
 
     const res = await transactionStore.updateStatusTransaction(
       parseInt(id),
@@ -40,6 +62,18 @@ const handleRequest = async (payload: any) => {
     if (transaction.value) {
       transaction.value.status = res.data.status ?? transaction.value.status
     }
+
+    const payloadChats = {
+      chats_id: transaction.value?.chats_id,
+      partner_id: request === "take" ? user.value.user.id : null,
+    }
+    const chats = await axios
+      .put("/api/v1/chat", payloadChats)
+      .catch((error) => {
+        console.log(error)
+      })
+    console.log(chats)
+
     console.log(res)
   } catch (error) {
     console.error(error)
@@ -51,7 +85,7 @@ const handleCancelRequest = () => {
     partner_id: null,
     status_id: 1,
   }
-  handleRequest(payload)
+  handleRequest(payload, "cancel")
 
   isModalOpen.value = false
   toastStore.success({
@@ -64,7 +98,7 @@ const handleTakeRequest = () => {
     partner_id: partner_id,
     status_id: 2,
   }
-  handleRequest(payload)
+  handleRequest(payload, "take")
   toastStore.success({
     text: "Berhasil diambil",
   })
@@ -84,14 +118,26 @@ onMounted(async () => {
 <template>
   <Toast />
   <Header title="Detail">
-    <Icon
-      name="mingcute:chat-1-fill"
-      size="32px"
-      class="w-full text-brg-primary-dark"
-    />
+    <div
+      class="flex w-full justify-end cursor-pointer"
+      v-if="
+        transaction &&
+        (transaction.status.name === 'taking' ||
+          transaction.status.name === 'finish')
+      "
+    >
+      <NuxtLink :to="`/chat/${transaction.chats_id}`">
+        <Icon
+          name="mingcute:chat-1-fill"
+          size="32px"
+          class="text-brg-primary-dark text-right"
+        />
+      </NuxtLink>
+    </div>
   </Header>
   <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
   <div v-else-if="transaction">
+    {{ transaction }}
     <section class="px-6 mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">
         Alamat Pengambilan

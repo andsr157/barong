@@ -1,5 +1,6 @@
 export interface Transaction {
     id: number
+    chats_id: number,
     user: {
         name: string
         telp: string
@@ -59,13 +60,14 @@ export interface TransactionDetail {
 export interface TransactionData {
     transaction: {
         id?: number,
-        user_id: number;
-        address_id: number;
+        user_id: number,
+        address_id: number,
+        chats_id?: number,
         // image: string;
-        status_id: number;
-        note: string;
+        status_id: number,
+        note: string,
     };
-    transaction_detail: TransactionDetail[];
+    transaction_detail: TransactionDetail[],
 }
 
 export interface TransactionImage {

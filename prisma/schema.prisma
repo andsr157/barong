@@ -70,6 +70,7 @@ model transaction {
   id                 Int                  @id @default(autoincrement())
   user_id            Int
   partner_id         Int?
+  chats_id           Int?
   address            address              @relation(fields: [address_id], references: [id])
   address_id         Int
   image              String
@@ -97,3 +98,23 @@ model chat {
     id           Int         @id @default(autoincrement())
     message      String
 }
+
+model chats {
+  id                  Int             @id @default(autoincrement())
+  user_id             Int
+  partner_id          Int?
+  date_created        DateTime        @default(now())
+  messages            messages[]
+}
+
+model messages {
+  id                  Int         @id @default(autoincrement())
+  chats               chats @relation(fields: [chats_id], references: [id])
+  chats_id            Int 
+  sender_id           Int        
+  content             String
+  date_created        DateTime        @default(now())
+}
+
+
+

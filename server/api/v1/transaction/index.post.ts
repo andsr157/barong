@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
             address_id: body.transaction.address_id,
             image: body.transaction.image,
             status_id: body.transaction.status_id,
+            chats_id: body.transaction.chats_id,
             note: body.transaction.note,
             partner_id: null,
             partner_rate: null,

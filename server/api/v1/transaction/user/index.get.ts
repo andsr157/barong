@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
             },
         });
 
+
         if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
             return AuthorizationCheck(session, transactions[0].user_id.toString());
         }
@@ -81,6 +82,7 @@ export default defineEventHandler(async (event) => {
 
             return {
                 id: data.id,
+                chats_id: data.chats_id,
                 user: user,
                 pengepul: partner,
                 address: {

@@ -91,6 +91,7 @@ export default defineEventHandler(async (event) => {
         // Format data transaksi sesuai dengan struktur yang diinginkan
         const formattedTransactions = {
             id: transactions[0].id,
+            chats_id: transactions[0].chats_id,
             user: user,
             pengepul: partner, // Informasi pengepul belum tersedia
             address: {

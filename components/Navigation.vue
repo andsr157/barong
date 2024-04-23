@@ -1,15 +1,15 @@
 <script setup lang="ts">
-const route = useRoute();
+const route = useRoute()
 
 interface Props {
   navigation: {
-    name: string;
-    icon: string;
-    path: string;
-  }[];
+    name: string
+    icon: string
+    path: string
+  }[]
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>
@@ -19,21 +19,12 @@ defineProps<Props>();
     <ul class="flex justify-between">
       <li v-for="nav in navigation" :key="nav.path">
         <NuxtLink :to="nav.path" class="router-link">
-          <div
-            class="flex items-center justify-center"
-            :class="
-              nav.name === 'transaction'
-                ? 'bg-brg-primary rounded-full w-14 h-14 relative -top-3/4'
-                : 'bg-white'
-            "
-          >
+          <div class="flex items-center justify-center bg-white">
             <Icon
               :name="nav.icon"
-              :size="nav.name === 'transaction' ? '35px' : '28px'"
+              size="28px"
               :class="
-                nav.name === 'transaction'
-                  ? 'text-white'
-                  : route.path === nav.path
+                route.path === nav.path
                   ? 'text-brg-primary'
                   : 'text-brg-light-gray'
               "
