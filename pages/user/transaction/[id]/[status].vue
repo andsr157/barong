@@ -86,7 +86,6 @@ onMounted(async () => {
   </Header>
   <div v-if="transaction" class="px-6">
     <section class="mt-[30px]">
-      {{ transaction }}
       <Stepper
         :status="transaction.status"
         v-if="transaction.status.name !== 'canceled'"

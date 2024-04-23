@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import axios from "axios"
 import { convertToTime } from "~/composables/helpers"
+import { createClient } from "@supabase/supabase-js"
+import axios from "axios"
 import type { ApiResponseChat, Message } from "~/types/chat.type"
 
-import { createClient } from "@supabase/supabase-js"
 const { data: user } = <any>useAuth()
-const USER_INDEX = computed(() => (user.value.user.role === "user" ? 0 : 1))
+const USER_INDEX = computed(() => (user.value.user.role === "user" ? 1 : 0))
 const route = useRoute()
 const chat_id: string = route.params.chat_id[0]
 
@@ -23,7 +23,6 @@ realTimeMessage.value = messages.value?.data.messages
 const config = useRuntimeConfig().app
 const supabase = createClient(config.supabaseUrl, config.supabaseKey)
 
-// const socket = ref<Socket>()
 const newMessage = ref<string>("")
 
 const scrollToBottom = () => {
@@ -32,35 +31,6 @@ const scrollToBottom = () => {
     chatContainer.scrollTop = chatContainer.scrollHeight
   }
 }
-
-// const sendMessage = () => {
-//   console.log("clicked")
-
-//   if (!newMessage.value.trim()) {
-//     console.warn("Message cannot be empty")
-//     return
-//   }
-//   const conversation = messages.value[0]
-//   if (conversation && conversation.messages instanceof Array) {
-//     conversation.messages.push({
-//       message_id:
-//         messages.value[0].messages[messages.value[0].messages.length - 1]
-//           .message_id + 1,
-//       content: newMessage.value,
-//       sender: AUTH_USER_ID,
-//       timestamp: "2024-04-20T12:31:00Z",
-//       unread: true,
-//     })
-//     newMessage.value = ""
-//     nextTick(() => {
-//       scrollToBottom()
-//     })
-//   } else {
-//     console.error(
-//       "Unable to send message: Invalid conversation or messages array"
-//     )
-//   }
-// }
 
 definePageMeta({
   layout: "blank",
@@ -115,9 +85,9 @@ const chat = supabase
 </script>
 
 <template>
-  <Header shadow fixed>
+  <Header shadow fixed class="!z-50">
     <template #content>
-      <div class="flex gap-x-3 items-center">
+      <div class="flex gap-x-3 items-center" v-if="status === 'success'">
         <div class="w-9 h-9 rounded-full">
           <NuxtImg
             :src="messages?.data.users[USER_INDEX].avatar"
@@ -130,11 +100,9 @@ const chat = supabase
       </div>
     </template>
   </Header>
-
-  <section
-    class="h-[75vh] pt-[30px] mt-[70px] overflow-y-auto px-6 chat-container"
-  >
-    <div class="flex flex-col gap-y-5">
+  <div class="bg-white w-full h-[70px]"></div>
+  <section class="h-[75vh] pt-6 pb-4 overflow-y-auto px-6 chat-container">
+    <div class="flex flex-col gap-y-5" v-if="status === 'success'">
       <div
         v-for="message in realTimeMessage"
         v-if="realTimeMessage !== undefined"
@@ -157,11 +125,8 @@ const chat = supabase
           </div>
         </div>
       </div>
-
-      <!-- <div v-for="data in realTimeMessage">
-        {{ data.content }}
-      </div> -->
     </div>
+    <div v-else>gagal mengambil data coba refresh</div>
   </section>
 
   <div

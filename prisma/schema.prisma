@@ -102,7 +102,7 @@ model chat {
 model chats {
   id                  Int             @id @default(autoincrement())
   user_id             Int
-  partner_id          Int
+  partner_id          Int?
   date_created        DateTime        @default(now())
   messages            messages[]
 }

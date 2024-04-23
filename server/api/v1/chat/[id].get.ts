@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
     })
     const partner = await prisma.users.findUnique({
         where: {
-            id: res.user_id
+            id: res.partner_id
         },
         select: {
             id: true,
