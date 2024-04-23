@@ -11,16 +11,6 @@ export const NAVIGATION = [
         path: '/user/history',
     },
     {
-        name: 'transaction',
-        icon: 'heroicons:plus-16-solid',
-        path: '/user/transaction/add',
-    },
-    {
-        name: 'chat',
-        icon: 'mingcute:chat-1-fill',
-        path: '/chat',
-    },
-    {
         name: 'user',
         icon: 'typcn:user',
         path: '/user/profile',
@@ -42,11 +32,6 @@ export const NAVIGATION_PENGEPUL = [
         name: 'partner-transaction',
         icon: 'lets-icons:order-fill',
         path: '/partner/request',
-    },
-    {
-        name: 'chat',
-        icon: 'mingcute:chat-1-fill',
-        path: '/chat',
     },
     {
         name: 'user',

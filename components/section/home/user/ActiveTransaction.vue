@@ -16,7 +16,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="px-6 pb-24">
+  <section class="px-6 pb-40">
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Transaksi Aktif
     </h2>
