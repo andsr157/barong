@@ -1,9 +1,26 @@
 <script setup lang="ts">
+import { useForm } from "vee-validate"
 import { useAddressStore } from "~/stores/Address.store"
+import * as Yup from "yup"
 
 const addresStore = useAddressStore()
 definePageMeta({
   layout: "blank",
+})
+
+const schema = Yup.object({
+  address_name: Yup.string().required("address is required"),
+  label: Yup.string().required("label is required"),
+  detail: Yup.string(),
+  owner_name: Yup.string().required("owner name is required"),
+  owner_telp: Yup.string()
+    .matches(/^\d+$/, "Phone number must be numeric")
+    .max(14, "Phone number must be at most 14 characters")
+    .required("Phone number is required"),
+})
+
+const { handleSubmit } = useForm<FormData>({
+  validationSchema: schema,
 })
 
 const route = useRoute()
@@ -52,12 +69,21 @@ const handleDeleteAddress = async () => {
   }
 }
 
-const handleUpdateAddress = async () => {
+// const handleUpdateAddress = async () => {
+//   console.log("jalan")
+//   const res = await addresStore.updateAddress()
+//   if (res.status === 200) {
+//     useRouter().push("/user/profile/address")
+//   }
+// }
+
+const handleUpdateAddress = handleSubmit(async (values) => {
+  console.log(values)
   const res = await addresStore.updateAddress()
   if (res.status === 200) {
     useRouter().push("/user/profile/address")
   }
-}
+})
 </script>
 <template>
   <div v-if="!isLoading">
@@ -75,40 +101,45 @@ const handleUpdateAddress = async () => {
         </div>
       </div>
       <div>
-        <Input
+        <InputValidation
           label="Alamat Lengkap"
+          name="address_name"
           inputClass="placeholder:text-[11px]"
           placeholder="Masukkan alamat lengkap anda"
           v-model="formAdress.address_name"
         />
       </div>
       <div>
-        <Input
+        <InputValidation
           label="Label Alamat"
+          name="label"
           inputClass="placeholder:text-[11px]"
           placeholder="Masukkan label alamat anda"
           v-model="formAdress.label"
         />
       </div>
       <div>
-        <Input
+        <InputValidation
           label="Patokan"
+          name="detail"
           inputClass="placeholder:text-[11px]"
           placeholder="Cth(perempatan pas, depan masjid, dll)"
           v-model="formAdress.detail"
         />
       </div>
       <div>
-        <Input
+        <InputValidation
           label="Nama Pemilik"
+          name="owner_name"
           inputClass="placeholder:text-[11px]"
           placeholder="Masukkan nama anda"
           v-model="formAdress.owner_name"
         />
       </div>
       <div>
-        <Input
+        <InputValidation
           label="Nomor Telepon"
+          name="owner_telp"
           inputClass="placeholder:text-[11px]"
           placeholder="Masukkan nomor telepon"
           v-model="formAdress.owner_telp"

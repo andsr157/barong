@@ -36,7 +36,7 @@ definePageMeta({
   layout: "blank",
 })
 
-const sendChat = async (id: number) => {
+const sendChat = async () => {
   try {
     if (!newMessage.value.trim()) {
       console.warn("Message cannot be empty")
@@ -53,10 +53,21 @@ const sendChat = async (id: number) => {
     if (res.data.status == 200) {
       newMessage.value = ""
     }
+    return Promise.resolve(res.data)
   } catch (error) {
     console.log(error)
   }
 }
+
+watch(
+  realTimeMessage,
+  () => {
+    nextTick(() => {
+      scrollToBottom()
+    })
+  },
+  { deep: true }
+)
 
 const chat = supabase
   .channel("test-chat")
@@ -77,11 +88,11 @@ const chat = supabase
   )
   .subscribe()
 
-// watch(realTimeMessage?.value, () => {
-//   nextTick(() => {
-//     scrollToBottom()
-//   })
-// })
+onMounted(() => {
+  nextTick(() => {
+    scrollToBottom()
+  })
+})
 </script>
 
 <template>
@@ -137,6 +148,7 @@ const chat = supabase
       type="text"
       placeholder="Tulis Pesan..."
       v-model="newMessage"
+      @keyup.enter="sendChat"
     />
     <Icon
       name="iconamoon:send-fill"
