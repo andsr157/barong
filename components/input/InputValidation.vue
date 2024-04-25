@@ -15,6 +15,7 @@ interface Props {
   suffixIcon?: string
   suffixIconSize?: string
   suffixIconColor?: string
+  readonly?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,7 +37,7 @@ const { value, errorMessage } = useField(fieldName.value ?? "", undefined, {
   }}</label>
   <div
     class="w-full h-[38px] border-[1px] border-brg-light-gray px-[14px] rounded-[10px] flex justify-between items-center"
-    :class="props.wrapperClass"
+    :class=" `${props.readonly ? 'bg-slate-200' : 'bg-white'} ${props.wrapperClass}`"
   >
     <Icon
       v-if="props.prefixIcon"
@@ -58,9 +59,10 @@ const { value, errorMessage } = useField(fieldName.value ?? "", undefined, {
       :step="props.type === 'number' ? 'any' : undefined"
       :type="props.type"
       v-model="value"
-      class="w-full h-full focus:outline-none focus:text-xs text-xs"
+      class="w-full h-full focus:outline-none focus:text-xs text-xs bg-transparent"
       :class="props.inputClass"
       :placeholder="props.placeholder"
+      :readonly="props.readonly"
     />
     <Icon
       v-if="props.suffixIcon"

@@ -2,48 +2,78 @@
 definePageMeta({
   layout: "blank",
 });
-const name = ref("Puan tek");
-const email = ref("puantek123@gmail.com");
-const telepon = ref("+628965189113");
+import { useForm } from "vee-validate";
+import * as Yup from "yup";
+import axios from "axios";
+import { useToastStore } from "~/stores/Toast.store";
+const { data: user, getSession} = <any>useAuth();
+
+const name = ref(user.value.user.name);
+const email = ref(user.value.user.email);
+const telepon = ref(user.value.user.telp);
+const toastStore = useToastStore();
+const isLoading = ref(false)
+
+const schema = Yup.object({
+  name: Yup.string().required("Name is required"),
+  telp: Yup.string()
+    .matches(/^\d+$/, "Phone number must be numeric")
+    .max(14, "Phone number must be at most 14 characters")
+    .required("Phone number is required"),
+});
+const { handleSubmit } = useForm<FormData>({
+  validationSchema: schema,
+})
+const onSubmit = handleSubmit(async() => {
+  try {
+    const payload = {
+      id:user.value.user.id,
+      name:name.value,
+      telp:telepon.value,
+    }
+    isLoading.value = true
+    const res = await axios.put('/api/v1/profile', payload)
+    if(res.data){
+       toastStore.success({text:"Berhasil Ubah Profil"})
+       await getSession({ required: true })
+       isLoading.value = false
+       setTimeout(() => {useRouter().push("/user/profile")
+       }, 1000);
+    }
+    isLoading.value = false
+  } catch (error) {
+    console.log(error);
+  }
+})
+
 </script>
 <template>
+  <Toast/>
   <Header title="Ubah Profil" />
   <div class="px-6 flex flex-col gap-4 mt-3">
-    <div classs="">
-      <label class="text-brg-primary-dark font-semibold text-sm">Profil</label>
-      <div class="w-[100px] h-[100px] mx-auto mt-4">
-        <NuxtImg
-          src="/assets/dummy-profile-user.jpeg"
-          width="100"
-          height="100"
-          class="h-full w-full object-cover rounded-full"
-        />
-      </div>
-      <div class="flex justify-center">
-        <ButtonSmall label="ubah" class="mt-4" />
-      </div>
-    </div>
 
     <div class="">
-      <Input
+      <InputValidation
         v-model="name"
+        name="name"
         label="Nama Lengkap"
         labelClass="text-sm font-semibold"
       />
     </div>
 
     <div class="">
-      <Input v-model="email" label="Email" labelClass="text-sm font-semibold" />
+      <InputValidation v-model="email" name="email" label="Email" labelClass="text-sm font-semibold" :readonly="true"/>
     </div>
 
     <div class="">
-      <Input
+      <InputValidation
         v-model="telepon"
+        name="telp"
         label="telepon"
         labelClass="text-sm font-semibold"
       />
     </div>
 
-    <ButtonLarge label="Simpan" class="mx-auto mt-10 mb-10" />
+    <ButtonLarge label="Simpan" @click="onSubmit" :disabled="isLoading" class="mx-auto mt-10 mb-10" />
   </div>
 </template>

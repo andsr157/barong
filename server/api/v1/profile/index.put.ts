@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
             },
             data: {
                 name: body.name,
-                email: body.email,
                 telp: body.telp,
 
             },
