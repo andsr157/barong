@@ -61,11 +61,21 @@ export default NuxtAuthHandler({
             return token
         },
 
-        async session({ session, token }) {
+        async session({ session, token }, refetch = false) {
+            const { email } = <any>session.user
             const { password, ...userData } = <any>session.user
             session.user = {
                 ...token,
-                ...userData
+                ...userData,
+            }
+            const updatedUser = await prisma.users.findUnique({
+                where: {
+                    email: email
+                }
+            })
+            session.user = {
+                ...session.user,
+                ...updatedUser
             }
 
             return session
