@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,17 +8,19 @@ datasource db {
 }
 
 model users {
-  id           Int       @id @default(autoincrement())
-  uuid         String    @default(uuid())
-  name         String
-  email        String    @unique
-  telp         String
-  avatar       String
-  date_created DateTime  @default(now())
-  update_at    DateTime? @updatedAt
-  address      address[]
-  password     String
-  role         String
+  id                                        Int           @id @default(autoincrement())
+  uuid                                      String?       @default(uuid())
+  name                                      String
+  email                                     String        @unique
+  telp                                      String
+  avatar                                    String
+  date_created                              DateTime      @default(now())
+  update_at                                 DateTime?     @updatedAt
+  password                                  String
+  role                                      String
+  address                                   address[]
+  transaction_transaction_partner_idTousers transaction[] @relation("transaction_partner_idTousers")
+  transaction_transaction_user_idTousers    transaction[] @relation("transaction_user_idTousers")
 }
 
 model address {
@@ -36,9 +32,9 @@ model address {
   owner_telp   String
   latitude     String
   longitude    String
-  user         users         @relation(fields: [user_id], references: [id])
   user_id      Int
   is_main      Boolean
+  user         users         @relation(fields: [user_id], references: [id])
   transaction  transaction[]
 }
 
@@ -54,8 +50,8 @@ model trash {
   minPrice           Int
   maxPrice           Int
   category_id        Int
-  category           trashCategory        @relation(fields: [category_id], references: [id])
   transaction_detail transaction_detail[]
+  category           trashCategory        @relation(fields: [category_id], references: [id])
 }
 
 model status {
@@ -67,54 +63,54 @@ model status {
 }
 
 model transaction {
-  id                 Int                  @id @default(autoincrement())
-  user_id            Int
-  partner_id         Int?
-  chats_id           Int?
-  address            address              @relation(fields: [address_id], references: [id])
-  address_id         Int
-  image              String
-  status             status               @relation(fields: [status_id], references: [id])
-  status_id          Int
-  partner_rate       Int?
-  partner_review     String?
-  note               String
-  total              Int?
-  date_created       DateTime             @default(now())
-  transaction_detail transaction_detail[]
+  id                                  Int                  @id @default(autoincrement())
+  user_id                             Int
+  partner_id                          Int?
+  address_id                          Int
+  image                               String
+  status_id                           Int
+  partner_rate                        Int?
+  partner_review                      String?
+  note                                String
+  total                               Int?
+  date_created                        DateTime             @default(now())
+  chats_id                            Int?
+  update_at                           DateTime?
+  address                             address              @relation(fields: [address_id], references: [id])
+  users_transaction_partner_idTousers users?               @relation("transaction_partner_idTousers", fields: [partner_id], references: [id])
+  status                              status               @relation(fields: [status_id], references: [id])
+  users_transaction_user_idTousers    users                @relation("transaction_user_idTousers", fields: [user_id], references: [id])
+  transaction_detail                  transaction_detail[]
 }
 
 model transaction_detail {
   id             Int         @id @default(autoincrement())
-  trash          trash       @relation(fields: [trash_id], references: [id])
-  transaction    transaction @relation(fields: [transaction_id], references: [id])
   transaction_id Int
   trash_id       Int
   price          Int?
   weight         Int
+  transaction    transaction @relation(fields: [transaction_id], references: [id])
+  trash          trash       @relation(fields: [trash_id], references: [id])
 }
 
 model chat {
-    id           Int         @id @default(autoincrement())
-    message      String
+  id      Int    @id @default(autoincrement())
+  message String
 }
 
 model chats {
-  id                  Int             @id @default(autoincrement())
-  user_id             Int
-  partner_id          Int?
-  date_created        DateTime        @default(now())
-  messages            messages[]
+  id           Int        @id @default(autoincrement())
+  user_id      Int
+  partner_id   Int?
+  date_created DateTime   @default(now())
+  messages     messages[]
 }
 
 model messages {
-  id                  Int         @id @default(autoincrement())
-  chats               chats @relation(fields: [chats_id], references: [id])
-  chats_id            Int 
-  sender_id           Int        
-  content             String
-  date_created        DateTime        @default(now())
+  id           Int      @id @default(autoincrement())
+  chats_id     Int
+  sender_id    Int
+  content      String
+  date_created DateTime @default(now())
+  chats        chats    @relation(fields: [chats_id], references: [id])
 }
-
-
-

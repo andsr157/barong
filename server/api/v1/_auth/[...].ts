@@ -73,10 +73,14 @@ export default NuxtAuthHandler({
                     email: email
                 }
             })
-            session.user = {
-                ...session.user,
-                ...updatedUser
+
+            if (updatedUser) {
+                session.user = {
+                    ...session.user,
+                    ...updatedUser
+                }
             }
+
 
             return session
         }
