@@ -24,11 +24,12 @@ const config = useRuntimeConfig().app
 const supabase = createClient(config.supabaseUrl, config.supabaseKey)
 
 const newMessage = ref<string>("")
-
-const scrollToBottom = () => {
-  const chatContainer = document.querySelector(".chat-container")
+const scrollToBottom = async () => {
+  const chatContainer = await document.querySelector(".chat-container")
   if (chatContainer) {
     chatContainer.scrollTop = chatContainer.scrollHeight
+  } else {
+    console.warn("element not found")
   }
 }
 
@@ -92,8 +93,8 @@ const chat = supabase
   )
   .subscribe()
 
-onMounted(() => {
-  nextTick(() => {
+onMounted(async () => {
+  await nextTick(() => {
     scrollToBottom()
   })
 })
