@@ -1,17 +1,17 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "blank",
-});
-import { useForm } from "vee-validate";
-import * as Yup from "yup";
-import axios from "axios";
-import { useToastStore } from "~/stores/Toast.store";
-const { data: user, getSession} = <any>useAuth();
+})
+import { useForm } from "vee-validate"
+import * as Yup from "yup"
+import axios from "axios"
+import { useToastStore } from "~/stores/Toast.store"
+const { data: user, getSession } = <any>useAuth()
 
-const name = ref(user.value.user.name);
-const email = ref(user.value.user.email);
-const telepon = ref(user.value.user.telp);
-const toastStore = useToastStore();
+const name = ref(user.value.user.name)
+const email = ref(user.value.user.email)
+const telepon = ref(user.value.user.telp)
+const toastStore = useToastStore()
 const isLoading = ref(false)
 
 const schema = Yup.object({
@@ -20,38 +20,37 @@ const schema = Yup.object({
     .matches(/^\d+$/, "Phone number must be numeric")
     .max(14, "Phone number must be at most 14 characters")
     .required("Phone number is required"),
-});
+})
 const { handleSubmit } = useForm<FormData>({
   validationSchema: schema,
 })
-const onSubmit = handleSubmit(async() => {
+const onSubmit = handleSubmit(async () => {
   try {
     const payload = {
-      id:user.value.user.id,
-      name:name.value,
-      telp:telepon.value,
+      id: user.value.user.id,
+      name: name.value,
+      telp: telepon.value,
     }
     isLoading.value = true
-    const res = await axios.put('/api/v1/profile', payload)
-    if(res.data){
-       toastStore.success({text:"Berhasil Ubah Profil"})
-       await getSession({ required: true })
-       isLoading.value = false
-       setTimeout(() => {useRouter().push("/user/profile")
-       }, 1000);
+    const res = await axios.put("/api/v1/profile", payload)
+    if (res.data) {
+      toastStore.success({ text: "Berhasil Ubah Profil" })
+      await getSession()
+      isLoading.value = false
+      setTimeout(() => {
+        useRouter().push("/user/profile")
+      }, 1000)
     }
     isLoading.value = false
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
 })
-
 </script>
 <template>
-  <Toast/>
+  <Toast />
   <Header title="Ubah Profil" />
   <div class="px-6 flex flex-col gap-4 mt-3">
-
     <div class="">
       <InputValidation
         v-model="name"
@@ -62,7 +61,13 @@ const onSubmit = handleSubmit(async() => {
     </div>
 
     <div class="">
-      <InputValidation v-model="email" name="email" label="Email" labelClass="text-sm font-semibold" :readonly="true"/>
+      <InputValidation
+        v-model="email"
+        name="email"
+        label="Email"
+        labelClass="text-sm font-semibold"
+        :readonly="true"
+      />
     </div>
 
     <div class="">
@@ -74,6 +79,11 @@ const onSubmit = handleSubmit(async() => {
       />
     </div>
 
-    <ButtonLarge label="Simpan" @click="onSubmit" :disabled="isLoading" class="mx-auto mt-10 mb-10" />
+    <ButtonLarge
+      label="Simpan"
+      @click="onSubmit"
+      :disabled="isLoading"
+      class="mx-auto mt-10 mb-10"
+    />
   </div>
 </template>
