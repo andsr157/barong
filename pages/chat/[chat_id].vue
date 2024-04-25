@@ -24,11 +24,12 @@ const config = useRuntimeConfig().app
 const supabase = createClient(config.supabaseUrl, config.supabaseKey)
 
 const newMessage = ref<string>("")
-
-const scrollToBottom = () => {
-  const chatContainer = document.querySelector(".chat-container")
+const scrollToBottom = async () => {
+  const chatContainer = await document.querySelector(".chat-container")
   if (chatContainer) {
     chatContainer.scrollTop = chatContainer.scrollHeight
+  } else {
+    console.warn("element not found")
   }
 }
 
@@ -73,9 +74,13 @@ const chat = supabase
   .channel("test-chat")
   .on(
     "postgres_changes",
-    { event: "*", schema: "public", table: "messages" },
+    {
+      event: "*",
+      schema: "public",
+      table: "messages",
+      filter: `chats_id=eq.${messages?.value?.data.chats_id}`,
+    },
     (payload: any) => {
-      console.log(payload.new)
       const message = {
         message_id: payload.new.id as number,
         sender_id: payload.new.sender_id as number,
@@ -88,8 +93,8 @@ const chat = supabase
   )
   .subscribe()
 
-onMounted(() => {
-  nextTick(() => {
+onMounted(async () => {
+  await nextTick(() => {
     scrollToBottom()
   })
 })
