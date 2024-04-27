@@ -68,20 +68,25 @@ export default NuxtAuthHandler({
                 ...token,
                 ...userData,
             }
-            const updatedUser = await prisma.users.findUnique({
-                where: {
-                    email: email
-                }
-            })
 
-            if (updatedUser) {
-                session.user = {
-                    ...session.user,
-                    ...updatedUser
+            try {
+                const updatedUser = await prisma.users.findUnique({
+                    where: {
+                        email: email
+                    }
+                })
+                console.log('update', updatedUser)
+
+                if (updatedUser) {
+                    session.user = {
+                        ...session.user,
+                        ...updatedUser
+                    }
                 }
+
+            } catch (error) {
+
             }
-
-
             return session
         }
     }

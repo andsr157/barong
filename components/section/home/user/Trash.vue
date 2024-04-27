@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { BREAKSPOINTS } from "@/constants/swiper.constants"
-import axios from "axios"
 
-const { data: user } = <any>useAuth()
 const nuxt = useNuxtApp()
 
-const { data, pending, status } = useFetch("/api/v1/dashboard/user", {
+const { data, pending, status, refresh } = useFetch("/api/v1/dashboard/user", {
   getCachedData(key) {
-    return nuxt.payload.data[key] || nuxt.static.data[key]
+    const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
+    if (!dataCache) {
+      return
+    } else {
+      return dataCache
+    }
   },
 })
 
@@ -25,7 +28,7 @@ const test = computed(() => {
 
 const updatedCard = computed(() => {
   const updatedCardData = [...card]
-  if (status.value === "success") {
+  if (data.value.status === 200) {
     data.value.data.trash.forEach((trashItem: TrashItem) => {
       const index = updatedCardData.findIndex(
         (cardItem) => cardItem.category === trashItem.category
@@ -96,20 +99,10 @@ interface CARD {
   dark: boolean
 }
 
-onMounted(async () => {
-  // try {
-  //   isLoading.value = true
-  //   const res = await axios.get("/api/v1/dashboard/user")
-  //   if (res) {
-  //     const { totalAmount, ...resData } = res.data.data
-  //     trashData.value = resData.trash
-  //     isLoading.value = false
-  //   } else {
-  //     console.log("failed fetch api")
-  //   }
-  // } catch (error) {
-  //   console.error(error)
-  // }
+onMounted(() => {
+  if (data.value.data === null) {
+    refresh()
+  }
 })
 </script>
 <template>
@@ -119,7 +112,7 @@ onMounted(async () => {
     </h2>
     <div v-if="pending">lagi loading sabar</div>
     <div v-else-if="newTrashData.length > 0 && status === 'success'">
-      <Swiper :breakpoints="BREAKSPOINTS" :loop="true">
+      <Swiper :breakpoints="BREAKSPOINTS">
         <SwiperSlide v-for="data in newTrashData">
           <CardTrash
             :category="data.category"

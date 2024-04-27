@@ -124,6 +124,6 @@ export default defineEventHandler(async (event) => {
     } catch (error) {
         console.error('Error fetching transaction data:', error);
         // Kembalikan respons dengan pesan error
-        return { error: 'Internal server error', status: 500 };
+        return { data: null, error: 'Internal server error', status: 500 };
     }
 });

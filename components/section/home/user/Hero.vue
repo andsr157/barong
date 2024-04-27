@@ -1,27 +1,22 @@
 <script setup lang="ts">
-import axios from "axios"
-
-const total = ref()
 const { data: user } = <any>useAuth()
 const nuxt = useNuxtApp()
 
-const { data, status } = useFetch("/api/v1/dashboard/user", {
+const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
   getCachedData(key) {
-    return nuxt.payload.data[key] || nuxt.static.data[key]
+    const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
+    if (!dataCache) {
+      return
+    } else {
+      return dataCache
+    }
   },
 })
 
-onMounted(async () => {
-  // try {
-  //   const res = await axios.get("/api/v1/dashboard/user")
-  //   if (res) {
-  //     total.value = res.data.data.totalAmount
-  //   } else {
-  //     console.error("failed fetch api")
-  //   }
-  // } catch (error) {
-  //   console.error(error)
-  // }
+onMounted(() => {
+  if (data.value.data === null) {
+    refresh()
+  }
 })
 </script>
 
@@ -31,7 +26,8 @@ onMounted(async () => {
       Hai {{ user.user.name }}
     </h1>
     <CardSummaryTransaction
-      :total="status === 'success' ? data.data.totalAmount : 0"
+      v-if="status === 'success'"
+      :total="data.status === 200 ? data.data.totalAmount : 0"
     />
   </section>
 </template>

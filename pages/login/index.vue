@@ -6,6 +6,7 @@ import { object, string } from "yup"
 const toastStore = useToastStore()
 const { signIn } = useAuth()
 const router = useRouter()
+const isLoading = ref(false)
 
 definePageMeta({
   middleware: "login",
@@ -23,22 +24,25 @@ const { values, handleSubmit } = useForm({
 
 const handleLogin = handleSubmit(async (values) => {
   try {
+    isLoading.value = true
     const { error } = (await signIn("credentials", {
       ...values,
       redirect: false,
     })) as any
 
     if (error === "Unauthorized") {
+      isLoading.value = false
       toastStore.error({
         text: "email atau password salah",
       })
     } else {
+      isLoading.value = false
       toastStore.success({
         text: "Login berhasil",
       })
       setTimeout(() => {
         router.push("/")
-      }, 1500)
+      }, 1000)
     }
   } catch (error) {
     console.error(error)
@@ -114,6 +118,11 @@ const switchVisibility = () => {
   <div
     class="w-full flex justify-center absolute bottom-0 right-1/2 translate-x-1/2 mb-16"
   >
-    <ButtonLarge @click="handleLogin" label="Masuk" class="text-base mt-14" />
+    <ButtonLarge
+      @click="handleLogin"
+      label="Masuk"
+      class="text-base mt-14"
+      :disabled="isLoading"
+    />
   </div>
 </template>
