@@ -137,7 +137,6 @@ onMounted(async () => {
   </Header>
   <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
   <div v-else-if="transaction">
-    {{ transaction }}
     <section class="px-6 mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">
         Alamat Pengambilan

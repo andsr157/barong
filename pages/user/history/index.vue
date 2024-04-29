@@ -51,7 +51,7 @@ const fetchData = async (status: string) => {
       status,
       () =>
         $fetch(
-          `/api/v1/transaction/user?limit=1&status=${status}&cursor=${cursor.value[status]}`
+          `/api/v1/transaction/user?limit=5&status=${status}&cursor=${cursor.value[status]}`
         ),
       { immediate: false }
     )
@@ -104,13 +104,13 @@ const fetchData = async (status: string) => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (
     transactionDataCache.value["active"] !== null &&
     transactionDataCache.value["active"].data.length > 0
   ) {
     transactionData.value["active"].data.push(
-      transactionDataCache.value["active"].data
+      ...transactionDataCache.value["active"].data
     )
     transactionData.value["active"].pagination =
       transactionDataCache.value["active"].pagination
@@ -119,7 +119,7 @@ onMounted(() => {
         transactionDataCache.value["active"].data.length - 1
       ].id
   } else {
-    fetchData("active")
+    await fetchData("active")
   }
 })
 </script>
@@ -127,9 +127,23 @@ onMounted(() => {
   <Header title="Riwayat Transaksi" />
 
   <div class="flex justify-evenly mt-5">
-    <ButtonSmall label="Saat ini" @click="fetchData('active')" />
-    <ButtonSmall label="Selesai" @click="fetchData('finish')" />
-    <ButtonSmall label="Dibatalkan" @click="fetchData('canceled')" />
+    <ButtonSmall
+      label="Saat ini"
+      :color="statusData !== 'active' ? 'bg-brg-light-gray' : 'bg-brg-primary'"
+      @click="fetchData('active')"
+    />
+    <ButtonSmall
+      label="Selesai"
+      :color="statusData !== 'finish' ? 'bg-brg-light-gray' : 'bg-brg-primary'"
+      @click="fetchData('finish')"
+    />
+    <ButtonSmall
+      label="Dibatalkan"
+      :color="
+        statusData !== 'canceled' ? 'bg-brg-light-gray' : 'bg-brg-primary'
+      "
+      @click="fetchData('canceled')"
+    />
   </div>
 
   <div class="px-6 mt-6 pt-6`">
@@ -140,6 +154,7 @@ onMounted(() => {
     >
       <CardTransactionUser
         v-for="transaction in transactionData[statusData].data"
+        :partner="transaction.pengepul"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
         :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
