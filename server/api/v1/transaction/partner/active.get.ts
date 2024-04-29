@@ -79,7 +79,7 @@ export default defineEventHandler(async (event) => {
             partner = {}
         }
 
-        // Format data transaksi sesuai dengan struktur yang diinginkan
+        // Format data return
         const formattedTransactions = transactions.map((data: any) => {
             const status = { id: data.status.id, ...data.status };
 
@@ -118,11 +118,10 @@ export default defineEventHandler(async (event) => {
         });
 
 
-        // Kembalikan respons dengan data transaksi yang diformat
         return { data: formattedTransactions, status: 200 };
+
     } catch (error) {
         console.error('Error fetching transaction data:', error);
-        // Kembalikan respons dengan pesan error
-        return { error: 'Internal server error', status: 500 };
+        return { data: null, error: 'Internal server error', status: 500 };
     }
 });

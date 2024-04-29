@@ -1,16 +1,26 @@
 <script setup lang="ts">
-import { useTransactionStore } from "~/stores/Transaction.store"
 import { formatSampah } from "~/composables/helpers"
-import { TRANSACTION } from "~/constants/trash.constants"
 
-const transactionStore = useTransactionStore()
-const transactionActive = ref<any>(null)
-const { isLoading } = storeToRefs(transactionStore)
+const nuxt = useNuxtApp()
+const {
+  data: transactionActive,
+  pending,
+  error,
+  refresh,
+} = await useFetch<any>("/api/v1/transaction/user/active", {
+  getCachedData(key) {
+    const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
+    if (!dataCache) {
+      return
+    } else {
+      return dataCache
+    }
+  },
+})
 
-onMounted(async () => {
-  const res = await transactionStore.getActiveTransaction()
-  if (res.status === 200) {
-    transactionActive.value = res.data
+onMounted(() => {
+  if (transactionActive.value.data === null) {
+    refresh()
   }
 })
 </script>
@@ -20,13 +30,16 @@ onMounted(async () => {
     <h2 class="mb-6 text-xl font-semibold text-brg-primary-dark">
       Transaksi Aktif
     </h2>
-    <div v-if="isLoading">lagi loading sabar</div>
-    <div class="flex flex-col gap-5" v-else-if="transactionActive">
+    <div v-if="pending">lagi loading sabar</div>
+    <div
+      class="flex flex-col gap-5"
+      v-else-if="transactionActive.status === 200"
+    >
       <CardTransactionUser
-        v-for="transaction in transactionActive"
+        v-for="transaction in transactionActive?.data"
         :detail-sampah="formatSampah(transaction.detailSampah)"
+        :partner="transaction.pengepul"
         :status="transaction.status"
-        :review="transaction.review.rate"
         :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>

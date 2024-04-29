@@ -1,19 +1,25 @@
 <script setup lang="ts">
-import axios from "axios"
 import { toCurrency } from "~/composables/helpers"
-const trashTotal = ref<number>(55)
-const unPaidService = ref<number>(0)
-const { data: user } = <any>useAuth()
-const data = ref<any>()
 
-onMounted(async () => {
-  try {
-    const res = await axios.get("/api/v1/dashboard/partner")
-    if (res) {
-      data.value = res.data.data
-    }
-  } catch (error) {
-    console.error(error)
+const nuxt = useNuxtApp()
+const { data: user } = <any>useAuth()
+
+const { data, status, refresh } = await (<any>(
+  useFetch("/api/v1/dashboard/partner", {
+    getCachedData(key) {
+      const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
+      if (!dataCache) {
+        return
+      } else {
+        return dataCache
+      }
+    },
+  })
+))
+
+onMounted(() => {
+  if (data.value.data === null) {
+    refresh()
   }
 })
 </script>
@@ -46,11 +52,18 @@ onMounted(async () => {
 
     <div class="mt-9">
       <CardSummaryTransaction
-        v-if="data"
         type="partner"
-        :total="data.totalAmount ?? 0"
-        :total-monthly="data.monthlyTotal ?? 0"
-        :service-bill="data.serviceBill ?? 0"
+        :total="
+          data.data !== null && status === 'success' ? data.data.totalAmount : 0
+        "
+        :total-monthly="
+          data.data !== null && status === 'success'
+            ? data.data.monthlyTotal
+            : 0
+        "
+        :service-bill="
+          data.data != null && status === 'success' ? data.data.serviceBill : 0
+        "
       />
     </div>
 
@@ -59,8 +72,13 @@ onMounted(async () => {
         class="flex flex-col justify-between w-full h-[86px] p-4 rounded-[10px] bg-brg-primary"
       >
         <span class="text-[10px] font-medium">Total sampah</span>
-        <h3 class="text-[20px] font-semibold" v-if="data">
-          {{ data.trashTotal }} <span class="!text-base">Kg</span>
+        <h3 class="text-[20px] font-semibold">
+          {{
+            data.data !== null && status === "success"
+              ? data.data.trashTotal
+              : 0
+          }}
+          <span class="!text-base">Kg</span>
         </h3>
       </div>
       <div
@@ -69,8 +87,14 @@ onMounted(async () => {
         <span class="text-[10px] font-medium"
           >Biaya layanan belum disetorkan</span
         >
-        <h3 class="font-semibold" v-if="data">
-          {{ toCurrency(data.lackServiceBill) }}
+        <h3 class="font-semibold">
+          {{
+            toCurrency(
+              data.data !== null && status === "success"
+                ? data.data.lackServiceBill
+                : 0
+            )
+          }}
         </h3>
       </div>
     </div>

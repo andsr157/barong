@@ -2,11 +2,15 @@
 defineProps<{
   detailSampah: string
   status: {
+    id: number
     name: string
     status: string
     label: string
   }
-  review?: number | null
+  partner?: {
+    name: string
+    avatar: string
+  }
   path?: string
 }>()
 
@@ -33,14 +37,14 @@ const emit = defineEmits()
           class="flex gap-x-2 items-center"
         >
           <NuxtImg
-            src="/assets/dummy-profile.png"
+            :src="partner?.avatar ?? '/assets/dummy-profile.png'"
             alt="foto pengepul"
             size="32px"
             width="32"
             height="32"
           />
           <span class="text-[11px] font-medium text-brg-primary-dark mt-1">
-            Mulyanto
+            {{ partner?.name }}
           </span>
         </div>
         <div>
@@ -79,7 +83,7 @@ const emit = defineEmits()
           @click="emit('reCreateTransaction')"
         />
         <ButtonSmall
-          v-else-if="status.name === 'finish' && review === null"
+          v-else-if="status.name === 'finish' && status.id === 3"
           label="Beri Nilai"
           color="bg-brg-secondary"
           class="px-3"

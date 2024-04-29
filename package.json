@@ -30,8 +30,6 @@
     "nuxt-rating": "^0.0.15",
     "nuxt-swiper": "^1.2.2",
     "pinia": "^2.1.7",
-    "socket.io": "^4.7.5",
-    "socket.io-client": "^4.7.5",
     "uuid": "^9.0.1",
     "vee-validate": "^4.12.6",
     "vue": "^3.4.21",
