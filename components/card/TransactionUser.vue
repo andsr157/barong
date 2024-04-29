@@ -2,11 +2,11 @@
 defineProps<{
   detailSampah: string
   status: {
+    id: number
     name: string
     status: string
     label: string
   }
-  review?: number | null
   path?: string
 }>()
 
@@ -79,7 +79,7 @@ const emit = defineEmits()
           @click="emit('reCreateTransaction')"
         />
         <ButtonSmall
-          v-else-if="status.name === 'finish' && review === null"
+          v-else-if="status.name === 'finish' && status.id === 3"
           label="Beri Nilai"
           color="bg-brg-secondary"
           class="px-3"

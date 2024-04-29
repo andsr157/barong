@@ -1,120 +1,93 @@
-// Import Prisma Client
 import { prisma } from '~/composables/prisma';
-import { getServerSession } from '#auth'
-import { AuthorizationCheck } from '~/server/helpers'
+import { getServerSession } from '#auth';
+import { AuthorizationCheck } from '~/server/helpers';
 
-// Definisikan event handler untuk API
 export default defineEventHandler(async (event) => {
-
     try {
-        const session = await getServerSession(event) as any
-        const transactions = await prisma.transaction.findMany({
+        const session = await getServerSession(event) as any;
+        const query = getQuery(event) as any;
+        const status = query.status as string;
+
+        const whereQuery: Record<string, any> = {
+            'active': { status_id: { in: [1, 2] } },
+            'finish': { status_id: { in: [3, 4] } },
+            'canceled': { status_id: 5 }
+        };
+
+        let queryPrisma: any = {
+            take: parseInt(query.limit),
             where: {
-                user_id: session.user.id,
+                AND: [
+                    { user_id: session.user.id },
+                    whereQuery[status]
+                ]
             },
             include: {
-                // users: true,
-                address: true,
+                partner: {
+                    select: {
+                        name: true,
+                        avatar: true
+                    }
+                },
                 transaction_detail: {
-                    include: {
+                    select: {
                         trash: {
-                            include: {
-                                category: true,
+                            select: {
+                                category: true
                             }
-                        },
-                    },
+                        }
+                    }
                 },
                 status: true,
             },
-        });
+            orderBy: {
+                date_created: 'desc'
+            }
+        };
 
+        if (query.cursor !== '0') {
+            queryPrisma['skip'] = 1;
+            queryPrisma['cursor'] = { id: parseInt(query.cursor) };
+        }
+
+        const [total_record, transactions]: [any, any] = await Promise.all([
+            prisma.transaction.count({
+                where: {
+                    AND: [
+                        { user_id: session.user.id },
+                        whereQuery[status]
+                    ]
+                }
+            }),
+            prisma.transaction.findMany(queryPrisma)
+        ]);
+
+        return transactions
 
         if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
             return AuthorizationCheck(session, transactions[0].user_id.toString());
         }
 
-        const user = await prisma.users.findUnique({
-            where: {
-                id: transactions[0].user_id
-
-            },
-            select: {
-                name: true,
-                telp: true,
-            }
-
-        });
-
-        let partner
-
-        if (transactions[0].partner_id !== null) {
-
-            const partnerData = await prisma.users.findUnique({
-
-                where: {
-                    id: transactions[0].partner_id
-
-                },
-                select: {
-                    name: true,
-                    telp: true,
-                    avatar: true,
-
-                }
-            });
-            const rate = await prisma.transaction.aggregate({
-                _avg: {
-                    partner_rate: true
-                },
-                where: {
-                    partner_id: transactions[0].partner_id
-                }
-            })
-
-            partner = { ...partnerData, rating: rate._avg.partner_rate }
-        } else {
-            partner = {}
-        }
-
-        // Format data transaksi sesuai dengan struktur yang diinginkan
         const formattedTransactions = transactions.map((data: any) => {
             const status = { id: data.status.id, ...data.status };
-
             return {
                 id: data.id,
-                chats_id: data.chats_id,
-                user: user,
-                pengepul: partner,
-                address: {
-                    label: data.address.label,
-                    name: data.address.owner_name,
-                    address: data.address.address_name,
-                    telp: data.address.owner_telp,
-                    detail: data.address.detail,
-                },
-                trashImage: '/assets/dummy-trash.png',
+                pengepul: data.partner,
                 detailSampah: data.transaction_detail.map((detail: any) => ({
-                    id: detail.id,
                     category: detail.trash.category.name,
-                    subcategory: detail.trash.name,
-                    minPrice: detail.trash.minPrice,
-                    maxPrice: detail.trash.maxPrice,
-                    weight: detail.weight,
-                    finalPrice: 0,
                 })),
-                totalPrice: data.total,
-                servicePrice: (data.total ?? 0) * 10 / 100,
-                finalTotalPrice: (data.total ?? 0) - ((data.total ?? 0) * 10 / 100),
                 status: status,
-                review: {
-                    rate: data.partner_rate,
-                    ulasan: data.partner_review,
-                },
-                note: data.note,
             };
         });
 
-        return { data: formattedTransactions, status: 200 };
+        const pagination = {
+            total_record,
+            total_pages: Math.ceil(total_record / parseInt(query.limit)),
+            next: transactions.length === parseInt(query.limit) ? `/api/v1/transaction/user?status=${status}&limit=${query.limit}&cursor=${transactions[transactions.length - 1].id}` : null,
+            previous: query.cursor ? `/api/v1/transaction/user?status=${status}&limit=${-query.limit}` : null,
+        };
+
+        return { data: formattedTransactions, pagination, status: 200 };
     } catch (error) {
         console.error('Error fetching transaction data:', error);
         return { error: 'Internal server error', status: 500 };

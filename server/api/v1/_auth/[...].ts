@@ -75,7 +75,6 @@ export default NuxtAuthHandler({
                         email: email
                     }
                 })
-                console.log('update', updatedUser)
 
                 if (updatedUser) {
                     session.user = {
