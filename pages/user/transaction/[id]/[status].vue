@@ -232,7 +232,7 @@ onMounted(async () => {
     >
       <NuxtLink
         :to="`/user/transaction/${transaction.id}/review?partnerId=${transaction.pengepul.id}`"
-        v-if="transaction.rate === null"
+        v-if="transaction.review.rate === null"
       >
         <ButtonLarge
           label="Selesaikan Transaksi"
