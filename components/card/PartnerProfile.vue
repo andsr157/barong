@@ -27,7 +27,7 @@ defineProps<{
         <div
           class="flex justify-center items-center text-brg-primary-dark gap-x-[2px] mt-1"
         >
-          <span class="text-[11px] font-semibold mt-[3px]">{{ rating }}</span>
+          <span class="text-[11px] font-semibold mt-[2px]">{{ rating }}</span>
 
           <Icon name="ic:round-star" size="15px" />
         </div>

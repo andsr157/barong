@@ -102,23 +102,16 @@ onMounted(async () => {
 
       <CardPartnerProfile
         class="mt-14"
-        v-if="transaction.status.name === 'taking'"
-        :name="transaction.pengepul.name"
-        :telp="transaction.pengepul.telp"
-        :rating="transaction.pengepul.rating"
-        :photo="transaction.pengepul.avatar"
-      />
-      <CardPartnerProfile
-        class="mt-14"
         v-if="
           transaction.status.name === 'finish' &&
           transaction.review.rate === null
         "
         :name="transaction.pengepul.name"
         :telp="transaction.pengepul.telp"
-        :rating="transaction.pengepul.rating"
+        :rating="transaction.pengepul.rating ?? 0"
         :photo="transaction.pengepul.avatar"
       />
+
       <div
         v-if="
           transaction.status.name === 'finish' &&
@@ -126,32 +119,26 @@ onMounted(async () => {
         "
         class="mt-[30px] flex flex-col"
       >
-        <h2
-          v-if="
-            transaction.status.name === 'finish' &&
-            transaction.review.rate !== null
-          "
-          class="text-brg-primary-dark font-semibold mb-4"
-        >
-          Nilai Pengepul
-        </h2>
+        <div class="flex gap-2 mb-6">
+          <NuxtImg :src="transaction.pengepul.avatar" width="34" height="34" />
+          <div class="flex flex-col">
+            <h1 class="font-medium text-[14px]">
+              {{ transaction.pengepul.name }}
+            </h1>
+            <p class="text-[10px]">{{ transaction.pengepul.telp }}</p>
+          </div>
+        </div>
+        <h2 class="text-brg-primary-dark font-semibold mb-4">Nilai</h2>
         <div class="mx-auto">
           <NuxtRating
             :rating-value="transaction.review.rate"
-            :read-only="false"
+            :read-only="true"
             class="w-[209px]"
             :rating-size="'50px'"
             :active-color="'#307FF5'"
           />
         </div>
-        <label
-          v-if="
-            transaction.status.name === 'finish' &&
-            transaction.review.rate !== null
-          "
-          class="text-brg-primary-dark font-semibold mb-4"
-          >Ulasan</label
-        >
+        <label class="text-brg-primary-dark font-semibold mb-4">Ulasan</label>
         <ClientOnly>
           <textarea
             cols="10"
@@ -159,6 +146,7 @@ onMounted(async () => {
             class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
             placeholder="isi ulasan anda"
             v-model="transaction.review.ulasan"
+            readonly
           >
           </textarea>
         </ClientOnly>
@@ -223,6 +211,7 @@ onMounted(async () => {
           class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
           placeholder="isi catatan"
           v-model="transaction.note"
+          readonly
         >
         </textarea>
       </ClientOnly>
@@ -236,19 +225,19 @@ onMounted(async () => {
     </div>
     <div
       class="max-w-max mx-auto py-12"
-      v-else-if="transaction.status.name === 'taking'"
-    >
-      <ButtonLarge label="Selesaikan Transaksi" :disabled="true" />
-    </div>
-    <div
-      class="max-w-max mx-auto py-12"
       v-else-if="
-        transaction.status.name === 'finish' && transaction.review.rate === null
+        transaction.status.name === 'taking' ||
+        transaction.status.name === 'finish'
       "
     >
-      <NuxtLink :to="`/user/transaction/${transaction.id}/review`">
-        <ButtonLarge label="Selesaikan Transaksi" />
-        <!-- @click="isModalOpen = true" -->
+      <NuxtLink
+        :to="`/user/transaction/${transaction.id}/review?partnerId=${transaction.pengepul.id}`"
+        v-if="transaction.rate === null"
+      >
+        <ButtonLarge
+          label="Selesaikan Transaksi"
+          :disabled="transaction.status.name === 'finish' ? false : true"
+        />
       </NuxtLink>
     </div>
 

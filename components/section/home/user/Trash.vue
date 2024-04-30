@@ -3,7 +3,10 @@ import { BREAKSPOINTS } from "@/constants/swiper.constants"
 
 const nuxt = useNuxtApp()
 
+const { data: trashCache } = useNuxtData("")
+
 const { data, pending, status, refresh } = useFetch("/api/v1/dashboard/user", {
+  key: "user-trash",
   getCachedData(key) {
     const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
     if (!dataCache) {
@@ -100,7 +103,7 @@ interface CARD {
 }
 
 onMounted(() => {
-  if (data.value.data === null) {
+  if (data.value === null || data.value.data === null) {
     refresh()
   }
 })
