@@ -1,6 +1,27 @@
 <script setup lang="ts">
+import { useTransactionStore } from "~/stores/Transaction.store"
+
+const transactionStore = useTransactionStore()
+
+const { transactionData } = storeToRefs(transactionStore)
 definePageMeta({
   layout: "blank",
+})
+
+onBeforeUnmount(() => {
+  if (transactionData.value.transaction.id) {
+    transactionData.value = {
+      transaction: {
+        id: 0,
+        user_id: 0,
+        chats_id: 0,
+        address_id: 0,
+        status_id: 0,
+        note: "",
+      },
+      transaction_detail: [],
+    }
+  }
 })
 </script>
 
