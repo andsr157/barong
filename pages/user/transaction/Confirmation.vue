@@ -96,7 +96,7 @@ const onSubmit = async () => {
     console.log(payload)
 
     let res
-    if (trash.value.transaction.id) {
+    if (trash.value.transaction.id === 0) {
       res = await transactionStore.updateTransaction(payload).catch((error) => {
         console.error("Error in updateTransaction:", error)
       })
