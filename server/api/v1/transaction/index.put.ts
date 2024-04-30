@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
             },
             data: {
                 user_id: body.transaction.user_id,
-                address_id: body.transaction.address_id,
+                address: body.transaction.address,
                 image: body.transaction.image,
                 status_id: body.transaction.status_id,
                 note: body.transaction.note,

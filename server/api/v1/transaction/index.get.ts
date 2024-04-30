@@ -10,7 +10,6 @@ export default defineEventHandler(async (event) => {
         const session = await getServerSession(event) as any
         const transactions = await prisma.transaction.findMany({
             include: {
-                address: true,
                 transaction_detail: {
                     include: {
                         trash: {
@@ -75,18 +74,18 @@ export default defineEventHandler(async (event) => {
         // Format data transaksi sesuai dengan struktur yang diinginkan
         const formattedTransactions = transactions.map((data: any) => {
             const status = { id: data.status.id, ...data.status };
-
+            const addressData = JSON.parse(data.address)
             return {
                 id: data.id,
                 chats_id: data.chats_id,
                 user: user,
                 pengepul: partner,
                 address: {
-                    label: data.address.label,
-                    address: data.address_name,
-                    name: data.address.owner_name,
-                    telp: data.address.owner_telp,
-                    detail: data.address.detail,
+                    label: addressData.label,
+                    address: addressData.address_name,
+                    name: addressData.owner_name,
+                    telp: addressData.owner_telp,
+                    detail: addressData.detail,
                 },
                 trashImage: '/assets/dummy-trash.png',
                 detailSampah: data.transaction_detail.map((detail: any) => ({

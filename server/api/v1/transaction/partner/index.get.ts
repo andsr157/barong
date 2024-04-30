@@ -22,11 +22,6 @@ export default defineEventHandler(async (event) => {
                 ]
             },
             include: {
-                address: {
-                    select: {
-                        address_name: true,
-                    }
-                },
                 user: {
                     select: {
                         name: true,
@@ -73,10 +68,11 @@ export default defineEventHandler(async (event) => {
 
         const formattedTransactions = transactions.map((data: any) => {
             const status = { id: data.status.id, ...data.status };
+            const addressData = JSON.parse(data.address)
             return {
                 id: data.id,
                 user: data.user,
-                address: data.address.address_name,
+                address: addressData.address_name,
                 detailSampah: data.transaction_detail.map((detail: any) => ({
                     category: detail.trash.category.name,
                 })),

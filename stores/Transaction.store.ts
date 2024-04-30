@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { type TransactionData, type TransactionDetail, type TransactionImage, type Transaction } from '~/types/transaction.type'
+import { type TransactionData, type TransactionDetail, type TransactionImage, type Transaction, type Address } from '~/types/transaction.type'
 
 
 interface PostData {
     transaction: {
         id?: number,
         user_id: number,
-        address_id: number,
+        address: Address
         chats_id?: number,
         image: string,
         status_id: number,
@@ -28,7 +28,16 @@ export const useTransactionStore = defineStore('transaction', {
                     id: 0,
                     user_id: 0,
                     chats_id: 0,
-                    address_id: 0,
+                    address: {
+                        id: 0,
+                        label: '',
+                        owner_name: '',
+                        address_name: '',
+                        owner_telp: '',
+                        detail: '',
+                        latitude: '',
+                        longitude: ''
+                    },
                     status_id: 0,
                     note: '',
                 },
@@ -46,6 +55,24 @@ export const useTransactionStore = defineStore('transaction', {
     },
 
     getters: {
+        resetTransationData(): void {
+            this.transactionData.transaction = {
+                user_id: 0,
+                address: {
+                    id: 0,
+                    label: '',
+                    owner_name: '',
+                    address_name: '',
+                    owner_telp: '',
+                    detail: '',
+                    latitude: '',
+                    longitude: ''
+                },
+                status_id: 0,
+                note: '',
+            }
+            this.transactionData.transaction_detail = []
+        },
         trashTotal(): number {
             return this.transactionData.transaction_detail.reduce((total: number, currentValue) => {
                 return total + currentValue.weight;
@@ -104,13 +131,7 @@ export const useTransactionStore = defineStore('transaction', {
             payload.transaction.chats_id = chat.data.data.id
             const res = await axios.post('/api/v1/transaction', payload)
             this.isLoading = false
-            this.transactionData.transaction = {
-                user_id: 0,
-                address_id: 0,
-                status_id: 0,
-                note: '',
-            }
-            this.transactionData.transaction_detail = []
+            this.resetTransationData
             this.transactionImage = null
             return Promise.resolve(res.data)
         },
@@ -119,13 +140,7 @@ export const useTransactionStore = defineStore('transaction', {
             console.log(payload)
             const res = await axios.put('/api/v1/transaction', payload)
             this.isLoading = false
-            this.transactionData.transaction = {
-                user_id: 0,
-                address_id: 0,
-                status_id: 0,
-                note: '',
-            }
-            this.transactionData.transaction_detail = []
+            this.resetTransationData
             this.transactionImage = null
             return Promise.resolve(res.data)
         },
@@ -237,9 +252,11 @@ export const useTransactionStore = defineStore('transaction', {
                     this.statusLoading = false
                 } else {
                     this.isLoading = false
+                    this.statusLoading = false
                 }
                 return Promise.resolve(res.data)
             } catch (error) {
+                this.isLoading = false
                 this.statusLoading = false
                 console.error(error)
             }

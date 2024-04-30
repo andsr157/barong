@@ -23,11 +23,6 @@ export default defineEventHandler(async (event) => {
                         avatar: true
                     }
                 },
-                address: {
-                    select: {
-                        address_name: true
-                    }
-                },
                 transaction_detail: {
                     select: {
                         trash: {
@@ -47,13 +42,13 @@ export default defineEventHandler(async (event) => {
 
         const formattedTransactions = transactions.map((data: any) => {
             const status = { id: data.status.id, ...data.status };
-
+            const addressData = JSON.parse(data.address)
             return {
                 id: data.id,
                 chats_id: data.chats_id,
                 user: data.user,
                 pengepul: data.partner,
-                address: data.address.address_name,
+                address: addressData.address_name,
                 detailSampah: data.transaction_detail.map((detail: any) => ({
                     category: detail.trash.category.name,
                     weight: detail.weight,

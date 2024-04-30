@@ -24,7 +24,16 @@ const handleSetCurrentTransaction = () => {
   const transactionData = {
     id: transaction.value.id,
     user_id: userId,
-    address_id: 0,
+    address: {
+      id: 0,
+      label: "",
+      owner_name: "",
+      address_name: "",
+      owner_telp: "",
+      detail: "",
+      latitude: "",
+      longitude: "",
+    },
     status_id: 0,
     note: transaction.value.note,
   }
