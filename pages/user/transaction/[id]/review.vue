@@ -1,42 +1,59 @@
 <script setup lang="ts">
-import { TRANSACTION } from "~/constants/trash.constants";
-
+import { useToastStore } from "~/stores/Toast.store"
+const toastStore = useToastStore()
 definePageMeta({
   layout: "blank",
-});
+})
 
-const route = useRoute();
-const router = useRouter();
-const transaction = ref<any>();
-const isModalOpen = ref(false);
-const rating = ref();
+const route = useRoute()
+const router = useRouter()
+const isModalOpen = ref(false)
+const rating = ref<number>()
+const review = ref<string>("")
+const partnerId = route.query.partnerId as string
+const transactionId = route.params.id as string
 
 const handleFinishTransaction = () => {
-  router.push(`/user/transaction/success`);
-};
-onMounted(() => {
-  let id: string;
-  if (Array.isArray(route.params.id)) {
-    id = route.params.id[0];
-  } else {
-    id = route.params.id;
+  const payload = {
+    id: parseInt(transactionId),
+    rate: rating.value,
+    review: review.value,
   }
-  transaction.value = TRANSACTION.filter((data) => {
-    return data.id === parseInt(id);
-  })[0];
-});
+  const { data: res, pending, status } = <any>useAsyncData("review-post", () =>
+    $fetch("/api/v1/review", {
+      method: "PUT",
+      body: payload,
+    })
+  )
+  if (res !== null || res.value.data !== null) {
+    router.push(`/user/transaction/success`)
+  } else {
+    toastStore.error({
+      text: "gagal menyimpan ulasan",
+    })
+  }
+}
+
+const {
+  data: partner,
+  pending,
+  status,
+} = await (<any>useFetch(`/api/v1/review/partner/${partnerId}`))
 
 const logRating = async (event: number) => {
-  rating.value = event;
-};
+  rating.value = event
+}
 </script>
 <template>
   <Header title="Penilaian" />
-  <div class="flex gap-2 px-6 mt-5">
-    <NuxtImg :src="transaction.pengepul.photo" width="34" height="34" />
+  <div
+    class="flex gap-2 px-6 mt-5"
+    v-if="!pending && status === 'success' && partner !== null"
+  >
+    <NuxtImg :src="partner?.data.avatar" width="34" height="34" />
     <div class="flex flex-col">
-      <h1 class="font-medium text-[14px]">{{transaction.pengepul.name}}</h1>
-      <p class="text-[10px]">{{transaction.pengepul.telp}}</p>
+      <h1 class="font-medium text-[14px]">{{ partner?.data.name }}</h1>
+      <p class="text-[10px]">{{ partner.data.telp }}</p>
     </div>
   </div>
   <div class="px-6">
@@ -47,7 +64,7 @@ const logRating = async (event: number) => {
         </label>
         <div class="mx-auto">
           <NuxtRating
-            :rating-value="0"
+            :rating-value="5"
             :read-only="false"
             class="w-[209px]"
             :rating-size="'50px'"
@@ -57,7 +74,11 @@ const logRating = async (event: number) => {
         </div>
       </div>
       <label class="text-brg-primary-dark font-semibold mb-4"
-        >Beri Ulasan Pengepul</label
+        >Beri Ulasan Pengepul
+        <span
+          class="bg-brg-light-gray text-[9px] p-1 px-2 rounded-2xl text-white font-normal"
+          >optional</span
+        ></label
       >
       <ClientOnly>
         <textarea
@@ -65,24 +86,16 @@ const logRating = async (event: number) => {
           rows="8"
           class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
           placeholder="isi ulasan anda"
-          v-model="transaction.review.ulasan"
+          v-model="review"
         >
         </textarea>
       </ClientOnly>
     </div>
   </div>
   <div class="max-w-max mx-auto py-11">
-    <ButtonLarge label="Selesaikan Transaksi" @click="isModalOpen = true" />
+    <ButtonLarge
+      label="Selesaikan Transaksi"
+      @click="handleFinishTransaction"
+    />
   </div>
-
-  <ModalDefault
-    title="Selesaikan Transaksi"
-    desc="apakah anda yakin ingin menyelesaikan transaksi"
-    label-confirmation="Selesaikan"
-    label-color="text-brg-primary"
-    :is-show="isModalOpen"
-    emit-function="finishTransaction"
-    @closeModal="isModalOpen = false"
-    @finishTransaction="handleFinishTransaction"
-  />
 </template>
