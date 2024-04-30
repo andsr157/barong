@@ -18,7 +18,9 @@ definePageMeta({
 })
 
 const router = useRouter()
-const address = ref<any>(null)
+const address = computed(() => {
+  return trash.value.transaction.address
+})
 const note = ref("ini catatan")
 const transactionData = trash.value.transaction_detail
 
@@ -112,17 +114,6 @@ const onSubmit = async () => {
     console.error(error)
   }
 }
-
-onMounted(async () => {
-  try {
-    const res = await useNuxtApp().$axios.get(
-      `address/${trash.value.transaction.address_id}`
-    )
-    if (res.data.status === 200) {
-      address.value = res.data.data
-    }
-  } catch (error) {}
-})
 </script>
 
 <template>
@@ -138,6 +129,7 @@ onMounted(async () => {
         :name="address.owner_name"
         :telp="address.owner_telp"
         :address="address.address_name"
+        :detail="address.detail"
         label-button="Ubah Alamat"
         no-button
       />

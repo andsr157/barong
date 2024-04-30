@@ -154,11 +154,25 @@ export const DATA = {
       status: "success",
     },
   ],
+
+  CHATS: [
+    {
+      user_id: 2,
+      partner_id: 3,
+    },
+    {
+      user_id: 1,
+      partner_id: 4,
+    },
+  ],
+
   TRANSACTION: [
     {
       user_id: 1,
       partner_id: 4,
-      address_id: 1,
+      chats_id: null,
+      address:
+        '{"label":"sekolah","address_name":"gabahan, sukoharjo ","detail":"dekat perempatan","owner_name":"july","owner_telp":"85842106413","latitude":"1113334455","longitude":"111226677"}',
       image: "image.png",
       status_id: 1,
       partner_rate: 4,
@@ -169,7 +183,10 @@ export const DATA = {
     {
       user_id: 2,
       partner_id: 3,
-      address_id: 2,
+      chats_id: 1,
+      address:
+        '{"label":"sekolah","address_name":"gabahan, sukoharjo ","detail":"dekat perempatan","owner_name":"july","owner_telp":"85842106413","latitude":"1113334455","longitude":"111226677"}',
+      image: "image.png",
       image: "image.png",
       status_id: 2,
       partner_rate: 5,
@@ -180,7 +197,10 @@ export const DATA = {
     {
       user_id: 1,
       partner_id: 4,
-      address_id: 3,
+      chats_id: 2,
+      address:
+        '{"label":"sekolah","address_name":"gabahan, sukoharjo ","detail":"dekat perempatan","owner_name":"july","owner_telp":"85842106413","latitude":"1113334455","longitude":"111226677"}',
+      image: "image.png",
       image: "image.png",
       status_id: 3,
       partner_rate: 3,

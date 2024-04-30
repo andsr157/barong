@@ -13,8 +13,16 @@ const getMainAddress = async () => {
     if (res.data.status === 200) {
       address.value = res.data.data[0]
       console.log(address.value)
-      transactionStore.transactionData.transaction.address_id =
-        res.data.data[0].id
+      transactionStore.transactionData.transaction.address = {
+        id: res.data.data[0].id,
+        label: res.data.data[0].label,
+        owner_name: res.data.data[0].owner_name,
+        address_name: res.data.data[0].address_name,
+        owner_telp: res.data.data[0].owner_telp,
+        detail: res.data.data[0].detail,
+        latitude: res.data.data[0].latitude,
+        longitude: res.data.data[0].longitude,
+      }
     }
   } catch (error) {
     console.error("Error fetching main address:", error)

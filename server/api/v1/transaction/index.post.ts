@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         data: {
 
             user_id: body.transaction.user_id,
-            address_id: body.transaction.address_id,
+            address: JSON.stringify(body.transaction.address),
             image: body.transaction.image,
             status_id: body.transaction.status_id,
             chats_id: body.transaction.chats_id,

@@ -67,12 +67,22 @@ async function seedUser() {
       })
     }
 
+    for (const chat of DATA.CHATS) {
+      await prisma.chats.create({
+        data: {
+          user_id: chat.user_id,
+          partner_id: chat.partner_id,
+        },
+      })
+    }
+
     for (const transaction of DATA.TRANSACTION) {
       await prisma.transaction.create({
         data: {
           user_id: transaction.user_id,
           partner_id: transaction.partner_id,
-          address_id: transaction.address_id,
+          chats_id: transaction.chats_id,
+          address: transaction.address,
           image: transaction.image,
           status_id: transaction.status_id,
           partner_rate: transaction.partner_rate,

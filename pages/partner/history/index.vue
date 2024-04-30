@@ -152,7 +152,7 @@ onMounted(() => {
         :address="transaction.address"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
-        :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
+        :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
       />
 
       <div v-if="transactionPending">loading data sabar</div>

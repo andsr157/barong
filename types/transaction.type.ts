@@ -57,11 +57,22 @@ export interface TransactionDetail {
     maxPrice?: number
     finalPrice?: number
 }
+
+export interface Address {
+    id?: number,
+    label: string,
+    owner_name: string,
+    address_name: string,
+    owner_telp: string,
+    detail: string,
+    latitude: string,
+    longitude: string
+}
 export interface TransactionData {
     transaction: {
         id?: number,
         user_id: number,
-        address_id: number,
+        address: Address,
         chats_id?: number,
         // image: string;
         status_id: number,

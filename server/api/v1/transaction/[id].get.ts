@@ -19,7 +19,6 @@ export default defineEventHandler(async (event) => {
             },
             include: {
                 // users: true,
-                address: true,
                 transaction_detail: {
                     include: {
                         trash: {
@@ -32,7 +31,6 @@ export default defineEventHandler(async (event) => {
                 status: true,
             },
         });
-
 
         if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
             if (session.user.role !== 'partner') {
@@ -87,6 +85,7 @@ export default defineEventHandler(async (event) => {
         const { id: status_id, ...status } = transactions[0].status
 
 
+        const addressData = JSON.parse(transactions[0].address)
 
         // Format data transaksi sesuai dengan struktur yang diinginkan
         const formattedTransactions = {
@@ -95,11 +94,13 @@ export default defineEventHandler(async (event) => {
             user: user,
             pengepul: partner, // Informasi pengepul belum tersedia
             address: {
-                label: transactions[0].address.label,
-                name: transactions[0].address.owner_name,
-                address: transactions[0].address.address_name,
-                telp: transactions[0].address.owner_telp,
-                detail: transactions[0].address.detail,
+                label: addressData.label,
+                name: addressData.owner_name,
+                address: addressData.address_name,
+                telp: addressData.owner_telp,
+                detail: addressData.detail,
+                latitude: addressData.latitude,
+                longituded: addressData.longitude,
             },
             trashImage: transactions[0].image, // Gambar sampah (placeholder)
             detailSampah: transactions[0].transaction_detail.map((detail) => ({
