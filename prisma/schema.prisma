@@ -24,7 +24,7 @@ model users {
 }
 
 model address {
-  id           Int           @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   label        String
   address_name String
   detail       String?
@@ -34,7 +34,7 @@ model address {
   longitude    String
   user_id      Int
   is_main      Boolean
-  user         users         @relation(fields: [user_id], references: [id])
+  user         users   @relation(fields: [user_id], references: [id])
 }
 
 model trashCategory {
@@ -65,7 +65,6 @@ model transaction {
   id                 Int                  @id @default(autoincrement())
   user_id            Int
   partner_id         Int?
-  address        String
   image              String
   status_id          Int
   partner_rate       Int?
@@ -73,11 +72,12 @@ model transaction {
   note               String
   total              Int?
   date_created       DateTime             @default(now())
-  update_at          DateTime?
+  address            String
   chats_id           Int?
-  status             status               @relation(fields: [status_id], references: [id])
+  update_at          DateTime?            @default(now())
   partner            users?               @relation("Partner", fields: [partner_id], references: [id])
-  user               users?               @relation("User", fields: [user_id], references: [id])
+  status             status               @relation(fields: [status_id], references: [id])
+  user               users                @relation("User", fields: [user_id], references: [id])
   transaction_detail transaction_detail[]
 }
 
