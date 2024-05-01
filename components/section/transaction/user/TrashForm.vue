@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { useToastStore } from "~/stores/Toast.store"
 import { useTrashStore } from "~/stores/Trash.store"
 import { useTransactionStore } from "~/stores/Transaction.store"
 import { type TrashCategory, type TrashSubCategory } from "~/types/trash.type"
+
 const trashStore = useTrashStore()
 const transactionStore = useTransactionStore()
+const toastStore = useToastStore()
+
 const { category, subcategory } = storeToRefs(trashStore)
 
 const emit = defineEmits()
@@ -17,7 +21,7 @@ const optionSubCategory = computed((): TrashCategory[] => {
 
 const selectedCategory = ref<TrashCategory | null>()
 const selectedSubCategory = ref<TrashSubCategory | null>()
-const trashWeight = ref(0)
+const trashWeight = ref(1)
 
 watch(selectedCategory, () => {
   selectedSubCategory.value = null
@@ -41,8 +45,20 @@ function resetTrashForm() {
   trashWeight.value = 0
 }
 
-async function addTrash() {
-  await transactionStore.addTrash(trashForm.value)
+function addTrash() {
+  if (trashForm.value.category === "" || trashForm.value.subcategory === "") {
+    toastStore.error({
+      text: "Kategori dan Subkategori tidak boleh kosong",
+    })
+    return
+  }
+  if (trashForm.value.weight <= 0) {
+    toastStore.error({
+      text: "Berat sampah tidak boleh nol",
+    })
+    return
+  }
+  transactionStore.addTrash(trashForm.value)
   resetTrashForm()
   emit("closeform")
 }
@@ -50,16 +66,10 @@ async function addTrash() {
 onMounted(() => {
   trashStore.getTrashCategory()
 })
-
-watchEffect(() => {
-  console.log(selectedCategory.value)
-  console.log(selectedSubCategory.value)
-  console.log(trashForm.value)
-  console.log(transactionStore.transactionData.transaction_detail)
-})
 </script>
 
 <template>
+  <Toast />
   <div
     class="border-[1px] border-brg-light-gray rounded-[10px] p-[10px] flex flex-col gap-2"
   >

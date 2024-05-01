@@ -44,9 +44,12 @@ export const useTransactionStore = defineStore('transaction', {
                 transaction_detail: [],
             } as TransactionData),
             transactionImage: null as any,
+            transaction: [] as Transaction[],
             isLoading: false,
             statusLoading: false,
-            transaction: [] as Transaction[]
+            formError: {
+                message: ''
+            }
         }
     },
 

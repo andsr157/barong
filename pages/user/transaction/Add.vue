@@ -1,9 +1,27 @@
 <script setup lang="ts">
 import { useTransactionStore } from "~/stores/Transaction.store"
-
+import { useToastStore } from "~/stores/Toast.store"
 const transactionStore = useTransactionStore()
+const toastStore = useToastStore()
 
-const { transactionData } = storeToRefs(transactionStore)
+const { transactionData, formError, transactionImage } =
+  storeToRefs(transactionStore)
+
+function nextToConfirmation() {
+  if (transactionImage.value === null) {
+    toastStore.error({
+      text: "Gambar tidak boleh kosong",
+    })
+    return
+  }
+  if (transactionData.value.transaction_detail.length === 0) {
+    toastStore.error({
+      text: "Belum ada data sampah",
+    })
+    return
+  }
+  useRouter().push("/user/transaction/confirmation")
+}
 definePageMeta({
   layout: "blank",
 })
@@ -35,6 +53,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <Toast />
   <Header title="Transaksi" />
   <div class="px-6">
     <section>
@@ -54,9 +73,11 @@ onBeforeUnmount(() => {
 
     <SectionTransactionUserTrashNote />
     <div class="flex">
-      <NuxtLink to="/user/transaction/confirmation" class="mx-auto">
-        <ButtonLarge label="Selanjutnya" class="my-12" />
-      </NuxtLink>
+      <ButtonLarge
+        label="Selanjutnya"
+        class="my-12 mx-auto"
+        @click="nextToConfirmation"
+      />
     </div>
   </div>
 </template>

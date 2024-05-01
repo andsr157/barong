@@ -28,15 +28,16 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits()
 const updateInput = (event: Event) => {
   const target = event.target as HTMLInputElement
-  let value = <any>target.value
+  let inputvalue = ref<any>(target.value)
 
   if (props.type === "number") {
-    if (value === "" || parseFloat(value) < 0) {
-      value = 0
+    if (inputvalue.value === "" || parseFloat(inputvalue.value) < 0) {
+      console.log(inputvalue.value === "")
+      inputvalue.value = 1
     }
-    emit("update:modelValue", parseFloat(value))
+    emit("update:modelValue", parseFloat(inputvalue.value))
   } else {
-    emit("update:modelValue", value)
+    emit("update:modelValue", inputvalue.value)
   }
 }
 </script>
@@ -65,6 +66,7 @@ const updateInput = (event: Event) => {
       :class="props.inputClass"
       :placeholder="props.placeholder"
       :readonly="props.readonly"
+      min="1"
     />
 
     <Icon
