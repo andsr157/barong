@@ -66,6 +66,7 @@ const uploadImage = async () => {
 
 const onSubmit = async () => {
   try {
+    isLoading.value = true
     const imageUrl = await uploadImage().catch((error) => {
       console.error("Error in uploadImage:", error)
     })
@@ -108,9 +109,12 @@ const onSubmit = async () => {
       })
     }
 
+    isLoading.value = false
+
     localStorage.removeItem("transaction")
     useRouter().push("/user/transaction/success")
   } catch (error) {
+    isLoading.value = false
     console.error(error)
   }
 }
