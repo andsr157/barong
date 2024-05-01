@@ -31,6 +31,7 @@ onMounted(async () => {
         :address="transaction.address.address"
         :status="transaction.status"
         :user="transaction.user"
+        :time="transaction.time"
         :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>

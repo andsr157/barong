@@ -101,11 +101,16 @@ const onSubmit = async () => {
     let res
     if (trash.value.transaction.id) {
       res = await transactionStore.updateTransaction(payload).catch((error) => {
+        console.log("asuiuuuuu")
+        isLoading.value = false
         console.error("Error in updateTransaction:", error)
+        throw error
       })
     } else {
       res = await transactionStore.addTransaction(payload).catch((error) => {
+        isLoading.value = false
         console.error("Error in addTransaction:", error)
+        throw error
       })
     }
 
@@ -121,6 +126,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
+  {{ trash }}
   <Header title="Transaksi" />
   <div class="px-6 mt-[30px]">
     <section class="">

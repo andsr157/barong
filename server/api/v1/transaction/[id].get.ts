@@ -123,6 +123,7 @@ export default defineEventHandler(async (event) => {
                 ulasan: transactions[0].partner_review,
             },
             note: transactions[0].note,
+            time: transactions[0].date
         };
 
         // Kembalikan respons dengan data transaksi yang diformat

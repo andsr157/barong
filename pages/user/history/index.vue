@@ -157,6 +157,7 @@ onMounted(async () => {
         :partner="transaction.pengepul"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
+        :time="transaction.time"
         :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
       />
 

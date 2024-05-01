@@ -17,7 +17,7 @@ interface PostData {
         id?: number,
         trash_id: number,
         weight: number
-    }[]
+    }[],
 }
 
 export const useTransactionStore = defineStore('transaction', {

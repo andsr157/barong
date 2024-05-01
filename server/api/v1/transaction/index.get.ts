@@ -106,6 +106,7 @@ export default defineEventHandler(async (event) => {
                     ulasan: data.partner_review,
                 },
                 note: data.note,
+                update_at: data.update_at
             };
         });
 
