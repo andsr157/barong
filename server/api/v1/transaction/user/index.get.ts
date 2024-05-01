@@ -75,6 +75,7 @@ export default defineEventHandler(async (event) => {
                 detailSampah: data.transaction_detail.map((detail: any) => ({
                     category: detail.trash.category.name,
                 })),
+                time: data.update_at,
                 status: status,
             };
         });

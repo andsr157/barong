@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { convertToTime, convertToDate } from "~/composables/helpers"
 defineProps<{
   detailSampah: string
   status: { name: string; label: string; status: string }
@@ -7,8 +8,8 @@ defineProps<{
     telp: string
   }
   address: string
-  review?: number | null
   path?: string
+  time: string
 }>()
 </script>
 
@@ -43,9 +44,11 @@ defineProps<{
         <span
           class="text-xs text-[#72798E] font-medium"
           v-if="status.name === 'finish' || status.name === 'canceled'"
-          >12 Januari 2024</span
+          >{{ convertToDate(time) }}</span
         >
-        <span v-else class="text-xs text-[#72798E] font-medium">12:30</span>
+        <span v-else class="text-xs text-[#72798E] font-medium">{{
+          convertToTime(time)
+        }}</span>
         <ButtonSmall
           v-if="status.name === 'taking'"
           label="Lokasi"

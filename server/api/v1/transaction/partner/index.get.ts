@@ -77,6 +77,7 @@ export default defineEventHandler(async (event) => {
                     category: detail.trash.category.name,
                 })),
                 status: status,
+                time: data.update_at
             };
         });
 
@@ -90,6 +91,6 @@ export default defineEventHandler(async (event) => {
         return { data: formattedTransactions, pagination, status: 200 };
     } catch (error) {
         console.error('Error fetching transaction data:', error);
-        return { error: 'Internal server error', status: 500 };
+        return { data: null, error: 'Internal server error', status: 500 };
     }
 });

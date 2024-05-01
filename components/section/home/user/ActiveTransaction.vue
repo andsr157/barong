@@ -40,6 +40,7 @@ onMounted(() => {
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :partner="transaction.pengepul"
         :status="transaction.status"
+        :time="transaction.time"
         :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>

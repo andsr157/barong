@@ -26,33 +26,35 @@ definePageMeta({
   layout: "blank",
 })
 
-onBeforeUnmount(() => {
-  if (transactionData.value.transaction.id) {
-    transactionData.value = {
-      transaction: {
-        id: 0,
-        user_id: 0,
-        chats_id: 0,
-        address: {
-          id: 0,
-          label: "",
-          owner_name: "",
-          address_name: "",
-          owner_telp: "",
-          detail: "",
-          latitude: "",
-          longitude: "",
-        },
-        status_id: 0,
-        note: "",
-      },
-      transaction_detail: [],
-    }
-  }
-})
+// onBeforeUnmount(() => {
+//   if (transactionData.value.transaction.id) {
+//     transactionData.value = {
+//       transaction: {
+//         id: 0,
+//         user_id: 0,
+//         chats_id: 0,
+//         address: {
+//           id: 0,
+//           label: "",
+//           owner_name: "",
+//           address_name: "",
+//           owner_telp: "",
+//           detail: "",
+//           latitude: "",
+//           longitude: "",
+//         },
+//         status_id: 0,
+//         note: "",
+//       },
+//       transaction_detail: [],
+//     }
+//     transactionImage.value = null
+//   }
+// })
 </script>
 
 <template>
+  {{ transactionData.transaction }}
   <Toast />
   <Header title="Transaksi" />
   <div class="px-6">

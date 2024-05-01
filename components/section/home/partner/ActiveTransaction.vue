@@ -38,9 +38,9 @@ onMounted(() => {
         v-for="transaction in transactionActive?.data"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
-        :review="transaction.review.rate"
         :user="transaction.user"
-        :address="transaction.address.address"
+        :address="transaction.address"
+        :time="transaction.time"
         :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>

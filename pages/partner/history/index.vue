@@ -152,6 +152,7 @@ onMounted(() => {
         :address="transaction.address"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
+        :time="transaction.time"
         :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
       />
 
