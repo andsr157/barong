@@ -32,13 +32,10 @@ export default defineEventHandler(async (event) => {
             }
         })
 
-        console.log(res)
-
         let totalAmount = 0;
         res.forEach(transaction => {
             totalAmount += transaction.total ?? 0;
         });
-
 
         const trashes = <any>[]
         for (let i = 0; i < res.length; i++) {
