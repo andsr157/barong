@@ -88,7 +88,7 @@ export default defineNuxtConfig({
 
   auth: {
     baseURL:
-      process.env.NODE_ENV === "test"
+      process.env.NODE_ENV === "development"
         ? "barong-git-staging-andsr157s-projects.vercel.app/api/v1/_auth"
         : "http://localhost:3000/api/v1/_auth",
     provider: {
