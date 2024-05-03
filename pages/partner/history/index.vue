@@ -8,6 +8,12 @@ definePageMeta({
 const statusName = ref("saat ini")
 const statusData = ref<string>("active")
 
+const pageFlag: Record<string, any> = ref({
+  active: ref<any>(0),
+  finish: ref<any>(0),
+  canceled: ref<any>(0),
+})
+
 const { data: activeCache } = useNuxtData("active")
 const { data: finishCache } = useNuxtData("finish")
 const { data: canceledCache } = useNuxtData("canceled")
@@ -69,6 +75,8 @@ const fetchData = async (status: string) => {
   transactionPending.value = pending.value
   fetchStatus.value = fetchStatus.value
 
+  pageFlag.value[status] += 1
+
   watch(pending, () => {
     transactionPending.value = pending.value
     console.log(transactionPending.value)
@@ -106,22 +114,23 @@ const fetchData = async (status: string) => {
 }
 
 onMounted(() => {
-  if (
-    transactionDataCache.value["active"] !== null &&
-    transactionDataCache.value["active"].data.length > 0
-  ) {
-    transactionData.value["active"].data.push(
-      ...transactionDataCache.value["active"].data
-    )
-    transactionData.value["active"].pagination =
-      transactionDataCache.value["active"].pagination
-    cursor.value["active"] =
-      transactionDataCache.value["active"].data[
-        transactionDataCache.value["active"].data.length - 1
-      ].id
-  } else {
-    fetchData("active")
-  }
+  fetchData("active")
+  // if (
+  //   transactionDataCache.value["active"] !== null &&
+  //   transactionDataCache.value["active"].data.length > 0
+  // ) {
+  //   transactionData.value["active"].data.push(
+  //     ...transactionDataCache.value["active"].data
+  //   )
+  //   transactionData.value["active"].pagination =
+  //     transactionDataCache.value["active"].pagination
+  //   cursor.value["active"] =
+  //     transactionDataCache.value["active"].data[
+  //       transactionDataCache.value["active"].data.length - 1
+  //     ].id
+  // } else {
+  //   fetchData("active")
+  // }
 })
 </script>
 <template>
@@ -157,6 +166,16 @@ onMounted(() => {
       />
 
       <div v-if="transactionPending">loading data sabar</div>
+
+      <Button
+        v-if="
+          transactionData[statusData].pagination.total_pages !==
+          pageFlag[statusData]
+        "
+        @click="fetchData(statusData)"
+        class="border-2 border-brg-primary mt-2 text-brg-primary text-sm font-medium p-2 rounded-3xl w-[40%] mx-auto"
+        >Load More</Button
+      >
     </div>
 
     <div v-else>
