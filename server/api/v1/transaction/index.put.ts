@@ -2,7 +2,7 @@ import { prisma } from '~/composables/prisma'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    console.log(body)
+    console.log('ini body', body.transaction_detail)
     try {
         const updatedTransaction = await prisma.transaction.update({
             where: {
@@ -25,6 +25,7 @@ export default defineEventHandler(async (event) => {
 
         const updatedTransactionDetails = await Promise.all(
             body.transaction_detail.map(async (detail: any) => {
+                const { id: trashId, ...resData } = detail
                 const { id, weight } = detail;
 
                 // Cek apakah detail transaksi sudah ada berdasarkan ID
@@ -37,7 +38,7 @@ export default defineEventHandler(async (event) => {
                 if (!existingTransactionDetail) {
                     // Jika detail transaksi belum ada, buat yang baru
                     return await prisma.transaction_detail.create({
-                        data: { ...detail, ...detailData }
+                        data: { ...resData, ...detailData }
                     });
                 } else {
                     // Jika sudah ada, perbarui detail transaksi yang ada

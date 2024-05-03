@@ -83,7 +83,7 @@ const onSubmit = async () => {
         const detail = {
           trash_id: data.trash_id,
           weight: data.weight,
-          ...(data.id ? { id: data.id } : {}),
+          ...(data.id ? { id: data.id } : { id: 0 }),
         }
         return detail
       }
@@ -126,7 +126,6 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  {{ trash }}
   <Header title="Transaksi" />
   <div class="px-6 mt-[30px]">
     <section class="">

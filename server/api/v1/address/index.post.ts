@@ -4,7 +4,7 @@ import { getServerSession } from '#auth'
 export default defineEventHandler(async (event) => {
     const session = await getServerSession(event) as any
     const body = await readBody(event)
-    console.log(session)
+    console.log('adddress body', body)
     const user_id = session.user.id
 
     let address = body

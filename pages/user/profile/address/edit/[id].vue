@@ -3,6 +3,7 @@ import { useForm } from "vee-validate"
 import { useAddressStore } from "~/stores/Address.store"
 import * as Yup from "yup"
 
+const toastStore = useToastStore()
 const addresStore = useAddressStore()
 definePageMeta({
   layout: "blank",
@@ -29,7 +30,7 @@ const address_id = Array.isArray(route.params.id)
   : route.params.id
 const toggle = ref("off")
 
-const { center, isLoading, formAdress } = storeToRefs(addresStore)
+const { center, isLoading, formAdress, address } = storeToRefs(addresStore)
 const isMapOpen = ref(false)
 const isModalOpen = ref(false)
 
@@ -52,12 +53,26 @@ const toggleSwitch = async () => {
   ) {
     formAdress.value.is_main = false
   }
-  formAdress.value.is_main = formAdress.value.is_main === false ? true : false
-  const res = await addresStore.setMainAddress({
-    is_main: formAdress.value.is_main,
-    id: formAdress.value.id,
-  })
-  if (res) {
+
+  if (formAdress.value.is_main || address.value.length <= 1) {
+    toastStore.error({
+      text: "alamat utama harus ada setidaknya satu",
+    })
+    toggleLoading.value = false
+    formAdress.value.is_main = true
+  } else if (!formAdress.value.is_main) {
+    formAdress.value.is_main = true
+    const res = await addresStore.setMainAddress({
+      is_main: formAdress.value.is_main,
+      id: formAdress.value.id,
+    })
+
+    if (res) {
+      toastStore.success({
+        text: "berhasil dijadikan alamat utama",
+      })
+    }
+
     toggleLoading.value = false
   }
 }
@@ -86,6 +101,7 @@ const handleUpdateAddress = handleSubmit(async (values) => {
 })
 </script>
 <template>
+  <Toast />
   <div v-if="!isLoading">
     <Header title="Edit Alamat" />
     <div class="px-6 flex flex-col gap-4 mt-5">
@@ -176,7 +192,7 @@ const handleUpdateAddress = handleSubmit(async (values) => {
         label="Simpan"
         class="mx-auto mb-12"
         @click="handleUpdateAddress"
-        :disabled="toggleLoading"
+        :disabled="isLoading"
       />
     </div>
 
