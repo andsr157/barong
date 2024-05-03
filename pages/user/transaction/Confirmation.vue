@@ -126,7 +126,6 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  {{ trash }}
   <Header title="Transaksi" />
   <div class="px-6 mt-[30px]">
     <section class="">

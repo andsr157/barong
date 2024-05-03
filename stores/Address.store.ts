@@ -25,6 +25,7 @@ export const useAddressStore = defineStore('Address-store', {
         mapRef: null as any,
         address: [] as Address[],
         formAdress: {} as Address,
+        mainAddress: { data: [] } as any,
         isLoading: false
     }),
 
@@ -46,7 +47,8 @@ export const useAddressStore = defineStore('Address-store', {
         async addAddress() {
             try {
                 this.isLoading = true
-                const res = await axios.post('/api/v1/address', this.formAdress)
+                const { id, ...payload } = this.formAdress
+                const res = await axios.post('/api/v1/address', payload)
                 if (res.data.status === 200) {
                     this.isLoading = false
                 }
