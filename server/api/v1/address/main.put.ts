@@ -13,7 +13,6 @@ export default defineEventHandler(async (event) => {
         }
     })
 
-
     if (currentMain.length > 0) {
         const setFalseCurrent = await prisma.address.update({
             where: {
@@ -36,7 +35,7 @@ export default defineEventHandler(async (event) => {
     if (setNewCurrent) {
         return { status: 200 }
     }
-    return { status: 400 }
+    return { error: 'update', status: 400 }
 
 
 })
