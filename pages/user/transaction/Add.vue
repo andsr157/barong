@@ -4,10 +4,16 @@ import { useToastStore } from "~/stores/Toast.store"
 const transactionStore = useTransactionStore()
 const toastStore = useToastStore()
 
+const addTransactionFlag = ref<boolean>(true)
+
 const { transactionData, formError, transactionImage } =
   storeToRefs(transactionStore)
 
 function nextToConfirmation() {
+  if (transactionData.value.transaction.id) {
+    addTransactionFlag.value = false
+  }
+
   if (transactionImage.value === null) {
     toastStore.error({
       text: "Gambar tidak boleh kosong",
@@ -26,35 +32,34 @@ definePageMeta({
   layout: "blank",
 })
 
-// onBeforeUnmount(() => {
-//   if (transactionData.value.transaction.id) {
-//     transactionData.value = {
-//       transaction: {
-//         id: 0,
-//         user_id: 0,
-//         chats_id: 0,
-//         address: {
-//           id: 0,
-//           label: "",
-//           owner_name: "",
-//           address_name: "",
-//           owner_telp: "",
-//           detail: "",
-//           latitude: "",
-//           longitude: "",
-//         },
-//         status_id: 0,
-//         note: "",
-//       },
-//       transaction_detail: [],
-//     }
-//     transactionImage.value = null
-//   }
-// })
+onBeforeUnmount(() => {
+  if (transactionData.value.transaction.id && addTransactionFlag.value) {
+    transactionData.value = {
+      transaction: {
+        id: 0,
+        user_id: 0,
+        chats_id: 0,
+        address: {
+          id: 0,
+          label: "",
+          owner_name: "",
+          address_name: "",
+          owner_telp: "",
+          detail: "",
+          latitude: "",
+          longitude: "",
+        },
+        status_id: 0,
+        note: "",
+      },
+      transaction_detail: [],
+    }
+    transactionImage.value = null
+  }
+})
 </script>
 
 <template>
-  {{ transactionData.transaction }}
   <Toast />
   <Header title="Transaksi" />
   <div class="px-6">
