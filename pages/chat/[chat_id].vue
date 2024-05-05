@@ -7,7 +7,9 @@ import type { ApiResponseChat, Message } from "~/types/chat.type"
 const { data: user } = <any>useAuth()
 const USER_INDEX = computed(() => (user.value.user.role === "user" ? 1 : 0))
 const route = useRoute()
-const chat_id: string = route.params.chat_id[0]
+const chat_id: string = Array.isArray(route.params.chat_id)
+  ? route.params.chat_id[0]
+  : route.params.chat_id
 
 const realTimeMessage = ref<Message[] | undefined>(undefined)
 const headers = useRequestHeaders(["cookie"]) as HeadersInit
