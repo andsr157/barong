@@ -30,6 +30,7 @@ const onSubmit = handleSubmit(async () => {
       id: user.value.user.id,
       name: name.value,
       telp: telepon.value,
+      avatar: user.value.user.value,
     }
     isLoading.value = true
     const res = await axios.put("/api/v1/profile", payload)

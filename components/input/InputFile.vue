@@ -6,7 +6,7 @@ interface Props {
   labelClass?: string
   wrapperClass?: string
   inputClass?: string
-  modelValue?: string | number | null
+  modelValue?: string | number | null | any
   placeholder?:string
   prefixIcon?: string
   prefixIconSize?: string
