@@ -5,17 +5,20 @@ const nuxt = useNuxtApp()
 
 const { data: trashCache } = useNuxtData("")
 
-const { data, pending, status, refresh } = useFetch("/api/v1/dashboard/user", {
-  key: "user-trash",
-  getCachedData(key) {
-    const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
-    if (!dataCache) {
-      return
-    } else {
-      return dataCache
-    }
-  },
-})
+const { data, pending, status, refresh } = await useFetch(
+  "/api/v1/dashboard/user",
+  {
+    key: "user-trash",
+    getCachedData(key) {
+      const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
+      if (!dataCache) {
+        return
+      } else {
+        return dataCache
+      }
+    },
+  }
+)
 
 interface TrashItem {
   category: string
