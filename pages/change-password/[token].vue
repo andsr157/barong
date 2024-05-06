@@ -1,7 +1,30 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { useForm } from "vee-validate"
+import * as Yup from "yup"
+
 definePageMeta({
   layout: "blank",
+})
+
+const toastStore = useToastStore()
+const isLoading = ref(false)
+
+const token = useRoute().params.token as string
+
+const schema = Yup.object({
+  password: Yup.string()
+    .matches(
+      /^(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
+      "Password must contain at least 8 characters, including one uppercase letter and one digit"
+    )
+    .required("Password is required"),
+  password_confirmation: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Confirm password is required"),
+})
+
+const { handleSubmit } = useForm({
+  validationSchema: schema,
 })
 
 const password = ref("")
@@ -16,8 +39,38 @@ const switchVisibilityPassword = () =>
 const switchVisibilityConfirmPassword = () =>
   (confirmPasswordFieldType.value =
     confirmPasswordFieldType.value === "password" ? "text" : "password")
+
+const onSubmit = handleSubmit(async () => {
+  isLoading.value = true
+  const res = (await $fetch("/api/v1/reset", {
+    method: "POST",
+    body: { newPassword: password.value, token: token },
+  })) as any
+
+  if (res && res.status === 200) {
+    toastStore.success({
+      text: "berhasil ubah kata sandi",
+    })
+    setTimeout(() => {
+      useRouter().push("/login")
+    }, 1000)
+  } else if (res.status === 400) {
+    toastStore.warning({
+      text: "Link kadaluarsa",
+      timeout: 3000,
+    })
+  } else {
+    toastStore.error({
+      text: "gagal ubah kata sandi coba kirim email lagi",
+      timeout: 3000,
+    })
+  }
+
+  isLoading.value = false
+})
 </script>
 <template>
+  <Toast />
   <section class="px-8 h-full pt-24 translate-y-1">
     <h1 class="text-brg-primary-dark text-lg font-semibold text-center">
       Ubah Kata Sandi
@@ -29,7 +82,8 @@ const switchVisibilityConfirmPassword = () =>
     </p>
     <div class="mt-8 flex flex-col gap-5 right-0">
       <div>
-        <Input
+        <InputValidation
+          name="password"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
           placeholder="Kata Sandi"
           prefixIcon="mdi:lock"
@@ -51,11 +105,12 @@ const switchVisibilityConfirmPassword = () =>
               class="text-brg-primary text-2xl text-end cursor-pointer"
             />
           </template>
-        </Input>
+        </InputValidation>
       </div>
 
       <div>
-        <Input
+        <InputValidation
+          name="password_confirmation"
           wrapperClass="!rounded-[20px] gap-2 !px-5"
           placeholder="Konfirmasi Kata Sandi"
           prefixIcon="mdi:lock-check"
@@ -77,11 +132,16 @@ const switchVisibilityConfirmPassword = () =>
               class="text-brg-primary text-2xl text-end cursor-pointer"
             />
           </template>
-        </Input>
+        </InputValidation>
       </div>
     </div>
   </section>
   <div class="absolute bottom-0 right-1/2 translate-x-1/2 mb-16">
-    <ButtonLarge label="Kirim" class="text-base mt-10" />
+    <ButtonLarge
+      label="Kirim"
+      class="text-base mt-10"
+      @click="onSubmit"
+      :disabled="isLoading"
+    />
   </div>
 </template>
