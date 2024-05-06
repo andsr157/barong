@@ -34,7 +34,7 @@ definePageMeta({
       <h1 class="text-[11px] text-white font-light">{{ user.user.email }}</h1>
     </div>
     <div class="px-6 mt-[34px] flex flex-col gap-[15px]">
-      <NuxtLink class="flex items-center gap-2" to="/user/profile/edit">
+      <NuxtLink class="flex items-center gap-2" to="/partner/profile/edit">
         <Icon
           name="mdi:account-edit"
           size="24px"
@@ -44,7 +44,7 @@ definePageMeta({
       </NuxtLink>
       <NuxtLink
         class="flex items-center gap-2"
-        to="/user/profile/changePassword"
+        to="/partner/profile/changePassword"
       >
         <Icon name="ooui:edit-lock" class="text-brg-primary-dark" size="20px" />
         <h1 class="font-semibold text-brg-primary-dark">Ubah Kata Sandi</h1>

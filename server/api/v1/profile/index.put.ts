@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
             data: {
                 name: body.name,
                 telp: body.telp,
-
+                avatar: body.avatar
             },
         });
         return updatedProfile
