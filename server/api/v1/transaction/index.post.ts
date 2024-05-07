@@ -21,7 +21,6 @@ export default defineEventHandler(async (event) => {
             partner_review: null,
             total: null,
         }
-
     })
 
     // return res

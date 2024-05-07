@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useTransactionStore } from "~/stores/Transaction.store"
 import { estimateTotal } from "~/composables/helpers"
 
 const transactionStore = useTransactionStore()
+const toastStore = useToastStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -10,6 +10,7 @@ const transaction = ref<any>()
 const isModalOpen = ref(false)
 const { data: user } = <any>useAuth()
 const userId = user.value?.user?.id
+const isLoading = ref(false)
 
 const estimate = computed(() => {
   return estimateTotal(transaction.value.detailSampah)
@@ -17,6 +18,33 @@ const estimate = computed(() => {
 
 const handleFinishTransaction = () => {
   router.push(`/user/transaction/success`)
+}
+
+const handleCancelTransaction = async () => {
+  try {
+    isLoading.value = true
+    const res = (await $fetch("/api/v1/transaction/user/cancel", {
+      method: "PUT",
+      body: {
+        id: transaction.value.id,
+      },
+    })) as any
+
+    if (res && res.status === 200) {
+      transaction.value.status = res.data
+      toastStore.success({
+        text: "berhasil membatalkan transaksi",
+      })
+    } else {
+      toastStore.error({
+        text: "gagal  membatalkan transaksi",
+      })
+    }
+    isLoading.value = false
+  } catch (error) {
+    isLoading.value = false
+    console.log(error)
+  }
 }
 
 const handleSetCurrentTransaction = () => {
@@ -73,6 +101,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Toast />
   <Header title="Detail">
     <div
       class="flex w-full justify-end cursor-pointer"
@@ -219,7 +248,12 @@ onMounted(async () => {
       class="max-w-max mx-auto py-12"
       v-if="transaction.status.name === 'searching'"
     >
-      <ButtonLarge label="Batalkan" color="bg-brg-red" />
+      <ButtonLarge
+        label="Batalkan"
+        @click="handleCancelTransaction"
+        color="bg-brg-red"
+        :disabled="isLoading"
+      />
     </div>
     <div
       class="max-w-max mx-auto py-12"
