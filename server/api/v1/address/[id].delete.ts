@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
     const res = await prisma.address.delete({
         where: {
-            id: parseInt(addressId)
+            id: addressId
         }
     })
 

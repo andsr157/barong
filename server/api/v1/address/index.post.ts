@@ -37,8 +37,9 @@ export default defineEventHandler(async (event) => {
         }
     }
 
+    const count = await prisma.address.count()
     const res = await prisma.address.create({
-        data: { ...address, user_id: user_id }
+        data: { ...address, user_id: user_id, id: `ADR${count + 1}` }
     })
 
     if (res) {

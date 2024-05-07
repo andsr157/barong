@@ -60,11 +60,11 @@ onBeforeUnmount(() => {
   if (transactionData.value.transaction.id && addTransactionFlag.value) {
     transactionData.value = {
       transaction: {
-        id: 0,
-        user_id: 0,
-        chats_id: 0,
+        id: null,
+        user_id: null,
+        chats_id: null,
         address: {
-          id: 0,
+          id: null,
           label: "",
           owner_name: "",
           address_name: "",
@@ -73,7 +73,7 @@ onBeforeUnmount(() => {
           latitude: "",
           longitude: "",
         },
-        status_id: 0,
+        status_id: null,
         note: "",
       },
       transaction_detail: [],

@@ -14,10 +14,13 @@ export default defineEventHandler(async (event) => {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(body.password, salt)
 
+    const count = await prisma.users.count()
+
 
     const createdUser = await prisma.users.create({
         data: {
             ...body,
+            id: `USR${count + 1}`,
             password: hashedPassword,
         }
     })

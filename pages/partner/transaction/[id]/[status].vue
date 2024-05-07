@@ -55,10 +55,7 @@ const handleRequest = async (payload: any, request: string) => {
 
     console.log(clearMessage.data)
 
-    const res = await transactionStore.updateStatusTransaction(
-      parseInt(id),
-      payload
-    )
+    const res = await transactionStore.updateStatusTransaction(id, payload)
     if (transaction.value) {
       transaction.value.status = res.data.status ?? transaction.value.status
     }
@@ -83,7 +80,7 @@ const handleRequest = async (payload: any, request: string) => {
 const handleCancelRequest = () => {
   const payload = {
     partner_id: null,
-    status_id: 1,
+    status_id: "STS1",
   }
   handleRequest(payload, "cancel")
 
@@ -96,7 +93,7 @@ const handleCancelRequest = () => {
 const handleTakeRequest = () => {
   const payload = {
     partner_id: partner_id,
-    status_id: 2,
+    status_id: "STS2",
   }
   handleRequest(payload, "take")
   toastStore.success({
@@ -108,7 +105,7 @@ onMounted(async () => {
   const id = Array.isArray(route.params.id)
     ? route.params.id[0]
     : route.params.id
-  const res = await transactionStore.getSingleTransaction(parseInt(id))
+  const res = await transactionStore.getSingleTransaction(id)
   transaction.value = res.data
 
   console.log(res)
@@ -151,9 +148,43 @@ onMounted(async () => {
       />
     </section>
 
-    <section class="px-6 mt-[30px]">
+    <section
+      class="px-6 mt-[30px]"
+      v-if="
+        transaction.status.name === 'taking' ||
+        transaction.status.name === 'searching'
+      "
+    >
       <h2 class="text-brg-primary-dark font-semibold mb-4">Foto Sampah</h2>
       <CardImageGallery :url="transaction.trashImage" />
+    </section>
+
+    <section
+      class="px-6 mt-10 flex flex-col"
+      v-if="transaction.review.rate !== null"
+    >
+      <h2 class="text-brg-primary-dark font-semibold mb-4">Nilai</h2>
+      <div class="mx-auto">
+        <NuxtRating
+          :rating-value="transaction.review.rate"
+          :read-only="true"
+          class="w-[209px]"
+          :rating-size="'50px'"
+          :active-color="'#307FF5'"
+        />
+      </div>
+      <label class="text-brg-primary-dark font-semibold mb-4">Ulasan</label>
+      <ClientOnly>
+        <textarea
+          cols="10"
+          rows="8"
+          class="border-[1px] border-brg-light-gray w-full rounded-[20px] text-[11px] text-brg-primary-dark focus:outline-none py-3 px-4 font-medium"
+          placeholder="isi ulasan anda"
+          v-model="transaction.review.ulasan"
+          readonly
+        >
+        </textarea>
+      </ClientOnly>
     </section>
 
     <section class="px-6 mt-[30px]">

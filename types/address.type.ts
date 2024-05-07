@@ -1,5 +1,5 @@
 export interface Address {
-    id?: number,
+    id?: string | null,
     label: string,
     address_name: string,
     detail: string,

@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
         // Dapatkan data transaksi dari Prisma
         const transactions = await prisma.transaction.findMany({
             where: {
-                id: parseInt(id),
+                id: id,
             },
             include: {
                 // users: true,
@@ -32,9 +32,9 @@ export default defineEventHandler(async (event) => {
             },
         });
 
-        if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
+        if (AuthorizationCheck(session, transactions[0].user_id).status !== 200) {
             if (session.user.role !== 'partner') {
-                return AuthorizationCheck(session, transactions[0].user_id.toString());
+                return AuthorizationCheck(session, transactions[0].user_id);
             }
         }
 
@@ -123,7 +123,6 @@ export default defineEventHandler(async (event) => {
                 ulasan: transactions[0].partner_review,
             },
             note: transactions[0].note,
-            time: transactions[0].date
         };
 
         // Kembalikan respons dengan data transaksi yang diformat

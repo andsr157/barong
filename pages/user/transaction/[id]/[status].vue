@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useTransactionStore } from "~/stores/Transaction.store"
 import { estimateTotal } from "~/composables/helpers"
 
 const transactionStore = useTransactionStore()
+const toastStore = useToastStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -10,6 +10,7 @@ const transaction = ref<any>()
 const isModalOpen = ref(false)
 const { data: user } = <any>useAuth()
 const userId = user.value?.user?.id
+const isLoading = ref(false)
 
 const estimate = computed(() => {
   return estimateTotal(transaction.value.detailSampah)
@@ -19,13 +20,40 @@ const handleFinishTransaction = () => {
   router.push(`/user/transaction/success`)
 }
 
+const handleCancelTransaction = async () => {
+  try {
+    isLoading.value = true
+    const res = (await $fetch("/api/v1/transaction/user/cancel", {
+      method: "PUT",
+      body: {
+        id: transaction.value.id,
+      },
+    })) as any
+
+    if (res && res.status === 200) {
+      transaction.value.status = res.data
+      toastStore.success({
+        text: "berhasil membatalkan transaksi",
+      })
+    } else {
+      toastStore.error({
+        text: "gagal  membatalkan transaksi",
+      })
+    }
+    isLoading.value = false
+  } catch (error) {
+    isLoading.value = false
+    console.log(error)
+  }
+}
+
 const handleSetCurrentTransaction = () => {
   console.log(user.value)
   const transactionData = {
     id: transaction.value.id,
     user_id: userId,
     address: {
-      id: 0,
+      id: null,
       label: "",
       owner_name: "",
       address_name: "",
@@ -34,7 +62,7 @@ const handleSetCurrentTransaction = () => {
       latitude: "",
       longitude: "",
     },
-    status_id: 0,
+    status_id: null,
     note: transaction.value.note,
   }
 
@@ -50,9 +78,7 @@ const handleSetCurrentTransaction = () => {
     transaction_id = route.params.id
   }
   transactionStore.transactionData = currentTransaction
-  if (
-    transactionStore.transactionData.transaction.id === parseInt(transaction_id)
-  ) {
+  if (transactionStore.transactionData.transaction.id === transaction_id) {
     router.push("/user/transaction/add")
   }
 }
@@ -68,13 +94,14 @@ onMounted(async () => {
   } else {
     id = route.params.id
   }
-  const res = await transactionStore.getSingleTransaction(parseInt(id))
+  const res = await transactionStore.getSingleTransaction(id)
   transaction.value = res.data
   console.log(res.data)
 })
 </script>
 
 <template>
+  <Toast />
   <Header title="Detail">
     <div
       class="flex w-full justify-end cursor-pointer"
@@ -221,7 +248,12 @@ onMounted(async () => {
       class="max-w-max mx-auto py-12"
       v-if="transaction.status.name === 'searching'"
     >
-      <ButtonLarge label="Batalkan" color="bg-brg-red" />
+      <ButtonLarge
+        label="Batalkan"
+        @click="handleCancelTransaction"
+        color="bg-brg-red"
+        :disabled="isLoading"
+      />
     </div>
     <div
       class="max-w-max mx-auto py-12"
