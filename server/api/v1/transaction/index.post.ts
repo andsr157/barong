@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
         price: 0,
     }
 
-    console.log('detail', body.transaction_detail)
     const countDetail = await prisma.transaction_detail.count()
     let tempCountDetail = countDetail
     const transaction_detail = await prisma.transaction_detail.createMany({

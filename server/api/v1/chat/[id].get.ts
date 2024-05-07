@@ -14,7 +14,6 @@ export default defineEventHandler(async (event) => {
         include: {
             messages: true
         }
-
     })
 
 
@@ -44,6 +43,7 @@ export default defineEventHandler(async (event) => {
             avatar: true
         }
     })
+
     const partner = await prisma.users.findUnique({
         where: {
             id: res.partner_id

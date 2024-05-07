@@ -32,8 +32,6 @@ export default defineEventHandler(async (event) => {
             }
         })
 
-        console.log(res)
-
         let totalAmount = 0;
         res.forEach(transaction => {
             totalAmount += transaction.total ?? 0;

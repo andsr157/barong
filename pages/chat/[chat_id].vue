@@ -87,7 +87,7 @@ const chat = supabase
         message_id: payload.new.id as string,
         sender_id: payload.new.sender_id as string,
         content: payload.new.content as string,
-        created_at: payload.new.date_created as string,
+        created_at: payload.new.created_at as string,
       }
 
       realTimeMessage.value?.push(message)
