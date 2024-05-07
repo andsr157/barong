@@ -181,14 +181,17 @@ export const DATA = {
 
   CHATS: [
     {
+      id: "CHT1",
       user_id: "USR1",
       partner_id: null,
     },
     {
+      id: "CHT2",
       user_id: "USR2",
       partner_id: "USR3",
     },
     {
+      id: "CHT3",
       user_id: "USR1",
       partner_id: "USR4",
     },
@@ -217,7 +220,6 @@ export const DATA = {
       address:
         '{"label":"sekolah","address_name":"gabahan, sukoharjo ","detail":"dekat perempatan","owner_name":"july","owner_telp":"85842106413","latitude":"1113334455","longitude":"111226677"}',
       image: "image.png",
-      image: "image.png",
       status_id: "STS2",
       partner_rate: 5,
       partner_review: "baik sekali",
@@ -231,7 +233,6 @@ export const DATA = {
       chats_id: "CHT3",
       address:
         '{"label":"sekolah","address_name":"gabahan, sukoharjo ","detail":"dekat perempatan","owner_name":"july","owner_telp":"85842106413","latitude":"1113334455","longitude":"111226677"}',
-      image: "image.png",
       image: "image.png",
       status_id: "STS3",
       partner_rate: 3,
