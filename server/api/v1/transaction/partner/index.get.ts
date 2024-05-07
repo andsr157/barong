@@ -9,9 +9,14 @@ export default defineEventHandler(async (event) => {
         const status = query.status as string;
 
         const whereQuery: Record<string, any> = {
-            'active': { status_id: 2 },
-            'finish': { status_id: { in: [3, 4] } },
+            'active': { status_id: 'STS2' },
+            'finish': { status_id: { in: ['STS3', 'STS4'] } },
         };
+
+        let latestCursor
+        if (query.cursor !== '0') {
+            latestCursor = new Date(query.cursor)
+        }
 
         let queryPrisma: any = {
             take: parseInt(query.limit),
@@ -40,13 +45,13 @@ export default defineEventHandler(async (event) => {
                 status: true,
             },
             orderBy: {
-                date_created: 'desc'
+                updated_at: 'desc'
             }
         };
 
         if (query.cursor !== '0') {
             queryPrisma['skip'] = 1;
-            queryPrisma['cursor'] = { id: parseInt(query.cursor) };
+            queryPrisma['cursor'] = { updated_at: latestCursor };
         }
 
         const [total_record, transactions]: [any, any] = await Promise.all([

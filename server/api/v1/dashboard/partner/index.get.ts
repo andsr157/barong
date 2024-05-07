@@ -13,8 +13,8 @@ export default defineEventHandler(async (event) => {
             where: {
                 partner_id: userId,
                 OR: [
-                    { status_id: 3 },
-                    { status_id: 4 }
+                    { status_id: 'STS3' },
+                    { status_id: 'STS4' }
                 ],
             },
             include: {
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
         const currentMonth = today.getMonth() + 1;
 
         const { monthlyTotal, totalAmount, serviceBill } = res.reduce((accumulator, transaction) => {
-            const date = new Date(transaction.date_created);
+            const date = new Date(transaction.updated_at);
             const itemMonth = date.getMonth() + 1;
 
             if (itemMonth === currentMonth) {
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
         }, { monthlyTotal: 0, totalAmount: 0, serviceBill: 0 });
 
         const { lastMonthService } = res.reduce((accumulator, transaction) => {
-            const date = new Date(transaction.date_created);
+            const date = new Date(transaction.updated_at);
             const itemMonth = date.getMonth() + 1;
 
             if (itemMonth === currentMonth - 1) {

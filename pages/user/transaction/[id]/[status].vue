@@ -68,7 +68,7 @@ onMounted(async () => {
   } else {
     id = route.params.id
   }
-  const res = await transactionStore.getSingleTransaction(parseInt(id))
+  const res = await transactionStore.getSingleTransaction(id)
   transaction.value = res.data
   console.log(res.data)
 })

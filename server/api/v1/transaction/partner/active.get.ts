@@ -5,7 +5,6 @@ import { AuthorizationCheck } from '~/server/helpers'
 
 // Definisikan event handler untuk API
 export default defineEventHandler(async (event) => {
-
     try {
         // Ambil user_id dari parameter rute
         const session = await getServerSession(event) as any
@@ -13,8 +12,7 @@ export default defineEventHandler(async (event) => {
         const transactions = await prisma.transaction.findMany({
             where: {
                 partner_id: session.user.id,
-                status_id: 2
-
+                status_id: 'STS2'
             },
             include: {
                 user: {
@@ -35,12 +33,12 @@ export default defineEventHandler(async (event) => {
                 status: true,
             },
             orderBy: {
-                date_created: 'desc'
+                updated_at: 'desc'
             }
         });
 
-        if (AuthorizationCheck(session, transactions[0].partner_id.toString()).status !== 200) {
-            return AuthorizationCheck(session, transactions[0].partner_id.toString());
+        if (AuthorizationCheck(session, transactions[0].partner_id).status !== 200) {
+            return AuthorizationCheck(session, transactions[0].partner_id);
         }
 
         const user = await prisma.users.findUnique({
@@ -52,7 +50,6 @@ export default defineEventHandler(async (event) => {
                 telp: true,
             }
         });
-
 
         // Format data return
         const formattedTransactions = transactions.map((data: any) => {
@@ -67,15 +64,14 @@ export default defineEventHandler(async (event) => {
                     weight: detail.weight,
                 })),
                 status: status,
-                time: data.update_at
+                time: data.updated_at
             };
         });
-
 
         return { data: formattedTransactions, status: 200 };
 
     } catch (error) {
         console.error('Error fetching transaction data:', error);
-        return { data: null, error: 'Internal server error', status: 500 };
+        return { data: null, error: error, status: 500 };
     }
 });

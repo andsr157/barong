@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
                     category: detail.trash.category.name,
                     weight: detail.weight,
                 })),
-                time: data.update_at,
+                time: data.updated_at,
                 status: status,
 
             };

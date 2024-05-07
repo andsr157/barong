@@ -232,7 +232,7 @@ export const useTransactionStore = defineStore('transaction', {
             }
         },
 
-        async getSingleTransaction(id: number) {
+        async getSingleTransaction(id: string) {
             try {
                 this.isLoading = true
                 const res = await axios.get(`/api/v1/transaction/${id}`)
