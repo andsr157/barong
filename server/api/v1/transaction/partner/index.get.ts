@@ -82,7 +82,7 @@ export default defineEventHandler(async (event) => {
                     category: detail.trash.category.name,
                 })),
                 status: status,
-                time: data.update_at
+                time: data.updated_at
             };
         });
 

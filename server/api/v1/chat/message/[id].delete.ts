@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
         const res = await prisma.messages.deleteMany({
             where: {
-                chats_id: parseInt(id)
+                chats_id: id
             }
         })
 

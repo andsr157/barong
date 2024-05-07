@@ -15,7 +15,7 @@ const transactionId = route.params.id as string
 
 const handleFinishTransaction = () => {
   const payload = {
-    id: parseInt(transactionId),
+    id: transactionId,
     rate: rating.value,
     review: review.value,
   }
@@ -26,7 +26,7 @@ const handleFinishTransaction = () => {
     })
   )
   if (res !== null || res.value.data !== null) {
-    router.push(`/user/transaction/success`)
+    // router.push(`/user/transaction/success`)
   } else {
     toastStore.error({
       text: "gagal menyimpan ulasan",

@@ -1,18 +1,18 @@
 export interface User {
-    id: number;
+    id: string;
     name: string;
     avatar: string;
 }
 
 export interface Message {
-    message_id: number;
-    sender_id: number;
+    message_id: string;
+    sender_id: string;
     content: string;
-    date_created: string;
+    created_at: string;
 }
 
 export interface Chat {
-    chats_id: number;
+    chats_id: string;
     users: User[];
     messages: Message[];
 }

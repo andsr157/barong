@@ -67,7 +67,7 @@ export const useAddressStore = defineStore('Address-store', {
             }
         },
 
-        async deleteAddress(id: number) {
+        async deleteAddress(id: string) {
             try {
                 const res = await axios.delete(`/api/v1/address/${id}`)
                 return Promise.resolve(res.data)
@@ -89,7 +89,7 @@ export const useAddressStore = defineStore('Address-store', {
             console.log(id)
             console.log('jlan kuy')
             console.log(this.address)
-            const data = this.address.find((data: Address) => data.id === parseInt(id));
+            const data = this.address.find((data: Address) => data.id === id);
             console.log(data)
             if (data) {
                 console.log('jalan')
@@ -100,7 +100,7 @@ export const useAddressStore = defineStore('Address-store', {
 
         setDefaultFormAddress() {
             const defaultValues: Partial<Address> = {
-                id: 0,
+                id: null,
                 label: '',
                 address_name: '',
                 detail: '',
@@ -125,7 +125,7 @@ export const useAddressStore = defineStore('Address-store', {
 
 
 
-        async getCurrentLocation(id: number) {
+        async getCurrentLocation(id: string) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     console.log(position);

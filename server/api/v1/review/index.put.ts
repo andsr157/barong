@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
             data: {
                 partner_rate: body.rate,
                 partner_review: body.review,
-                status_id: 4,
+                status_id: 'STS4',
             }
         })
 

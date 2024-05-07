@@ -1,5 +1,5 @@
 export interface Transaction {
-    id: number
+    id: string
     chats_id: number,
     user: {
         name: string
@@ -39,7 +39,7 @@ export interface Transaction {
 
 //transaction form data type
 export interface Transaction {
-    id: number;
+    id: string;
     user: {
         name: string;
         telp: string;
@@ -48,7 +48,7 @@ export interface Transaction {
 }
 
 export interface TransactionDetail {
-    id?: number,
+    id?: string,
     trash_id: number;
     category: string,
     subcategory: string,
@@ -59,7 +59,7 @@ export interface TransactionDetail {
 }
 
 export interface Address {
-    id?: number,
+    id?: string | null,
     label: string,
     owner_name: string,
     address_name: string,
@@ -70,12 +70,12 @@ export interface Address {
 }
 export interface TransactionData {
     transaction: {
-        id?: number,
-        user_id: number,
+        id?: string | null,
+        user_id: string | null,
         address: Address,
-        chats_id?: number,
+        chats_id?: string | null,
         // image: string;
-        status_id: number,
+        status_id: string | null,
         note: string,
     };
     transaction_detail: TransactionDetail[],

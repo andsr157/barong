@@ -5,17 +5,17 @@ import { type TransactionData, type TransactionDetail, type TransactionImage, ty
 
 interface PostData {
     transaction: {
-        id?: number,
-        user_id: number,
+        id?: string,
+        user_id: string,
         address: Address
-        chats_id?: number,
+        chats_id?: string,
         image: string,
-        status_id: number,
+        status_id: string,
         note: string,
     },
     transaction_detail: {
-        id?: number,
-        trash_id: number,
+        id?: string,
+        trash_id: string,
         weight: number
     }[],
 }
@@ -25,11 +25,11 @@ export const useTransactionStore = defineStore('transaction', {
         return {
             transactionData: reactive({
                 transaction: {
-                    id: 0,
-                    user_id: 0,
-                    chats_id: 0,
+                    id: null,
+                    user_id: null,
+                    chats_id: null,
                     address: {
-                        id: 0,
+                        id: null,
                         label: '',
                         owner_name: '',
                         address_name: '',
@@ -38,7 +38,7 @@ export const useTransactionStore = defineStore('transaction', {
                         latitude: '',
                         longitude: ''
                     },
-                    status_id: 0,
+                    status_id: null,
                     note: '',
                 },
                 transaction_detail: [],
@@ -60,9 +60,9 @@ export const useTransactionStore = defineStore('transaction', {
     getters: {
         resetTransationData(): void {
             this.transactionData.transaction = {
-                user_id: 0,
+                user_id: null,
                 address: {
-                    id: 0,
+                    id: null,
                     label: '',
                     owner_name: '',
                     address_name: '',
@@ -71,7 +71,7 @@ export const useTransactionStore = defineStore('transaction', {
                     latitude: '',
                     longitude: ''
                 },
-                status_id: 0,
+                status_id: null,
                 note: '',
             }
             this.transactionData.transaction_detail = []
@@ -148,7 +148,7 @@ export const useTransactionStore = defineStore('transaction', {
             return Promise.resolve(res.data)
         },
 
-        async deleteTransactionTrash(id: number) {
+        async deleteTransactionTrash(id: string) {
             this.isLoading = true
             const res = await axios.delete(`/api/v1/transaction/trash/${id}`)
             if (res.data.status === 200) {
@@ -191,7 +191,6 @@ export const useTransactionStore = defineStore('transaction', {
             } catch (error) {
                 console.error(error)
             }
-
         },
 
         async getAllTransaction() {
@@ -247,7 +246,7 @@ export const useTransactionStore = defineStore('transaction', {
             }
         },
 
-        async updateStatusTransaction(id: number, payload: any) {
+        async updateStatusTransaction(id: string, payload: any) {
             try {
                 this.statusLoading = true
                 const res = await axios.put(`/api/v1/transaction/partner/${id}`, payload)

@@ -78,7 +78,7 @@ const toggleSwitch = async () => {
 }
 
 const handleDeleteAddress = async () => {
-  const res = await addresStore.deleteAddress(formAdress.value.id)
+  const res = await addresStore.deleteAddress(formAdress?.value?.id)
   if (res.status === 200) {
     useRouter().push("/user/profile/address")
   }

@@ -11,10 +11,10 @@ export default defineEventHandler(async (event) => {
 
         const res = await prisma.transaction.update({
             where: {
-                id: parseInt(transaction_id)
+                id: transaction_id
             },
             data: {
-                status_id: 3,
+                status_id: 'STS3',
                 total: body.total
             }
         })

@@ -74,7 +74,7 @@ const onSubmit = async () => {
     const transaction = {
       ...trash.value.transaction,
       user_id: user.value.user.id,
-      status_id: 1,
+      status_id: "STS1",
       image: imageUrl,
     }
 
@@ -83,7 +83,7 @@ const onSubmit = async () => {
         const detail = {
           trash_id: data.trash_id,
           weight: data.weight,
-          ...(data.id ? { id: data.id } : { id: 0 }),
+          ...(data.id ? { id: data.id } : { id: null }),
         }
         return detail
       }

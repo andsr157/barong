@@ -25,7 +25,7 @@ const handleSetCurrentTransaction = () => {
     id: transaction.value.id,
     user_id: userId,
     address: {
-      id: 0,
+      id: null,
       label: "",
       owner_name: "",
       address_name: "",
@@ -34,7 +34,7 @@ const handleSetCurrentTransaction = () => {
       latitude: "",
       longitude: "",
     },
-    status_id: 0,
+    status_id: null,
     note: transaction.value.note,
   }
 
@@ -50,9 +50,7 @@ const handleSetCurrentTransaction = () => {
     transaction_id = route.params.id
   }
   transactionStore.transactionData = currentTransaction
-  if (
-    transactionStore.transactionData.transaction.id === parseInt(transaction_id)
-  ) {
+  if (transactionStore.transactionData.transaction.id === transaction_id) {
     router.push("/user/transaction/add")
   }
 }
