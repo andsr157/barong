@@ -4,7 +4,6 @@ import { getServerSession } from '#auth'
 import { AuthorizationCheck } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
-
     try {
         const session = await getServerSession(event) as any
         const transactions = await prisma.transaction.findMany({
