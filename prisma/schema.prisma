@@ -8,53 +8,53 @@ datasource db {
 }
 
 model users {
-  id             Int           @id @default(autoincrement())
-  uuid           String?
+  id             String      @id
   name           String
-  email          String        @unique
+  email          String      @unique
   telp           String
   avatar         String
-  date_created   DateTime      @default(now())
-  update_at      DateTime?
   password       String
   role           String
+  created_at   DateTime    @default(now())
+  updated_at      DateTime?   @default(now())
   address        address[]
+  serviceFee     serviceFee[]
   ReferredToUser transaction[] @relation("Partner")
   ReferrerToUser transaction[] @relation("User")
 }
 
 model address {
-  id           Int     @id @default(autoincrement())
-  label        String
+  id           String    @id @default(cuid())
+  label        String?
   address_name String
   detail       String?
-  owner_name   String
-  owner_telp   String
-  latitude     String
-  longitude    String
-  user_id      Int
+  owner_name   String?
+  owner_telp   String?
+  latitude     String?
+  longitude    String?
+  user_id      String
   is_main      Boolean
-  user         users   @relation(fields: [user_id], references: [id])
+  user         users     @relation(fields: [user_id], references: [id])
 }
 
 model trashCategory {
-  id          Int     @id @default(autoincrement())
+  id          String    @id @default(cuid())
   name        String
   subcategory trash[]
 }
 
 model trash {
-  id                 Int                  @id @default(autoincrement())
+  id                 String    @id @default(cuid())
   name               String
   minPrice           Int
   maxPrice           Int
-  category_id        Int
+  category_id        String
   transaction_detail transaction_detail[]
-  category           trashCategory        @relation(fields: [category_id], references: [id])
+  category           trashCategory @relation(fields: [category_id], references: [id])
 }
 
 model status {
-  id          Int           @id @default(autoincrement())
+  id          String    @id @default(cuid())
   name        String
   label       String
   status      String
@@ -62,53 +62,58 @@ model status {
 }
 
 model transaction {
-  id                 Int                  @id @default(autoincrement())
-  user_id            Int
-  partner_id         Int?
+  id                 String    @id @default(cuid())
+  user_id            String
+  partner_id         String?
   image              String
-  status_id          Int
+  status_id          String
   partner_rate       Int?
   partner_review     String?
   note               String
   total              Int?
-  date_created       DateTime             @default(now())
   address            String
-  chats_id           Int?
-  update_at          DateTime?            @default(now())
-  partner            users?               @relation("Partner", fields: [partner_id], references: [id])
-  status             status               @relation(fields: [status_id], references: [id])
-  user               users                @relation("User", fields: [user_id], references: [id])
+  chats_id           String?
+  created_at         DateTime    @default(now())
+  updated_at          DateTime?   @default(now())
+  partner            users?      @relation("Partner", fields: [partner_id], references: [id])
+  status             status      @relation(fields: [status_id], references: [id])
+  user               users       @relation("User", fields: [user_id], references: [id])
   transaction_detail transaction_detail[]
 }
 
 model transaction_detail {
-  id             Int         @id @default(autoincrement())
-  transaction_id Int
-  trash_id       Int
+  id             String    @id @default(cuid())
+  transaction_id String
+  trash_id       String
   price          Int?
   weight         Int
   transaction    transaction @relation(fields: [transaction_id], references: [id])
   trash          trash       @relation(fields: [trash_id], references: [id])
 }
 
-model chat {
-  id      Int    @id @default(autoincrement())
-  message String
-}
-
 model chats {
-  id           Int        @id @default(autoincrement())
-  user_id      Int
-  partner_id   Int?
-  date_created DateTime   @default(now())
+  id           String    @id @default(cuid())
+  user_id      String
+  partner_id   String?
+  created_at DateTime  @default(now())
   messages     messages[]
 }
 
 model messages {
-  id           Int      @id @default(autoincrement())
-  chats_id     Int
-  sender_id    Int
+  id           String    @id @default(cuid())
+  chats_id     String
+  sender_id    String
   content      String
-  date_created DateTime @default(now())
-  chats        chats    @relation(fields: [chats_id], references: [id])
+  created_at   DateTime  @default(now())
+  chats        chats     @relation(fields: [chats_id], references: [id])
+}
+
+model serviceFee {
+  id         String    @id @default(cuid())
+  partner_id String
+  totalFee   Int
+  lackOfFee  Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @default(now())
+  users      users     @relation(fields: [partner_id], references: [id])
 }

@@ -11,8 +11,8 @@ export default defineEventHandler(async (event) => {
             where: {
                 user_id: session.user.id,
                 OR: [
-                    { status_id: 1 },
-                    { status_id: 2 }
+                    { status_id: 'STS1' },
+                    { status_id: 'STS2' },
                 ]
             },
             include: {
@@ -36,8 +36,9 @@ export default defineEventHandler(async (event) => {
             },
         });
 
-        if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
-            return AuthorizationCheck(session, transactions[0].user_id.toString());
+
+        if (AuthorizationCheck(session, transactions[0].user_id).status !== 200) {
+            return AuthorizationCheck(session, transactions[0].user_id);
         }
 
         const formattedTransactions = transactions.map((data: any) => {

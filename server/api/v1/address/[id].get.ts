@@ -10,14 +10,11 @@ export default defineEventHandler(async (event) => {
         return { error: 'ID not found', status: 400 }
     }
 
-    const idAsNumber = parseInt(id)
-    if (isNaN(idAsNumber)) {
-        return { error: 'Invalid ID', status: 400 }
-    }
+
 
     const res = await prisma.address.findUnique({
         where: {
-            id: idAsNumber
+            id: id
         }
     })
 

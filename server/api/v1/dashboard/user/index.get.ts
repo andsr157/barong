@@ -13,10 +13,10 @@ export default defineEventHandler(async (event) => {
         }
         const res = await prisma.transaction.findMany({
             where: {
-                user_id: parseInt(userId),
+                user_id: userId,
                 OR: [
-                    { status_id: 3 },
-                    { status_id: 4 }
+                    { status_id: 'STS3' },
+                    { status_id: 'STS4' }
                 ]
             },
             include: {

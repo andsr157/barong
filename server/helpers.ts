@@ -5,7 +5,7 @@ export function AuthorizationCheck(session: any, reqId: string) {
 
     const userId = session.user.id
 
-    if (userId !== parseInt(reqId)) {
+    if (userId !== reqId) {
         return { data: {}, status: 403 }
     }
 
