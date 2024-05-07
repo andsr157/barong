@@ -2,7 +2,6 @@ import { prisma } from '~/composables/prisma'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    console.log('ini body', body.transaction_detail)
     try {
         const updatedTransaction = await prisma.transaction.update({
             where: {
@@ -14,15 +13,18 @@ export default defineEventHandler(async (event) => {
                 image: body.transaction.image,
                 status_id: body.transaction.status_id,
                 note: body.transaction.note,
-                update_at: new Date()
+                updated_at: new Date()
             },
         });
+
 
         const detailData = {
             transaction_id: body.transaction.id,
             price: 0,
         }
 
+        const count = await prisma.transaction_detail.count()
+        let countDetail = count
         const updatedTransactionDetails = await Promise.all(
             body.transaction_detail.map(async (detail: any) => {
                 const { id: trashId, ...resData } = detail
@@ -36,12 +38,11 @@ export default defineEventHandler(async (event) => {
                 });
 
                 if (!existingTransactionDetail) {
-                    // Jika detail transaksi belum ada, buat yang baru
+                    countDetail += 1
                     return await prisma.transaction_detail.create({
-                        data: { ...resData, ...detailData }
+                        data: { id: `TRD${countDetail}`, ...resData, ...detailData }
                     });
                 } else {
-                    // Jika sudah ada, perbarui detail transaksi yang ada
                     return await prisma.transaction_detail.update({
                         where: { id: id },
                         data: {
@@ -53,7 +54,6 @@ export default defineEventHandler(async (event) => {
             })
         );
 
-        // Mengembalikan respons yang sesuai dengan permintaan
         return {
             data: {
                 transaction: updatedTransaction,

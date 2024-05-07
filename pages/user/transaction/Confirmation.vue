@@ -83,7 +83,7 @@ const onSubmit = async () => {
         const detail = {
           trash_id: data.trash_id,
           weight: data.weight,
-          ...(data.id ? { id: data.id } : { id: null }),
+          ...(data.id ? { id: data.id } : { id: "" }),
         }
         return detail
       }
