@@ -1,11 +1,30 @@
 import { prisma } from '~/composables/prisma'
+import { getNextNumber } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
-    const count = await prisma.chats.count()
+
+    const lastId = await prisma.chats.findFirst({
+        select: {
+            id: true
+        },
+        orderBy: {
+            id: 'desc'
+        }
+    })
+
+    if (!lastId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized'
+        })
+    }
+
+    const id = getNextNumber(lastId.id)
+
     const res = await prisma.chats.create({
         data: {
-            id: `CHT${count + 1}`,
+            id: id,
             user_id: body.user_id,
             partner_id: null
         }

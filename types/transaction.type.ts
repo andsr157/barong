@@ -49,7 +49,7 @@ export interface Transaction {
 
 export interface TransactionDetail {
     id?: string,
-    trash_id: number;
+    trash_id: string;
     category: string,
     subcategory: string,
     weight: number;

@@ -1,4 +1,5 @@
 import { prisma } from "@/composables/prisma"
+import { getNextNumber } from "~/server/helpers"
 import bcrypt from 'bcrypt'
 
 export default defineEventHandler(async (event) => {
@@ -14,13 +15,28 @@ export default defineEventHandler(async (event) => {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(body.password, salt)
 
-    const count = await prisma.users.count()
+    const lastId = await prisma.users.findFirst({
+        select: {
+            id: true
+        },
+        orderBy: {
+            id: 'desc'
+        }
+    })
 
+    if (!lastId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized'
+        })
+    }
+
+    const id = getNextNumber(lastId.id)
 
     const createdUser = await prisma.users.create({
         data: {
             ...body,
-            id: `USR${count + 1}`,
+            id: id,
             password: hashedPassword,
         }
     })

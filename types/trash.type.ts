@@ -7,5 +7,5 @@ export interface TrashSubCategory {
     name: string,
     minPrice: number,
     maxPrice: number,
-    category_id: number
+    category_id: string
 }

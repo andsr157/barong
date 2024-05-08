@@ -1,4 +1,5 @@
 import { prisma } from '~/composables/prisma'
+import { getSeparateNumber } from '~/server/helpers';
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
@@ -23,8 +24,24 @@ export default defineEventHandler(async (event) => {
             price: 0,
         }
 
-        const count = await prisma.transaction_detail.count()
-        let countDetail = count
+        const lastDetailId = await prisma.transaction_detail.findFirst({
+            select: {
+                id: true
+            },
+            orderBy: {
+                id: 'desc'
+            }
+        })
+
+        if (!lastDetailId) {
+            throw createError({
+                statusCode: 401,
+                statusMessage: 'Unauthorized'
+            })
+        }
+
+        let countDetail = getSeparateNumber(lastDetailId.id)
+
         const updatedTransactionDetails = await Promise.all(
             body.transaction_detail.map(async (detail: any) => {
                 const { id: trashId, ...resData } = detail

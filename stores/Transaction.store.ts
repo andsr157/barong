@@ -118,7 +118,7 @@ export const useTransactionStore = defineStore('transaction', {
             }
         },
 
-        removeTrash(trashId: number) {
+        removeTrash(trashId: string) {
             const index = this.transactionData.transaction_detail.findIndex(detail => detail.trash_id === trashId);
             if (index !== -1) {
                 this.transactionData.transaction_detail.splice(index, 1);
@@ -150,12 +150,14 @@ export const useTransactionStore = defineStore('transaction', {
 
         async deleteTransactionTrash(id: string) {
             this.isLoading = true
-            const res = await axios.delete(`/api/v1/transaction/trash/${id}`)
+            const res = await axios.delete(`/api/v1/transaction/trash/${id}`).catch((error) => {
+                this.isLoading = false
+            }) as any
+
             if (res.data.status === 200) {
                 this.transactionData.transaction_detail = this.transactionData.transaction_detail.filter(data => data.id !== id)
-            } else {
-                this.isLoading = false
             }
+            this.isLoading = false
         },
 
         async getActiveTransaction(role: string = 'user') {

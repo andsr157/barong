@@ -1,5 +1,6 @@
 import { prisma } from '~/composables/prisma'
 import { getServerSession } from '#auth'
+import { getNextNumber } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
     const session = await getServerSession(event) as any
@@ -36,9 +37,24 @@ export default defineEventHandler(async (event) => {
         }
     }
 
-    const count = await prisma.address.count()
+    const lastId = await prisma.address.findFirst({
+        select: { id: true },
+        orderBy: {
+            id: 'desc'
+        }
+    })
+
+    if (!lastId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized'
+        })
+    }
+
+    const id = getNextNumber(lastId.id)
+
     const res = await prisma.address.create({
-        data: { ...address, user_id: user_id, id: `ADR${count + 1}` }
+        data: { ...address, user_id: user_id, id: id }
     })
 
     if (res) {

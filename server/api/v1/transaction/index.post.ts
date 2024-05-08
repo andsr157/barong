@@ -1,15 +1,32 @@
 import { PrismaClient } from "@prisma/client";
+import { getNextNumber, getSeparateNumber } from "~/server/helpers";
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     // return body
 
-    const count = await prisma.transaction.count()
+    const lastId = await prisma.transaction.findFirst({
+        select: {
+            id: true
+        },
+        orderBy: {
+            id: 'desc'
+        }
+    })
+
+    if (!lastId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized'
+        })
+    }
+
+    const id = getNextNumber(lastId.id)
 
     const res = await prisma.transaction.create({
         data: {
-            id: `TR${count + 1}`,
+            id: id,
             user_id: body.transaction.user_id,
             address: JSON.stringify(body.transaction.address),
             image: body.transaction.image,
@@ -30,7 +47,24 @@ export default defineEventHandler(async (event) => {
         price: 0,
     }
 
-    const countDetail = await prisma.transaction_detail.count()
+    const lastDetailId = await prisma.transaction_detail.findFirst({
+        select: {
+            id: true
+        },
+        orderBy: {
+            id: 'desc'
+        }
+    })
+
+    if (!lastDetailId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized'
+        })
+    }
+
+    const countDetail = getSeparateNumber(lastDetailId.id)
+
     let tempCountDetail = countDetail
     const transaction_detail = await prisma.transaction_detail.createMany({
         data: body.transaction_detail.map((data: any) => {
