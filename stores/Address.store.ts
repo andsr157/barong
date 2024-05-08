@@ -137,7 +137,6 @@ export const useAddressStore = defineStore('Address-store', {
                         this.mapRef.leafletObject.setView(this.center, 1000);
                     }
                     const address = await getLocationAdress(this.center.lat, this.center.lng);
-                    const index = this.address.findIndex((data) => data.id = id)
                     this.generatedAddress = address
                 });
             }
