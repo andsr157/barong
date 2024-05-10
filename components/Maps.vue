@@ -21,6 +21,19 @@ const saveNewLocation = () => {
 
   emit("closeMap")
 }
+
+async function test(event: any) {
+  console.log(event)
+  addresStore.getLocationAdress(event.lat, event.lng)
+  center.value = {
+    lat: event.lat,
+    lng: event.lng,
+  }
+}
+
+async function isReady(event: any) {
+  console.log(event)
+}
 </script>
 
 <template>
@@ -35,7 +48,12 @@ const saveNewLocation = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           layer-type="base"
         />
-        <LMarker :lat-lng="[props.center.lat, props.center.lng]" draggable>
+        <LMarker
+          :lat-lng="[props.center.lat, props.center.lng]"
+          @update:lat-lng="test"
+          @ready="isReady"
+          draggable
+        >
         </LMarker>
       </LMap>
     </div>

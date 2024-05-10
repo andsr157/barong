@@ -101,6 +101,7 @@ const handleUpdateAddress = handleSubmit(async (values) => {
 })
 </script>
 <template>
+  {{ formAdress }}
   <Toast />
   <div v-if="!isLoading">
     <Header title="Edit Alamat" />

@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { HttpStatusCode } from "axios"
-import { useTransactionStore } from "~/stores/Transaction.store"
+import useCustomMaps from "~/composables/useMap"
+
+const maps = useCustomMaps() as any
+
 const transactionStore = useTransactionStore()
+const locationStore = useLocationStore()
 const { isLoading } = storeToRefs(transactionStore)
+const { lat: latitude, lng: longitude } = storeToRefs(locationStore)
 
 definePageMeta({
   layout: "partner",
@@ -17,9 +21,17 @@ const requestPending = ref()
 const requestStatus = ref()
 
 async function fetchData() {
+  if (latitude.value === 0 && longitude.value === 0) {
+    const { lat, lng } = await maps.getCurrentLocation()
+    ;(latitude.value = lat), (longitude.value = lng)
+  }
+
   const { data, execute, pending, status } = useAsyncData(
     "request",
-    () => $fetch(`/api/v1/transaction/request?limit=1&cursor=${cursor.value}`),
+    () =>
+      $fetch(
+        `/api/v1/transaction/request?limit=1&cursor=${cursor.value}&lat=${latitude.value}&lng=${longitude.value}`
+      ),
     { immediate: false }
   ) as any
 
@@ -69,6 +81,9 @@ async function fetchData() {
 
 onMounted(() => {
   fetchData()
+  setInterval(() => {
+    locationStore.updateLocation()
+  }, 5000)
   // if (dataCache.value !== null && dataCache.value.data.length > 0) {
   //   requestData.value.data.push(...dataCache.value.data)
   //   requestData.value.pagination = dataCache.value.pagination
@@ -96,12 +111,13 @@ onMounted(() => {
 
       <div v-if="requestPending">loading data</div>
 
-      <Button
+      <button
         v-if="requestData.pagination.total_pages !== pageFlag"
         @click="fetchData()"
         class="border-2 border-brg-primary mt-2 text-brg-primary text-sm font-medium p-2 rounded-3xl w-[40%] mx-auto"
-        >Load More</Button
       >
+        Load More
+      </button>
     </div>
     <div v-else-if="!requestPending && requestStatus !== 'pending'">
       <p
