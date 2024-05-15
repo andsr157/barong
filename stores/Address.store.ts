@@ -22,7 +22,7 @@ export const useAddressStore = defineStore('Address-store', {
         async getLocationAdress(lat: number, lng: number) {
             try {
                 const res = await axios.get(
-                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+                    `https://nominatim.openstreetmap.org/reverse?&lat=${lat}&lon=${lng}&format=json`
                 );
                 this.generatedAddress = res.data.display_name;
             } catch (error) {
