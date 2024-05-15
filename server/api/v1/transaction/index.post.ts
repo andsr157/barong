@@ -6,23 +6,31 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     // return body
 
-    const lastId = await prisma.transaction.findFirst({
-        select: {
-            id: true
-        },
-        orderBy: {
-            id: 'desc'
-        }
-    })
+    const count = await prisma.transaction.count()
 
-    if (!lastId) {
-        throw createError({
-            statusCode: 401,
-            statusMessage: 'Unauthorized'
+    let id
+    if (count === 0) {
+        id = 'TR1'
+    } else {
+        const lastId = await prisma.transaction.findFirst({
+            select: {
+                id: true
+            },
+            orderBy: {
+                id: 'desc'
+            }
         })
+
+        if (!lastId) {
+            throw createError({
+                statusCode: 401,
+                statusMessage: 'Unauthorized'
+            })
+        }
+
+        id = getNextNumber(lastId.id)
     }
 
-    const id = getNextNumber(lastId.id)
 
     const res = await prisma.transaction.create({
         data: {

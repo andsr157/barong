@@ -4,23 +4,30 @@ import { getNextNumber } from '~/server/helpers'
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
 
-    const lastId = await prisma.chats.findFirst({
-        select: {
-            id: true
-        },
-        orderBy: {
-            id: 'desc'
-        }
-    })
+    const count = await prisma.chats.count()
 
-    if (!lastId) {
-        throw createError({
-            statusCode: 401,
-            statusMessage: 'Unauthorized'
+    let id
+    if (count === 0) {
+        id = 'CHT1'
+    } else {
+        const lastId = await prisma.chats.findFirst({
+            select: {
+                id: true
+            },
+            orderBy: {
+                id: 'desc'
+            }
         })
-    }
 
-    const id = getNextNumber(lastId.id)
+        if (!lastId) {
+            throw createError({
+                statusCode: 401,
+                statusMessage: 'Unauthorized'
+            })
+        }
+
+        id = getNextNumber(lastId.id)
+    }
 
     const res = await prisma.chats.create({
         data: {
