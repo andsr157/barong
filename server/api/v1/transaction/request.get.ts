@@ -60,6 +60,8 @@ export default defineEventHandler(async (event) => {
             prisma.transaction.findMany(queryPrisma)
         ]);
 
+        return transactions
+
 
         if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
             if (session.user.role !== 'partner') {
@@ -97,8 +99,8 @@ export default defineEventHandler(async (event) => {
         }).filter((tr: any) => tr !== null);
 
         const pagination = {
-            total_record,
-            total_pages: Math.ceil(total_record / parseInt(query.limit)),
+            total_record: formattedTransactions.length,
+            total_pages: Math.ceil(formattedTransactions.length / parseInt(query.limit)),
             next: transactions.length === parseInt(query.limit) ? `/api/v1/transaction/request?limit=${query.limit}&cursor=${transactions[transactions.length - 1].updated_at.toISOString()}` : null,
             previous: query.cursor ? `/api/v1/transaction/request?limit=${-query.limit}cursor=${transactions[transactions.length - 1].updated_at.toISOString()}` : null,
         };

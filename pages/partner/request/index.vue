@@ -119,7 +119,13 @@ onMounted(() => {
         Load More
       </button>
     </div>
-    <div v-else-if="!requestPending && requestStatus !== 'pending'">
+    <div
+      v-else-if="
+        !requestPending &&
+        requestStatus !== 'pending' &&
+        requestData.data.length > 0
+      "
+    >
       <p
         class="text-center text-sm font-medium text-brg-primary-dark text-opacity-70 mt-10"
       >
