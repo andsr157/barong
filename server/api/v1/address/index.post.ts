@@ -37,34 +37,9 @@ export default defineEventHandler(async (event) => {
         }
     }
 
-    const count = await prisma.address.count()
-
-    let id
-    if (count === 0) {
-        id = 'TR1'
-    } else {
-        const lastId = await prisma.address.findFirst({
-            select: { id: true },
-            orderBy: {
-                id: 'desc'
-            }
-        })
-
-        if (!lastId) {
-            throw createError({
-                statusCode: 401,
-                statusMessage: 'Unauthorized'
-            })
-        }
-
-        id = getNextNumber(lastId.id)
-    }
-
-
-
 
     const res = await prisma.address.create({
-        data: { ...address, user_id: user_id, id: id }
+        data: { ...address, user_id: user_id }
     })
 
     if (res) {

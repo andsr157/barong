@@ -8,7 +8,7 @@ datasource db {
 }
 
 model users {
-  id             String        @id
+  id             String        @id @default(cuid())
   name           String
   email          String        @unique
   telp           String
@@ -38,13 +38,13 @@ model address {
 }
 
 model trashCategory {
-  id          String  @id @default(cuid())
+  id          String  @id
   name        String
   subcategory trash[]
 }
 
 model trash {
-  id                 String               @id @default(cuid())
+  id                 String               @id 
   name               String
   minPrice           Int
   maxPrice           Int
@@ -54,7 +54,7 @@ model trash {
 }
 
 model status {
-  id          String        @id @default(cuid())
+  id          String        @id 
   name        String
   label       String
   status      String

@@ -55,9 +55,9 @@ export default defineEventHandler(async (event) => {
                 });
 
                 if (!existingTransactionDetail) {
-                    countDetail += 1
+
                     return await prisma.transaction_detail.create({
-                        data: { id: `TRD${countDetail}`, ...resData, ...detailData }
+                        data: { ...resData, ...detailData }
                     });
                 } else {
                     return await prisma.transaction_detail.update({
@@ -67,7 +67,6 @@ export default defineEventHandler(async (event) => {
                         },
                     });
                 }
-
             })
         );
 

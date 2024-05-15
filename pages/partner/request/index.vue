@@ -80,64 +80,55 @@ async function fetchData() {
 }
 
 onMounted(() => {
-  fetchData()
   setInterval(() => {
     locationStore.updateLocation()
   }, 5000)
-  // if (dataCache.value !== null && dataCache.value.data.length > 0) {
-  //   requestData.value.data.push(...dataCache.value.data)
-  //   requestData.value.pagination = dataCache.value.pagination
-  //   cursor.value = dataCache.value.data[dataCache.value.data.length - 1].time
-  // } else {
-  //   fetchData()
-  // }
+  if (dataCache.value !== null && dataCache.value.data.length > 0) {
+    requestData.value.data.push(...dataCache.value.data)
+    requestData.value.pagination = dataCache.value.pagination
+    cursor.value = dataCache.value.data[dataCache.value.data.length - 1].time
+    pageFlag.value += 1
+  } else {
+    console.log("woiii")
+    fetchData()
+  }
 })
 </script>
 
 <template>
   <Header title="Permintaan" />
-  <section class="px-6 pt-[30px] pb-24 overflow-auto">
-    <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
-    <div v-else-if="requestData.data.length > 0" class="flex flex-col gap-y-5">
-      <CardTransactionPartner
-        v-for="transaction in requestData.data"
-        :detailSampah="formatSampah(transaction.detailSampah)"
-        :address="transaction.address.address"
-        :status="transaction.status"
-        :user="transaction.user"
-        :time="transaction.time"
-        :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
-      />
+  <Suspense>
+    <section class="px-6 pt-[30px] pb-24 overflow-auto">
+      <div v-if="requestPending" class="px-6 mt-6">Lagi loading sabar</div>
+      <div
+        v-else-if="requestData.data.length > 0"
+        class="flex flex-col gap-y-5"
+      >
+        <CardTransactionPartner
+          v-for="transaction in requestData.data"
+          :detailSampah="formatSampah(transaction.detailSampah)"
+          :address="transaction.address.address"
+          :status="transaction.status"
+          :user="transaction.user"
+          :time="transaction.time"
+          :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
+        />
 
-      <div v-if="requestPending">loading data</div>
-
-      <button
-        v-if="requestData.pagination.total_pages !== pageFlag"
-        @click="fetchData()"
-        class="border-2 border-brg-primary mt-2 text-brg-primary text-sm font-medium p-2 rounded-3xl w-[40%] mx-auto"
-      >
-        Load More
-      </button>
-    </div>
-    <div
-      v-else-if="
-        !requestPending &&
-        requestStatus !== 'pending' &&
-        requestData.data.length > 0
-      "
-    >
-      <p
-        class="text-center text-sm font-medium text-brg-primary-dark text-opacity-70 mt-10"
-      >
-        Loading data
-      </p>
-    </div>
-    <div v-else>
-      <p
-        class="text-center text-sm font-medium text-brg-primary-dark text-opacity-70 mt-10"
-      >
-        Tidak ada permintaan
-      </p>
-    </div>
-  </section>
+        <button
+          v-if="requestData.pagination.total_pages !== pageFlag"
+          @click="fetchData()"
+          class="border-2 border-brg-primary mt-2 text-brg-primary text-sm font-medium p-2 rounded-3xl w-[40%] mx-auto"
+        >
+          Load More
+        </button>
+      </div>
+      <div v-else>
+        <p
+          class="text-center text-sm font-medium text-brg-primary-dark text-opacity-70 mt-10"
+        >
+          Tidak ada permintaan
+        </p>
+      </div>
+    </section>
+  </Suspense>
 </template>

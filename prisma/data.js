@@ -1,7 +1,6 @@
 export const DATA = {
   USERS: [
     {
-      id: "USR1",
       name: "andika",
       password: "andika123",
       email: "andik@gmail.com",
@@ -11,7 +10,6 @@ export const DATA = {
       role: "user",
     },
     {
-      id: "USR2",
       name: "july",
       password: "july123",
       email: "jyuly@gmail.com",
@@ -21,7 +19,6 @@ export const DATA = {
       role: "user",
     },
     {
-      id: "USR3",
       name: "dwi",
       password: "dwi123",
       email: "dwi@gmail.com",
@@ -31,7 +28,6 @@ export const DATA = {
       role: "partner",
     },
     {
-      id: "USR4",
       name: "hasan najib",
       password: "hasan123",
       email: "san@gmail.com",
@@ -41,7 +37,6 @@ export const DATA = {
       role: "partner",
     },
     {
-      id: "USR5",
       name: "saputra dwi",
       password: "saputra123",
       email: "saputra@gmail.com",
@@ -53,7 +48,6 @@ export const DATA = {
   ],
   ADDRESS: [
     {
-      id: "ADR1",
       label: "kost",
       address_name: "gabahan, sukoharjo ",
       detail: "dekat perempatan",
@@ -64,7 +58,6 @@ export const DATA = {
       user_id: "USR1",
     },
     {
-      id: "ADR2",
       label: "sekolah",
       address_name: "gabahan, sukoharjo ",
       detail: "dekat perempatan",
@@ -75,7 +68,6 @@ export const DATA = {
       user_id: "USR2",
     },
     {
-      id: "ADR3",
       label: "kost",
       address_name: "gabahan, sukoharjo ",
       detail: "dekat perempatan",
@@ -181,17 +173,14 @@ export const DATA = {
 
   CHATS: [
     {
-      id: "CHT1",
       user_id: "USR1",
       partner_id: null,
     },
     {
-      id: "CHT2",
       user_id: "USR2",
       partner_id: "USR3",
     },
     {
-      id: "CHT3",
       user_id: "USR1",
       partner_id: "USR4",
     },
@@ -199,7 +188,6 @@ export const DATA = {
 
   TRANSACTION: [
     {
-      id: "TR1",
       user_id: "USR1",
       partner_id: "USR3",
       chats_id: "CHT1",
@@ -213,7 +201,6 @@ export const DATA = {
       total: 0,
     },
     {
-      id: "TR2",
       user_id: "USR2",
       partner_id: "USR3",
       chats_id: "CHT2",
@@ -227,7 +214,6 @@ export const DATA = {
       total: 0,
     },
     {
-      id: "TR3",
       user_id: "USR1",
       partner_id: "USR4",
       chats_id: "CHT3",
@@ -243,28 +229,24 @@ export const DATA = {
   ],
   TRANSACTION_DETAIL: [
     {
-      id: "TRD1",
       trash_id: "RSK101",
       price: 0,
       weight: 2,
       transaction_id: "TR1",
     },
     {
-      id: "TRD2",
       trash_id: "RSK301",
       price: 0,
       weight: 2,
       transaction_id: "TR2",
     },
     {
-      id: "TRD3",
       trash_id: "RSK201",
       price: 1000,
       weight: 2,
       transaction_id: "TR3",
     },
     {
-      id: "TRD4",
       trash_id: "RSK501",
       price: 1000,
       weight: 2,

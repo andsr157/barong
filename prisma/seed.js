@@ -10,7 +10,6 @@ async function seedUser() {
     for (const user of DATA.USERS) {
       await prisma.users.create({
         data: {
-          id: user.id,
           password: await bcrypt.hash(user.password, salt),
           name: user.name,
           email: user.email,
@@ -24,7 +23,6 @@ async function seedUser() {
     for (const address of DATA.ADDRESS) {
       await prisma.address.create({
         data: {
-          id: address.id,
           label: address.label,
           address_name: address.address_name,
           detail: address.detail,
@@ -74,7 +72,6 @@ async function seedUser() {
     for (const chat of DATA.CHATS) {
       await prisma.chats.create({
         data: {
-          id: chat.id,
           user_id: chat.user_id,
           partner_id: chat.partner_id,
         },
@@ -84,7 +81,6 @@ async function seedUser() {
     for (const transaction of DATA.TRANSACTION) {
       await prisma.transaction.create({
         data: {
-          id: transaction.id,
           user_id: transaction.user_id,
           partner_id: transaction.partner_id,
           chats_id: transaction.chats_id,

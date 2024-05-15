@@ -16,35 +16,9 @@ export default defineEventHandler(async (event) => {
     const hashedPassword = await bcrypt.hash(body.password, salt)
 
 
-    const count = await prisma.users.count()
-
-    let id
-    if (count === 0) {
-        id = "USR1"
-    } else {
-        const lastId = await prisma.users.findFirst({
-            select: {
-                id: true
-            },
-            orderBy: {
-                id: 'desc'
-            }
-        })
-
-        if (!lastId) {
-            throw createError({
-                statusCode: 401,
-                statusMessage: 'Unauthorized'
-            })
-        }
-
-        id = getNextNumber(lastId.id)
-    }
-
     const createdUser = await prisma.users.create({
         data: {
             ...body,
-            id: id,
             password: hashedPassword,
         }
     })
