@@ -26,7 +26,7 @@ const handleFinishTransaction = () => {
     })
   )
   if (res !== null || res.value.data !== null) {
-    // router.push(`/user/transaction/success`)
+    router.push(`/user/transaction/success`)
   } else {
     toastStore.error({
       text: "gagal menyimpan ulasan",
