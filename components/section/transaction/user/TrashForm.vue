@@ -29,7 +29,7 @@ watch(selectedCategory, () => {
 
 const trashForm = computed(() => {
   return {
-    trash_id: selectedSubCategory.value?.id || 0,
+    trash_id: selectedSubCategory.value?.id || "",
     category: selectedCategory.value?.name || "",
     subcategory: selectedSubCategory.value?.name || "",
     minPrice: selectedSubCategory.value?.minPrice || 0,

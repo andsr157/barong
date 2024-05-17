@@ -47,7 +47,7 @@ const sendChat = async () => {
     }
     console.log(newMessage.value)
     const payload = {
-      chats_id: parseInt(chat_id),
+      chats_id: chat_id,
       sender_id: user.value.user.id,
       content: newMessage.value,
     }
@@ -84,10 +84,10 @@ const chat = supabase
     },
     (payload: any) => {
       const message = {
-        message_id: payload.new.id as number,
-        sender_id: payload.new.sender_id as number,
+        message_id: payload.new.id as string,
+        sender_id: payload.new.sender_id as string,
         content: payload.new.content as string,
-        date_created: payload.new.date_created as string,
+        created_at: payload.new.created_at as string,
       }
 
       realTimeMessage.value?.push(message)
@@ -139,7 +139,7 @@ onMounted(async () => {
         >
           <p class="mb-2">{{ message.content }}</p>
           <div class="absolute bottom-1 right-1 text-[9px]">
-            <span>{{ convertToTime(message.date_created) }}</span>
+            <span>{{ convertToTime(message.created_at) }}</span>
           </div>
         </div>
       </div>

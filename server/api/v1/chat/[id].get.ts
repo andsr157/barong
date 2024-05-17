@@ -9,12 +9,11 @@ export default defineEventHandler(async (event) => {
     const chats_id = getRouterParam(event, 'id') ?? '';
     const res = await prisma.chats.findUnique({
         where: {
-            id: parseInt(chats_id)
+            id: chats_id
         },
         include: {
             messages: true
         }
-
     })
 
 
@@ -25,9 +24,9 @@ export default defineEventHandler(async (event) => {
     let authorizationResult
 
     if (session?.user?.role === 'user') {
-        authorizationResult = AuthorizationCheck(session, res.user_id.toString());
+        authorizationResult = AuthorizationCheck(session, res.user_id);
     } else {
-        authorizationResult = AuthorizationCheck(session, res.partner_id.toString());
+        authorizationResult = AuthorizationCheck(session, res.partner_id);
     }
 
     if (authorizationResult.status !== 200) {
@@ -44,6 +43,7 @@ export default defineEventHandler(async (event) => {
             avatar: true
         }
     })
+
     const partner = await prisma.users.findUnique({
         where: {
             id: res.partner_id

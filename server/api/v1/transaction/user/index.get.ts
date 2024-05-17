@@ -9,10 +9,15 @@ export default defineEventHandler(async (event) => {
         const status = query.status as string;
 
         const whereQuery: Record<string, any> = {
-            'active': { status_id: { in: [1, 2] } },
-            'finish': { status_id: { in: [3, 4] } },
-            'canceled': { status_id: 5 }
+            'active': { status_id: { in: ['STS1', 'STS2'] } },
+            'finish': { status_id: { in: ['STS3', 'STS4'] } },
+            'canceled': { status_id: 'STS5' }
         };
+
+        let latestCursor
+        if (query.cursor !== '0') {
+            latestCursor = new Date(query.cursor)
+        }
 
         let queryPrisma: any = {
             take: parseInt(query.limit),
@@ -41,13 +46,13 @@ export default defineEventHandler(async (event) => {
                 status: true,
             },
             orderBy: {
-                date_created: 'desc'
+                updated_at: 'desc'
             }
         };
 
         if (query.cursor !== '0') {
             queryPrisma['skip'] = 1;
-            queryPrisma['cursor'] = { id: parseInt(query.cursor) };
+            queryPrisma['cursor'] = { updated_at: latestCursor };
         }
 
         const [total_record, transactions]: [any, any] = await Promise.all([
@@ -62,9 +67,8 @@ export default defineEventHandler(async (event) => {
             prisma.transaction.findMany(queryPrisma)
         ]);
 
-
-        if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
-            return AuthorizationCheck(session, transactions[0].user_id.toString());
+        if (AuthorizationCheck(session, transactions[0].user_id).status !== 200) {
+            return AuthorizationCheck(session, transactions[0].user_id);
         }
 
         const formattedTransactions = transactions.map((data: any) => {
@@ -75,7 +79,7 @@ export default defineEventHandler(async (event) => {
                 detailSampah: data.transaction_detail.map((detail: any) => ({
                     category: detail.trash.category.name,
                 })),
-                time: data.update_at,
+                time: data.updated_at,
                 status: status,
             };
         });
@@ -90,6 +94,6 @@ export default defineEventHandler(async (event) => {
         return { data: formattedTransactions, pagination, status: 200 };
     } catch (error) {
         console.error('Error fetching transaction data:', error);
-        return { error: 'Internal server error', status: 500 };
+        return { error: error, status: 500 };
     }
 });

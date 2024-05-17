@@ -4,7 +4,6 @@ import { getServerSession } from '#auth'
 export default defineEventHandler(async (event) => {
     const session = await getServerSession(event) as any
     const body = await readBody(event)
-    console.log(session)
     const user_id = session.user.id
     const currentMain = await prisma.address.findMany({
         where: {

@@ -2,18 +2,7 @@ import { defineStore } from "pinia";
 import { type Address, type Center } from "~/types/address.type";
 import axios from 'axios'
 
-const getLocationAdress = async (lat: number, lng: number) => {
-    try {
-        const res = await axios.get(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-        );
-        console.log(res.data);
-        return res.data.display_name;
-    } catch (error) {
-        console.error(error);
-        return '';
-    }
-}
+
 
 export const useAddressStore = defineStore('Address-store', {
     state: () => ({
@@ -30,6 +19,18 @@ export const useAddressStore = defineStore('Address-store', {
     }),
 
     actions: {
+        async getLocationAdress(lat: number, lng: number) {
+            try {
+                const res = await axios.get(
+                    `https://nominatim.openstreetmap.org/reverse?&lat=${lat}&lon=${lng}&format=json`
+                );
+                this.generatedAddress = res.data.display_name;
+            } catch (error) {
+                console.error(error);
+                return '';
+            }
+        },
+
         async getAddress() {
             try {
                 this.isLoading = true
@@ -67,7 +68,7 @@ export const useAddressStore = defineStore('Address-store', {
             }
         },
 
-        async deleteAddress(id: number) {
+        async deleteAddress(id: string) {
             try {
                 const res = await axios.delete(`/api/v1/address/${id}`)
                 return Promise.resolve(res.data)
@@ -89,7 +90,7 @@ export const useAddressStore = defineStore('Address-store', {
             console.log(id)
             console.log('jlan kuy')
             console.log(this.address)
-            const data = this.address.find((data: Address) => data.id === parseInt(id));
+            const data = this.address.find((data: Address) => data.id === id);
             console.log(data)
             if (data) {
                 console.log('jalan')
@@ -100,7 +101,7 @@ export const useAddressStore = defineStore('Address-store', {
 
         setDefaultFormAddress() {
             const defaultValues: Partial<Address> = {
-                id: 0,
+                id: null,
                 label: '',
                 address_name: '',
                 detail: '',
@@ -125,10 +126,9 @@ export const useAddressStore = defineStore('Address-store', {
 
 
 
-        async getCurrentLocation(id: number) {
+        async getCurrentLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
-                    console.log(position);
                     this.center = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude,
@@ -136,9 +136,7 @@ export const useAddressStore = defineStore('Address-store', {
                     if (this.mapRef) {
                         this.mapRef.leafletObject.setView(this.center, 1000);
                     }
-                    const address = await getLocationAdress(this.center.lat, this.center.lng);
-                    const index = this.address.findIndex((data) => data.id = id)
-                    this.generatedAddress = address
+                    const address = await this.getLocationAdress(this.center.lat, this.center.lng);
                 });
             }
         }

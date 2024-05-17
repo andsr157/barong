@@ -4,15 +4,14 @@ import { getServerSession } from '#auth'
 import { AuthorizationCheck } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
-
     try {
         const session = await getServerSession(event) as any
         const transactions = await prisma.transaction.findMany({
             where: {
                 user_id: session.user.id,
                 OR: [
-                    { status_id: 1 },
-                    { status_id: 2 }
+                    { status_id: 'STS1' },
+                    { status_id: 'STS2' },
                 ]
             },
             include: {
@@ -36,8 +35,9 @@ export default defineEventHandler(async (event) => {
             },
         });
 
-        if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
-            return AuthorizationCheck(session, transactions[0].user_id.toString());
+
+        if (AuthorizationCheck(session, transactions[0].user_id).status !== 200) {
+            return AuthorizationCheck(session, transactions[0].user_id);
         }
 
         const formattedTransactions = transactions.map((data: any) => {
@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
                     category: detail.trash.category.name,
                     weight: detail.weight,
                 })),
-                time: data.update_at,
+                time: data.updated_at,
                 status: status,
 
             };

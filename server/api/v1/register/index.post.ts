@@ -1,4 +1,5 @@
 import { prisma } from "@/composables/prisma"
+import { getNextNumber } from "~/server/helpers"
 import bcrypt from 'bcrypt'
 
 export default defineEventHandler(async (event) => {

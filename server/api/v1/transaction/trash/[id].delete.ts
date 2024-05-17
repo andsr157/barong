@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
     const res = await prisma.transaction_detail.delete({
         where: {
-            id: parseInt(id)
+            id: id
         }
     })
 

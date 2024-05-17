@@ -58,7 +58,7 @@ const fetchData = async (status: string) => {
       status,
       () =>
         $fetch(
-          `/api/v1/transaction/user?limit=5&status=${status}&cursor=${cursor.value[status]}`
+          `/api/v1/transaction/user?limit=1&status=${status}&cursor=${cursor.value[status]}`
         ),
       { immediate: false }
     )
@@ -92,7 +92,7 @@ const fetchData = async (status: string) => {
     if (data.value !== null) {
       transactionData.value[status].data.push(...data.value.data)
       transactionData.value[status].pagination = data.value.pagination
-      cursor.value[status] = data.value.data[data.value.data.length - 1].id
+      cursor.value[status] = data.value.data[data.value.data.length - 1].time
     }
     return
   }
@@ -104,7 +104,7 @@ const fetchData = async (status: string) => {
     if (data.value !== null) {
       transactionData.value[status].data.push(...data.value.data)
       transactionData.value[status].pagination = data.value.pagination
-      cursor.value[status] = data.value.data[data.value.data.length - 1].id
+      cursor.value[status] = data.value.data[data.value.data.length - 1].time
     }
     return
   }

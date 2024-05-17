@@ -95,7 +95,8 @@ const fetchData = async (status: string) => {
     if (data.value !== null) {
       transactionData.value[status].data.push(...data.value.data)
       transactionData.value[status].pagination = data.value.pagination
-      cursor.value[status] = data.value.data[data.value.data.length - 1].id
+      cursor.value[status] =
+        data.value.data[data.value.data.length - 1].updated_at
     }
     return
   }
@@ -107,7 +108,8 @@ const fetchData = async (status: string) => {
     if (data.value !== null) {
       transactionData.value[status].data.push(...data.value.data)
       transactionData.value[status].pagination = data.value.pagination
-      cursor.value[status] = data.value.data[data.value.data.length - 1].id
+      cursor.value[status] =
+        data.value.data[data.value.data.length - 1].updated_at
     }
     return
   }

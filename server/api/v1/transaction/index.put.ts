@@ -1,8 +1,8 @@
 import { prisma } from '~/composables/prisma'
+import { getSeparateNumber } from '~/server/helpers';
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    console.log('ini body', body.transaction_detail)
     try {
         const updatedTransaction = await prisma.transaction.update({
             where: {
@@ -14,14 +14,33 @@ export default defineEventHandler(async (event) => {
                 image: body.transaction.image,
                 status_id: body.transaction.status_id,
                 note: body.transaction.note,
-                update_at: new Date()
+                updated_at: new Date()
             },
         });
+
 
         const detailData = {
             transaction_id: body.transaction.id,
             price: 0,
         }
+
+        const lastDetailId = await prisma.transaction_detail.findFirst({
+            select: {
+                id: true
+            },
+            orderBy: {
+                id: 'desc'
+            }
+        })
+
+        if (!lastDetailId) {
+            throw createError({
+                statusCode: 401,
+                statusMessage: 'Unauthorized'
+            })
+        }
+
+        let countDetail = getSeparateNumber(lastDetailId.id)
 
         const updatedTransactionDetails = await Promise.all(
             body.transaction_detail.map(async (detail: any) => {
@@ -36,12 +55,11 @@ export default defineEventHandler(async (event) => {
                 });
 
                 if (!existingTransactionDetail) {
-                    // Jika detail transaksi belum ada, buat yang baru
+
                     return await prisma.transaction_detail.create({
                         data: { ...resData, ...detailData }
                     });
                 } else {
-                    // Jika sudah ada, perbarui detail transaksi yang ada
                     return await prisma.transaction_detail.update({
                         where: { id: id },
                         data: {
@@ -49,11 +67,9 @@ export default defineEventHandler(async (event) => {
                         },
                     });
                 }
-
             })
         );
 
-        // Mengembalikan respons yang sesuai dengan permintaan
         return {
             data: {
                 transaction: updatedTransaction,

@@ -1,10 +1,10 @@
 import { prisma } from '~/composables/prisma'
 import { getServerSession } from '#auth'
+import { getNextNumber } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
     const session = await getServerSession(event) as any
     const body = await readBody(event)
-    console.log('adddress body', body)
     const user_id = session.user.id
 
     let address = body
@@ -36,6 +36,7 @@ export default defineEventHandler(async (event) => {
             })
         }
     }
+
 
     const res = await prisma.address.create({
         data: { ...address, user_id: user_id }

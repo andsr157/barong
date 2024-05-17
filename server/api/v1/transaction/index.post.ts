@@ -1,13 +1,14 @@
 import { PrismaClient } from "@prisma/client";
+import { getNextNumber, getSeparateNumber } from "~/server/helpers";
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     // return body
 
+
     const res = await prisma.transaction.create({
         data: {
-
             user_id: body.transaction.user_id,
             address: JSON.stringify(body.transaction.address),
             image: body.transaction.image,
@@ -19,22 +20,17 @@ export default defineEventHandler(async (event) => {
             partner_review: null,
             total: null,
         }
-
     })
-
-    // return res
 
     const detailData = {
         transaction_id: res.id,
         price: 0,
     }
 
-    console.log('detail', body.transaction_detail)
     const transaction_detail = await prisma.transaction_detail.createMany({
-
         data: body.transaction_detail.map((data: any) => {
-            const { id, ...restData } = data
-            return { ...restData, ...detailData }
+            const { id, ...resData } = data
+            return { ...resData, ...detailData, }
         })
     })
     return transaction_detail

@@ -1,12 +1,11 @@
 export interface TrashCategory {
-    id: number,
+    id: string,
     name: string
 }
-
 export interface TrashSubCategory {
-    id: number,
+    id: string,
     name: string,
     minPrice: number,
     maxPrice: number,
-    category_id: number
+    category_id: string
 }

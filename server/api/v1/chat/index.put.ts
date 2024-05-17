@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const chats = await prisma.chats.update({
         where: {
-            id: parseInt(body.chats_id)
+            id: body.chats_id
         },
         data: {
             partner_id: body.partner_id

@@ -1,8 +1,10 @@
 import { prisma } from '~/composables/prisma'
+import { getNextNumber } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event)
-    console.log(body)
+
+
     const res = await prisma.chats.create({
         data: {
             user_id: body.user_id,

@@ -15,7 +15,7 @@ const transactionId = route.params.id as string
 
 const handleFinishTransaction = () => {
   const payload = {
-    id: parseInt(transactionId),
+    id: transactionId,
     rate: rating.value,
     review: review.value,
   }

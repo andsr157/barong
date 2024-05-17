@@ -10,7 +10,6 @@ async function seedUser() {
     for (const user of DATA.USERS) {
       await prisma.users.create({
         data: {
-          uuid: uuidv4(),
           password: await bcrypt.hash(user.password, salt),
           name: user.name,
           email: user.email,
@@ -40,6 +39,7 @@ async function seedUser() {
     for (const category of DATA.TRASHCATEGORY) {
       await prisma.trashCategory.create({
         data: {
+          id: category.id,
           name: category.name,
           subcategory: category.subcategory,
         },
@@ -49,6 +49,7 @@ async function seedUser() {
     for (const trash of DATA.TRASH) {
       await prisma.trash.create({
         data: {
+          id: trash.id,
           name: trash.name,
           minPrice: trash.minPrice,
           maxPrice: trash.maxPrice,
@@ -60,6 +61,7 @@ async function seedUser() {
     for (const status of DATA.STATUS) {
       await prisma.status.create({
         data: {
+          id: status.id,
           name: status.name,
           label: status.label,
           status: status.status,
@@ -96,6 +98,7 @@ async function seedUser() {
     for (const detail of DATA.TRANSACTION_DETAIL) {
       await prisma.transaction_detail.create({
         data: {
+          id: detail.id,
           trash_id: detail.trash_id,
           price: detail.price,
           weight: detail.weight,
