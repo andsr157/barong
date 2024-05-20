@@ -77,6 +77,9 @@ dependencies:
   workbox-cacheable-response:
     specifier: ^7.1.0
     version: 7.1.0
+  workbox-core:
+    specifier: ^7.1.0
+    version: 7.1.0
   workbox-precaching:
     specifier: ^7.1.0
     version: 7.1.0
