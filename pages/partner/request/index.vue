@@ -13,8 +13,8 @@ definePageMeta({
 })
 
 const { data: dataCache } = useNuxtData("request")
-const cursor = ref(0)
-const pageFlag = ref(0)
+const cursor = ref<any>(0)
+const pageFlag = ref<any>(0)
 
 const requestData = ref<any>({ data: [], pagination: {} })
 const requestPending = ref()
@@ -45,8 +45,6 @@ async function fetchData() {
   requestPending.value = pending.value
   requestStatus.value = status.value
 
-  pageFlag.value += 1
-
   watch(pending, () => {
     requestPending.value = pending.value
   })
@@ -57,11 +55,12 @@ async function fetchData() {
 
   if (!dataCache.value || dataCache.value.data.length === 0) {
     await execute()
-    if (data.value !== null) {
+    if (data.value !== null && data.value.data.length !== 0) {
       requestData.value.data.push(...data.value.data)
       requestData.value.pagination = data.value.pagination
       cursor.value =
         requestData.value.data[requestData.value.data.length - 1].time
+      pageFlag.value += data.value.pagination.pageFlag
     }
     return
   }
@@ -74,6 +73,7 @@ async function fetchData() {
       requestData.value.pagination = data.value.pagination
       cursor.value =
         requestData.value.data[requestData.value.data.length - 1].time
+      pageFlag.value += data.value.pagination.pageFlag
     }
     return
   }
@@ -87,19 +87,20 @@ onMounted(() => {
     requestData.value.data.push(...dataCache.value.data)
     requestData.value.pagination = dataCache.value.pagination
     cursor.value = dataCache.value.data[dataCache.value.data.length - 1].time
-    pageFlag.value += 1
   } else {
-    console.log("woiii")
     fetchData()
   }
 })
 </script>
 
 <template>
+  {{ pageFlag }}
   <Header title="Permintaan" />
   <Suspense>
     <section class="px-6 pt-[30px] pb-24 overflow-auto">
-      <div v-if="requestPending" class="px-6 mt-6">Lagi loading sabar</div>
+      <div v-if="requestData.length > 0" class="px-6 mt-6">
+        Lagi loading sabar
+      </div>
       <div
         v-else-if="requestData.data.length > 0"
         class="flex flex-col gap-y-5"
@@ -114,8 +115,10 @@ onMounted(() => {
           :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
         />
 
+        <div v-if="requestPending">loading data sabar</div>
+
         <button
-          v-if="requestData.pagination.total_pages !== pageFlag"
+          v-if="requestData.pagination.total_pages > pageFlag"
           @click="fetchData()"
           class="border-2 border-brg-primary mt-2 text-brg-primary text-sm font-medium p-2 rounded-3xl w-[40%] mx-auto"
         >

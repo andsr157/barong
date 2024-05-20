@@ -44,7 +44,7 @@ model trashCategory {
 }
 
 model trash {
-  id                 String               @id 
+  id                 String               @id
   name               String
   minPrice           Int
   maxPrice           Int
@@ -54,7 +54,7 @@ model trash {
 }
 
 model status {
-  id          String        @id 
+  id          String        @id
   name        String
   label       String
   status      String

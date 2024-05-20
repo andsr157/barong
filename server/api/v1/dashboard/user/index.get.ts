@@ -37,7 +37,6 @@ export default defineEventHandler(async (event) => {
             totalAmount += transaction.total ?? 0;
         });
 
-
         const trashes = <any>[]
         for (let i = 0; i < res.length; i++) {
             const transaction_detail = res[i].transaction_detail

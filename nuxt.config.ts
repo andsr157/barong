@@ -3,11 +3,11 @@ import { defineNuxtConfig } from "nuxt/config";
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
+    '@vite-pwa/nuxt',
     "@nuxtjs/google-fonts",
     "@pinia/nuxt",
     "@vueuse/nuxt",
     "nuxt-icon",
-    //"@vee-validate/nuxt",
     "@nuxt/image",
     "nuxt-swiper",
     "@sidebase/nuxt-auth",
@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     'nuxt3-leaflet',
-    // '@nuxtjs/supabase',
+
   ],
 
   runtimeConfig: {
@@ -33,10 +33,65 @@ export default defineNuxtConfig({
     },
   },
 
+  pwa: {
+    manifest: {
+      name: 'Barong',
+      short_name: 'Barong',
+      description: 'Barong: aplikasi Jual Beli Rongsok',
+      theme_color: '#ffff',
+      icons: [
+        {
+          src: 'icons/icon_64x64.png',
+          sizes: '64x64',
+          type: 'image/png'
+        },
+        {
+          src: 'icons/icon_144x144.png',
+          sizes: '144x144',
+          type: 'image/png'
+        },
+        {
+          src: 'icons/icon_192x192.png',
+          sizes: '192x192',
+          type: 'image/png'
+        },
+        {
+          src: 'icons/icon_512x512.png',
+          sizes: '512x512',
+          type: 'image/png'
+        },
+      ],
+      screenshots: [
+        {
+          "src": "screen/screen_360x800.png",
+          "sizes": "360x800",
+          "type": "image/png",
+          "form_factor": "narrow",
+          "label": "Mobile"
+        },
+        {
+          "src": "screen/screen_1920x1080.png",
+          "sizes": "1920x1080",
+          "type": "image/png",
+          "form_factor": "wide",
+          "label": "Desktop"
+        },
+      ]
+    },
+    workbox: {
+      navigateFallback: '/',
+    },
+    strategies: 'injectManifest',
+    devOptions: {
+      enabled: true,
+      type: 'module',
+    }
+  },
+
   auth: {
     baseURL:
       process.env.NODE_ENV === "production"
-        ? "https://barong-psi.vercel.app/api/v1/_auth"
+        ? "https://barong-git-staging-andsr157s-projects.vercel.app/api/v1/_auth"
         : "http://localhost:3000/api/v1/_auth",
     provider: {
       type: "authjs",
