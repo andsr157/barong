@@ -21,6 +21,7 @@ model users {
   serviceFee     serviceFee[]
   ReferredToUser transaction[] @relation("Partner")
   ReferrerToUser transaction[] @relation("User")
+  pushSubscriptions PushSubscription[]
 }
 
 model address {
@@ -116,4 +117,13 @@ model serviceFee {
   created_at DateTime  @default(now())
   updated_at DateTime? @default(now())
   users      users     @relation(fields: [partner_id], references: [id])
+}
+
+model PushSubscription {
+  id          Int      @id @default(autoincrement())
+  user_id      String  @unique
+  subscription Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  user        users     @relation(fields: [user_id], references: [id])
 }
