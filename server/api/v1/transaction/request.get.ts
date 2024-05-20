@@ -13,95 +13,117 @@ export default defineEventHandler(async (event) => {
 
         const lat = parseFloat(query.lat)
         const lng = parseFloat(query.lng)
+        const limit = parseInt(query.limit);
+        const radius = 30000;
 
         let latestCursor
         if (query.cursor !== '0') {
             latestCursor = new Date(query.cursor)
         }
+        ;
+        let formattedTransactions = [];
+        let keepFetching = true;
+        let pageFlag = 0
 
-        const queryPrisma: any = {
-            take: parseInt(query.limit),
+
+        const count = await prisma.transaction.count({
             where: {
-                status_id: 'STS1'
-            },
-            include: {
-                user: {
-                    select: {
-                        name: true,
-                        telp: true
-                    }
-                },
-                transaction_detail: {
-                    include: {
-                        trash: {
-                            include: {
-                                category: true,
-                            }
-                        },
-                    },
-                },
-                status: true,
-            },
-        }
+                status_id: 'STS1',
+            }
+        })
 
-        if (query.cursor != '0') {
-            queryPrisma['skip'] = 1;
-            queryPrisma['cursor'] = { updated_at: latestCursor };
-        }
-
-
-
-        const [total_record, transactions]: [any, any] = await Promise.all([
-            prisma.transaction.count({
+        while (keepFetching) {
+            const queryPrisma: any = {
+                take: limit,
                 where: {
                     status_id: 'STS1'
-                }
-            }),
-            prisma.transaction.findMany(queryPrisma)
-        ]);
+                },
+                include: {
+                    user: {
+                        select: {
+                            name: true,
+                            telp: true
+                        }
+                    },
+                    transaction_detail: {
+                        include: {
+                            trash: {
+                                include: {
+                                    category: true,
+                                }
+                            },
+                        },
+                    },
+                    status: true,
+                },
+            };
 
-        if (AuthorizationCheck(session, transactions[0].user_id.toString()).status !== 200) {
-            if (session.user.role !== 'partner') {
-                return AuthorizationCheck(session, transactions[0].user_id.toString());
+            if (latestCursor) {
+                queryPrisma['skip'] = 1
+                queryPrisma['cursor'] = { updated_at: latestCursor };
+            }
+
+            const transactions = await prisma.transaction.findMany(queryPrisma);
+
+            if (!transactions.length) {
+                break;
+            }
+            pageFlag += 1
+            for (const data of transactions) {
+                const status = { id: data.status.id, ...data.status };
+                const addressData = JSON.parse(data.address);
+
+                const transactionLat = parseFloat(addressData.latitude);
+                const transactionLng = parseFloat(addressData.longitude);
+
+                const distance = maps.calculateDistance(lat, lng, transactionLat, transactionLng);
+
+                if (distance <= radius) {
+                    if (formattedTransactions.length < limit) {
+                        formattedTransactions.push({
+                            id: data.id,
+                            user: data.user,
+                            address: {
+                                address: addressData.address_name,
+                            },
+                            detailSampah: data.transaction_detail.map((detail: any) => ({
+                                id: detail.id,
+                                category: detail.trash.category.name,
+                            })),
+                            time: data.updated_at,
+                            status: status,
+                        });
+                    }
+
+                }
+
+            }
+
+            latestCursor = transactions[transactions.length - 1].updated_at;
+
+            if (formattedTransactions.length >= limit || transactions.length < limit) {
+                keepFetching = false;
             }
         }
 
-        const formattedTransactions = transactions.map((data: any) => {
-            const status = { id: data.status.id, ...data.status };
-            const addressData = JSON.parse(data.address)
 
-            const transactionLat = parseFloat(addressData.latitude)
-            const transactionLng = parseFloat(addressData.longitude)
-
-            const distance = maps.calculateDistance(lat, lng, transactionLat, transactionLng)
-            const radius = 30000
-            console.log(distance)
-            if (distance <= radius) {
-                return {
-                    id: data.id,
-                    user: data.user,
-                    address: {
-                        address: addressData.address_name,
-                    },
-                    detailSampah: data.transaction_detail.map((detail: any) => ({
-                        id: detail.id,
-                        category: detail.trash.category.name,
-                    })),
-                    time: data.updated_at,
-                    status: status,
-                };
-            } else {
-                return null
+        const total_pages = Math.ceil(count / limit)
+        console.log('totalpages', total_pages)
+        console.log('flagPages', pageFlag)
+        let pagination
+        if (total_pages >= pageFlag) {
+            pagination = {
+                next: formattedTransactions.length >= limit ? `/api/v1/transaction/request?limit=${limit}&cursor=${latestCursor?.toISOString()}` : null,
+                pageFlag: pageFlag,
+                total_pages: total_pages
+            };
+        } else {
+            pagination = {
+                next: null,
+                pageFlag: 0,
+                total_pages: total_pages
             }
-        }).filter((tr: any) => tr !== null);
-
-        const pagination = {
-            total_record: formattedTransactions.length,
-            total_pages: Math.ceil(formattedTransactions.length / parseInt(query.limit)),
-            next: transactions.length === parseInt(query.limit) ? `/api/v1/transaction/request?limit=${query.limit}&cursor=${transactions[transactions.length - 1].updated_at.toISOString()}` : null,
-            previous: query.cursor ? `/api/v1/transaction/request?limit=${-query.limit}cursor=${transactions[transactions.length - 1].updated_at.toISOString()}` : null,
-        };
-
+        }
         return { data: formattedTransactions, pagination, status: 200 };
     } catch (error) {
         console.error('Error fetching transaction data:', error);
