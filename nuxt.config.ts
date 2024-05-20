@@ -25,11 +25,12 @@ export default defineNuxtConfig({
       supabaseKey: process.env.SUPABASE_KEY,
       bucketUrl: process.env.BUCKET_URL,
       jwtSecret: process.env.JWT_SECRET,
+
     },
     public: {
       appUrl: process.env.BASE_URL ?? "http://localhost:3000",
       apiurl: process.env.API_URL,
-
+      vapidPublic: process.env.VAPID_PUBLIC_KEY
     },
   },
 
