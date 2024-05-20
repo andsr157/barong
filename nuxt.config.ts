@@ -79,8 +79,9 @@ export default defineNuxtConfig({
       ]
     },
     workbox: {
-      navigateFallback: '/'
+      navigateFallback: '/',
     },
+    strategies: 'injectManifest',
     devOptions: {
       enabled: true,
       type: 'module',
