@@ -36,7 +36,9 @@ const urlBase64ToUint8Array = (base64String) => {
 
 const saveSubscription = async (subscription) => {
   const response = await fetch(
-    "http://barong-psi.vercel.app/api/v1/notification/subscription",
+    process.env.NODE_ENV === "production"
+      ? "https://barong-psi.vercel.app/api/v1/notification/subscription"
+      : "http://localhost:3000/api/v1/notification/subscription",
     {
       method: "POST",
       headers: { "Content-type": "application/json" },
