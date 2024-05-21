@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import axios from "axios"
-import { useTransactionStore } from "~/stores/Transaction.store"
 import { type Transaction } from "~/types/transaction.type"
 
 definePageMeta({
@@ -8,6 +7,7 @@ definePageMeta({
 })
 
 const transactionStore = useTransactionStore()
+const toastStore = useToastStore()
 const { isLoading } = storeToRefs(transactionStore)
 const route = useRoute()
 const router = useRouter()
@@ -29,19 +29,25 @@ const totalTrashWeight = computed(() => {
   return 0
 })
 
-const realTotal = computed(() => {
-  if (transaction.value && transaction.value.detailSampah) {
-    return transaction.value.detailSampah.reduce((total, item) => {
-      if (item.finalPrice !== undefined) {
-        return total + item.finalPrice * item.weight
-      } else {
-        return total
-      }
-    }, 0)
-  } else {
-    return 0
-  }
-})
+const realTotal = ref<any>()
+
+watch(
+  transaction,
+  () => {
+    if (transaction.value && transaction.value.detailSampah) {
+      realTotal.value = transaction.value.detailSampah.reduce((total, item) => {
+        if (item.finalPrice !== undefined) {
+          return total + item.finalPrice * item.weight
+        } else {
+          return total
+        }
+      }, 0)
+    } else {
+      realTotal.value = 0
+    }
+  },
+  { deep: true }
+)
 
 const servicePrice = computed(() => {
   return (realTotal.value * 10) / 100
@@ -61,9 +67,43 @@ onMounted(async () => {
   transaction.value = res.data
 })
 
+const validationCheck = () => {
+  const detailSampah =
+    transaction.value?.detailSampah.filter((data: any) => {
+      return (
+        data.finalPrice === 0 ||
+        data.finalPrice === "" ||
+        data.finalPrice === undefined ||
+        data.weight === 0 ||
+        data.weight === "" ||
+        data.weight === undefined
+      )
+    }) ?? []
+
+  if (
+    realTotal.value === 0 ||
+    realTotal.value === undefined ||
+    detailSampah?.length > 0 ||
+    detailSampah === undefined
+  ) {
+    isModalOpen.value = false
+    toastStore.error({
+      text: "Data harus di isi tidak boleh kosong atau nol",
+      timeout: 2000,
+    })
+
+    return false
+  }
+
+  return true
+}
+
 const isModalOpen = ref(false)
 
 const handleFinishTransaction = async () => {
+  if (!validationCheck()) {
+    return
+  }
   const trash = computed(() => {
     return (
       transaction.value?.detailSampah.map((data: any) => {
@@ -96,6 +136,7 @@ const handleFinishTransaction = async () => {
 </script>
 
 <template>
+  <Toast />
   <Header title="Pelaporan" />
   <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
   <div class="px-6" v-else-if="transaction">
@@ -117,6 +158,8 @@ const handleFinishTransaction = async () => {
             v-model="data.finalPrice"
             wrapper-class="!px-2"
             input-class="!font-medium"
+            type="number"
+            :min="0"
           >
             <template #prefix>
               <span class="text-[11px] pe-1 pt-[2px]">Rp </span>
@@ -129,6 +172,7 @@ const handleFinishTransaction = async () => {
             wrapper-class="!px-1"
             input-class="!max-w-max pe-[6px] text-brg-primary !font-semibold text-end pe-[2px]"
             type="number"
+            :min="0"
           >
             <template #suffix>
               <span class="text-brg-primary text-[9px] font-medium pt-1"
@@ -160,6 +204,7 @@ const handleFinishTransaction = async () => {
             prefix-icon="mdi:dollar"
             prefix-icon-color="text-brg-light-gray"
             placeholder="0"
+            :min="0"
           />
         </div>
         <div>
