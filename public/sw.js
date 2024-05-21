@@ -48,14 +48,17 @@ const saveSubscription = async (subscription) => {
 }
 
 self.addEventListener("activate", async (event) => {
+  console.log(event)
   event.waitUntil(
     (async () => {
       try {
+        console.log("inside", event)
         const subscription = await self.registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey:
             "BNsKXx4n8kwghDYTigbDajuKtW0e4mH6DBV5cxQlFH1jprApNL9rZ_dLQNGYBVOuw84O-vhukLb1UDaCCW8nR5g",
         })
+        console.log("berfore save", subscription)
         const response = await saveSubscription(subscription)
         console.log("Subscribed:", subscription)
       } catch (err) {
