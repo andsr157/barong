@@ -86,7 +86,8 @@ export default defineNuxtConfig({
     devOptions: {
       enabled: true,
       type: 'module',
-    }
+    },
+    injectRegister: 'script'
   },
 
   auth: {
