@@ -7,7 +7,9 @@ import {
 import { registerRoute, NavigationRoute } from "workbox-routing"
 
 self.skipWaiting()
+
 clientsClaim()
+
 precacheAndRoute(self.__WB_MANIFEST)
 cleanupOutdatedCaches()
 
@@ -47,16 +49,21 @@ const saveSubscription = async (subscription) => {
   )
 }
 
+self.addEventListener("install", (event) => {
+  console.log("service worker installe", event)
+})
+
 self.addEventListener("activate", async (event) => {
-  console.log(event)
+  console.log("service worker activated", event)
   event.waitUntil(
     (async () => {
       try {
         console.log("inside", event)
         const subscription = await self.registration.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey:
-            "BNsKXx4n8kwghDYTigbDajuKtW0e4mH6DBV5cxQlFH1jprApNL9rZ_dLQNGYBVOuw84O-vhukLb1UDaCCW8nR5g",
+          applicationServerKey: urlBase64ToUint8Array(
+            "BNsKXx4n8kwghDYTigbDajuKtW0e4mH6DBV5cxQlFH1jprApNL9rZ_dLQNGYBVOuw84O-vhukLb1UDaCCW8nR5g"
+          ),
         })
         console.log("berfore save", subscription)
         const response = await saveSubscription(subscription)
@@ -69,6 +76,7 @@ self.addEventListener("activate", async (event) => {
 })
 
 self.addEventListener("push", (e) => {
+  console.log(e)
   e.waitUntil(
     console.log(e),
     self.registration.showNotification("Simple Notification", {

@@ -79,15 +79,17 @@ export default defineNuxtConfig({
         },
       ]
     },
+    strategies: 'injectManifest',
+    srcDir: 'public',
+    filename: 'custom-sw.js',
     workbox: {
       navigateFallback: '/',
     },
-    strategies: 'injectManifest',
     devOptions: {
       enabled: true,
       type: 'module',
     },
-    injectRegister: 'script'
+
   },
 
   auth: {
