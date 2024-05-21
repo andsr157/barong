@@ -15,6 +15,7 @@ interface Props {
   suffixIconColor?: string
   errorMessage?: string
   readonly?: boolean
+  min?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   prefixIconSize: "20px",
   suffixIconSize: "20px",
   readonly: false,
+  min: 1,
 })
 
 const emit = defineEmits()
@@ -33,7 +35,7 @@ const updateInput = (event: Event) => {
   if (props.type === "number") {
     if (inputvalue.value === "" || parseFloat(inputvalue.value) < 0) {
       console.log(inputvalue.value === "")
-      inputvalue.value = 1
+      inputvalue.value = props.min
     }
     emit("update:modelValue", parseFloat(inputvalue.value))
   } else {
@@ -66,7 +68,7 @@ const updateInput = (event: Event) => {
       :class="props.inputClass"
       :placeholder="props.placeholder"
       :readonly="props.readonly"
-      min="1"
+      :min="props.min"
     />
 
     <Icon
@@ -81,3 +83,15 @@ const updateInput = (event: Event) => {
     {{ errorMessage }}
   </p>
 </template>
+
+<style scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+</style>
