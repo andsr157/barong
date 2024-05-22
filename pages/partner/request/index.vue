@@ -35,9 +35,13 @@ async function fetchData() {
     { immediate: false }
   ) as any
 
+  if (requestData.value.data.length === 0 && pageFlag.value[status] > 0) {
+    return
+  }
+
   if (
-    dataCache.value !== null &&
-    dataCache.value.data.length === dataCache.value.pagination.total_record
+    requestData.value.pagination.total_pages === pageFlag.value &&
+    pageFlag.value > 0
   ) {
     return
   }
@@ -53,48 +57,26 @@ async function fetchData() {
     requestStatus.value = status.value
   })
 
-  if (!dataCache.value || dataCache.value.data.length === 0) {
-    await execute()
-    if (data.value !== null && data.value.data.length !== 0) {
-      requestData.value.data.push(...data.value.data)
-      requestData.value.pagination = data.value.pagination
-      cursor.value =
-        requestData.value.data[requestData.value.data.length - 1].time
-      pageFlag.value += data.value.pagination.pageFlag
-    }
-    return
-  }
-  if (
-    requestData.value.data.length !== dataCache.value.pagination.total_record
-  ) {
-    await execute()
-    if (data.value !== null) {
-      requestData.value.data.push(...data.value.data)
-      requestData.value.pagination = data.value.pagination
-      cursor.value =
-        requestData.value.data[requestData.value.data.length - 1].time
-      pageFlag.value += data.value.pagination.pageFlag
-    }
-    return
+  await execute()
+  if (data.value !== null && data.value.data.length !== 0) {
+    requestData.value.data.push(...data.value.data)
+    requestData.value.pagination = data.value.pagination
+    cursor.value =
+      requestData.value.data[requestData.value.data.length - 1].time
+    pageFlag.value += data.value.pagination.pageFlag
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   setInterval(() => {
     locationStore.updateLocation()
   }, 5000)
-  if (dataCache.value !== null && dataCache.value.data.length > 0) {
-    requestData.value.data.push(...dataCache.value.data)
-    requestData.value.pagination = dataCache.value.pagination
-    cursor.value = dataCache.value.data[dataCache.value.data.length - 1].time
-  } else {
-    fetchData()
-  }
+
+  await fetchData()
 })
 </script>
 
 <template>
-  {{ pageFlag }}
   <Header title="Permintaan" />
   <Suspense>
     <section class="px-6 pt-[30px] pb-24 overflow-auto">
@@ -126,7 +108,9 @@ onMounted(() => {
         </button>
       </div>
       <div v-else>
+        <div v-if="requestPending">loading data sabar</div>
         <p
+          v-if="!requestPending && requestStatus !== 'pending'"
           class="text-center text-sm font-medium text-brg-primary-dark text-opacity-70 mt-10"
         >
           Tidak ada permintaan

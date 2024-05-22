@@ -14,9 +14,7 @@ const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
 })
 
 onMounted(() => {
-  if (data.value.data === null) {
-    refresh()
-  }
+  refresh()
 })
 </script>
 
@@ -26,8 +24,9 @@ onMounted(() => {
       Hai {{ user.user.name }}
     </h1>
     <CardSummaryTransaction
-      v-if="status === 'success'"
-      :total="data.status === 200 ? data.data.totalAmount : 0"
+      :total="
+        data.data !== null && status === 'success' ? data.data.totalAmount : 0
+      "
     />
   </section>
 </template>

@@ -18,9 +18,7 @@ const {
 })
 
 onMounted(() => {
-  if (transactionActive.value.data === null) {
-    refresh()
-  }
+  refresh()
 })
 </script>
 

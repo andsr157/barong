@@ -66,6 +66,9 @@ export default defineEventHandler(async (event) => {
             prisma.transaction.findMany(queryPrisma)
         ]);
 
+        if (!(transactions.length)) {
+            return { data: null, status: 400 };
+        }
 
         if (AuthorizationCheck(session, transactions[0].partner_id.toString()).status !== 200) {
             return AuthorizationCheck(session, transactions[0].partner_id.toString());

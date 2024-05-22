@@ -18,9 +18,7 @@ const { data, status, refresh } = await (<any>(
 ))
 
 onMounted(() => {
-  if (data.value.data === null) {
-    refresh()
-  }
+  refresh()
 })
 </script>
 

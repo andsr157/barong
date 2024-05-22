@@ -37,7 +37,7 @@ async function isReady(event: any) {
 </script>
 
 <template>
-  <div class="fixed top-o bottom-0 w-full h-full z-50">
+  <div class="fixed top-o bottom-0 w-full max-w-[450px] h-full z-50">
     <div class="absolute w-full h-full z-10">
       <LMap
         ref="mapRef"

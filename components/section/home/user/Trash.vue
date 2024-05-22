@@ -106,9 +106,7 @@ interface CARD {
 }
 
 onMounted(() => {
-  if (data.value === null || data.value.data === null) {
-    refresh()
-  }
+  refresh()
 })
 </script>
 <template>

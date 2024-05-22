@@ -65,9 +65,16 @@ const fetchData = async (status: string) => {
   )
 
   if (
-    transactionDataCache.value[status] !== null &&
-    transactionData.value[status].data.length ===
-      transactionDataCache.value[status].pagination.total_record
+    transactionData.value[status].data.length === 0 &&
+    pageFlag.value[status] > 0
+  ) {
+    return
+  }
+
+  if (
+    transactionData.value[status].pagination.total_pages ===
+      pageFlag.value[status] &&
+    pageFlag.value[status] > 0
   ) {
     return
   }
@@ -84,82 +91,46 @@ const fetchData = async (status: string) => {
     fetchStatus.value = fetchStatus.value
   })
 
-  if (
-    !transactionDataCache.value[status] ||
-    transactionDataCache.value[status].data.length === 0
-  ) {
-    await execute()
-    if (data.value !== null) {
-      transactionData.value[status].data.push(...data.value.data)
-      transactionData.value[status].pagination = data.value.pagination
-      cursor.value[status] = data.value.data[data.value.data.length - 1].time
-    }
-    return
-  }
-  if (
-    transactionData.value[status].data.length !==
-    transactionDataCache.value[status].pagination.total_record
-  ) {
-    await execute()
-    if (data.value !== null) {
-      transactionData.value[status].data.push(...data.value.data)
-      transactionData.value[status].pagination = data.value.pagination
-      cursor.value[status] = data.value.data[data.value.data.length - 1].time
-    }
-    return
+  await execute()
+  if (data.value && data.value.data !== null) {
+    transactionData.value[status].data.push(...data.value.data)
+    transactionData.value[status].pagination = data.value.pagination
+    cursor.value[status] = data.value.data[data.value.data.length - 1].time
   }
 }
 
 onMounted(async () => {
   await fetchData("active")
-  // if (
-  //   transactionDataCache.value["active"] !== null &&
-  //   transactionDataCache.value["active"].data.length > 0
-  // ) {
-  //   transactionData.value["active"].data.push(
-  //     ...transactionDataCache.value["active"].data
-  //   )
-  //   transactionData.value["active"].pagination =
-  //     transactionDataCache.value["active"].pagination
-  //   cursor.value["active"] =
-  //     transactionDataCache.value["active"].data[
-  //       transactionDataCache.value["active"].data.length - 1
-  //     ].id
-  // } else {
-  //   await fetchData("active")
-  // }
-  // watch(
-  //   transactionDataContainer,
-  //   (newValue) => {
-  //     if (newValue) {
-  //       window.addEventListener("scroll", handleScroll)
-  //     }
-  //   },
-  //   { immediate: true }
-  // )
 })
 </script>
 <template>
   <Header title="Riwayat Transaksi" />
 
   <div class="flex justify-evenly mt-5">
-    <ButtonSmall
-      label="Saat ini"
-      :color="statusData !== 'active' ? 'bg-brg-light-gray' : 'bg-brg-primary'"
-      @click="fetchData('active')"
-    />
-    <ButtonSmall
-      label="Selesai"
-      :color="statusData !== 'finish' ? 'bg-brg-light-gray' : 'bg-brg-primary'"
-      @click="fetchData('finish')"
-    />
-    <ButtonSmall
-      label="Dibatalkan"
-      :color="
-        statusData !== 'canceled' ? 'bg-brg-light-gray' : 'bg-brg-primary'
-      "
-      @click="fetchData('canceled')"
-    />
+    <div @click="fetchData('active')">
+      <ButtonSmall
+        label="Saat ini"
+        :color="
+          statusData !== 'active' ? 'bg-brg-light-gray' : 'bg-brg-primary'
+        "
+      />
+    </div>
+    <div @click="fetchData('finish')">
+      <ButtonSmall
+        label="Selesai"
+        :color="
+          statusData !== 'finish' ? 'bg-brg-light-gray' : 'bg-brg-primary'
+        "
+      />
+    </div>
+    <div @click="fetchData('canceled')">
+      <ButtonSmall
+        label="Dibatalkan"
+        :color="
+          statusData !== 'canceled' ? 'bg-brg-light-gray' : 'bg-brg-primary'
+        "
+      />
+    </div>
   </div>
 
   <div class="px-6 mt-6 pt-6`">
@@ -179,15 +150,16 @@ onMounted(async () => {
       />
 
       <div v-if="transactionPending">loading data sabar</div>
-      <Button
+      <button
         v-if="
           transactionData[statusData].pagination.total_pages !==
           pageFlag[statusData]
         "
         @click="fetchData(statusData)"
         class="border-2 border-brg-primary mt-2 text-brg-primary text-sm font-medium p-2 rounded-3xl w-[40%] mx-auto"
-        >Load More</Button
       >
+        Load More
+      </button>
     </div>
 
     <div v-else>

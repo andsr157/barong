@@ -7,33 +7,19 @@ definePageMeta({
 
 const statusName = ref("saat ini")
 const statusData = ref<string>("active")
-
 const pageFlag: Record<string, any> = ref({
   active: ref<any>(0),
   finish: ref<any>(0),
-  canceled: ref<any>(0),
 })
-
-const { data: activeCache } = useNuxtData("active")
-const { data: finishCache } = useNuxtData("finish")
-const { data: canceledCache } = useNuxtData("canceled")
 
 const cursor: Record<string, any> = ref({
   active: ref<any>(0),
   finish: ref<any>(0),
-  canceled: ref<any>(0),
-})
-
-const transactionDataCache: Record<string, any> = ref({
-  active: ref<any>(activeCache),
-  finish: ref<any>(finishCache),
-  canceled: ref<any>(canceledCache),
 })
 
 const transactionData: Record<string, any> = ref({
   active: ref({ data: [], pagination: {} }),
   finish: ref({ data: [], pagination: {} }),
-  canceled: ref({ data: [], pagination: {} }),
 })
 
 const transactionPending = ref<boolean>()
@@ -43,7 +29,6 @@ const fetchData = async (status: string) => {
   const statuses: Record<string, string> = {
     active: "saat ini",
     finish: "Selesai",
-    canceled: "Dibatalkan",
   }
 
   statusName.value = statuses[status]
@@ -58,81 +43,50 @@ const fetchData = async (status: string) => {
       status,
       () =>
         $fetch(
-          `/api/v1/transaction/partner?limit=5&status=${status}&cursor=${cursor.value[status]}`
+          `/api/v1/transaction/partner?limit=1&status=${status}&cursor=${cursor.value[status]}`
         ),
       { immediate: false }
     )
   )
 
   if (
-    transactionDataCache.value[status] !== null &&
-    transactionData.value[status].data.length ===
-      transactionDataCache.value[status].pagination.total_record
+    transactionData.value[status].data.length === 0 &&
+    pageFlag.value[status] > 0
+  ) {
+    return
+  }
+
+  if (
+    transactionData.value[status].pagination.total_pages ===
+      pageFlag.value[status] &&
+    pageFlag.value[status] > 0
   ) {
     return
   }
 
   transactionPending.value = pending.value
   fetchStatus.value = fetchStatus.value
-
   pageFlag.value[status] += 1
 
   watch(pending, () => {
     transactionPending.value = pending.value
-    console.log(transactionPending.value)
   })
 
   watch(fetchStatus, () => {
     fetchStatus.value = fetchStatus.value
-    console.log(fetchStatus.value)
   })
 
-  if (
-    !transactionDataCache.value[status] ||
-    transactionDataCache.value[status].data.length === 0
-  ) {
-    await execute()
-    if (data.value !== null) {
-      transactionData.value[status].data.push(...data.value.data)
-      transactionData.value[status].pagination = data.value.pagination
-      cursor.value[status] =
-        data.value.data[data.value.data.length - 1].updated_at
-    }
-    return
+  await execute()
+  if (data.value && data.value.data !== null) {
+    transactionData.value[status].data.push(...data.value.data)
+    transactionData.value[status].pagination = data.value.pagination
+    cursor.value[status] = data.value.data[data.value.data.length - 1].time
   }
-  if (
-    transactionData.value[status].data.length !==
-    transactionDataCache.value[status].pagination.total_record
-  ) {
-    await execute()
-    if (data.value !== null) {
-      transactionData.value[status].data.push(...data.value.data)
-      transactionData.value[status].pagination = data.value.pagination
-      cursor.value[status] =
-        data.value.data[data.value.data.length - 1].updated_at
-    }
-    return
-  }
+  return
 }
 
-onMounted(() => {
-  fetchData("active")
-  // if (
-  //   transactionDataCache.value["active"] !== null &&
-  //   transactionDataCache.value["active"].data.length > 0
-  // ) {
-  //   transactionData.value["active"].data.push(
-  //     ...transactionDataCache.value["active"].data
-  //   )
-  //   transactionData.value["active"].pagination =
-  //     transactionDataCache.value["active"].pagination
-  //   cursor.value["active"] =
-  //     transactionDataCache.value["active"].data[
-  //       transactionDataCache.value["active"].data.length - 1
-  //     ].id
-  // } else {
-  //   fetchData("active")
-  // }
+onMounted(async () => {
+  await fetchData("active")
 })
 </script>
 <template>
@@ -169,15 +123,16 @@ onMounted(() => {
 
       <div v-if="transactionPending">loading data sabar</div>
 
-      <Button
+      <button
         v-if="
           transactionData[statusData].pagination.total_pages !==
           pageFlag[statusData]
         "
         @click="fetchData(statusData)"
         class="border-2 border-brg-primary mt-2 text-brg-primary text-sm font-medium p-2 rounded-3xl w-[40%] mx-auto"
-        >Load More</Button
       >
+        Load More
+      </button>
     </div>
 
     <div v-else>
