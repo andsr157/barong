@@ -23,14 +23,14 @@ const emit = defineEmits()
     <transition name="fade-overlay">
       <div
         v-if="isShow"
-        class="w-full h-screen fixed top-0 z-40 bg-black bg-opacity-20"
+        class="w-full max-w-[450px] h-screen fixed top-0 z-40 bg-black bg-opacity-20"
       ></div>
     </transition>
 
     <transition name="fade">
       <div
         v-if="isShow"
-        class="fixed w-full z-50 top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 px-6"
+        class="fixed w-full max-w-96 z-50 top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 px-6"
       >
         <div
           class="w-full flex flex-col items-center py-6 rounded-[10px] bg-white"

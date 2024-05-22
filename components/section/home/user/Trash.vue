@@ -9,13 +9,24 @@ const { data, pending, status, refresh } = await useFetch(
   "/api/v1/dashboard/user",
   {
     key: "user-trash",
+    transform(input) {
+      return {
+        ...input,
+        fetchedAt: new Date(),
+      }
+    },
     getCachedData(key) {
       const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
       if (!dataCache) {
         return
-      } else {
-        return dataCache
       }
+      const expirationDate = new Date(dataCache.fetchedAt)
+      expirationDate.setTime(expirationDate.getTime() + 30 * 1000)
+      const isExpired = expirationDate.getTime() < Date.now()
+      if (isExpired) {
+        return
+      }
+      return dataCache
     },
   }
 )
@@ -104,10 +115,6 @@ interface CARD {
   color: string
   dark: boolean
 }
-
-onMounted(() => {
-  refresh()
-})
 </script>
 <template>
   <section class="ps-6 mb-10">

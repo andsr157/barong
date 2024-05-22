@@ -6,20 +6,27 @@ const { data: user } = <any>useAuth()
 
 const { data, status, refresh } = await (<any>(
   useFetch("/api/v1/dashboard/partner", {
+    transform(input) {
+      return {
+        ...input,
+        fetchedAt: new Date(),
+      }
+    },
     getCachedData(key) {
       const dataCache = nuxt.payload.data[key] || nuxt.static.data[key]
       if (!dataCache) {
         return
-      } else {
-        return dataCache
       }
+      const expirationDate = new Date(dataCache.fetchedAt)
+      expirationDate.setTime(expirationDate.getTime() + 30 * 1000)
+      const isExpired = expirationDate.getTime() < Date.now()
+      if (isExpired) {
+        return
+      }
+      return dataCache
     },
   })
 ))
-
-onMounted(() => {
-  refresh()
-})
 </script>
 
 <template>
