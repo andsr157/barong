@@ -13,6 +13,8 @@ export interface Transaction {
         name: string
         telp: string
         detail: string
+        latitude?: string
+        longitude?: string
     },
     trashImage: string
     detailSampah: {

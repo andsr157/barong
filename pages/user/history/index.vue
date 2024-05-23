@@ -143,10 +143,11 @@ onMounted(async () => {
       <CardTransactionUser
         v-for="transaction in transactionData[statusData].data"
         :partner="transaction.pengepul"
+        :chat-id="transaction.chats_id"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
         :time="transaction.time"
-        :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
+        :path="`/user/transaction/${transaction.id}/${transaction.status.name}`"
       />
 
       <div v-if="transactionPending">loading data sabar</div>

@@ -46,7 +46,7 @@ const {
         :partner="transaction.pengepul"
         :status="transaction.status"
         :time="transaction.time"
-        :to="`/user/transaction/${transaction.id}/${transaction.status.name}`"
+        :path="`/user/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>
     <div class="w-full pb-14" v-else>

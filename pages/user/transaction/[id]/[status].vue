@@ -130,7 +130,7 @@ onMounted(async () => {
       <CardPartnerProfile
         class="mt-14"
         v-if="
-          transaction.status.name === 'finish' &&
+          transaction.status.name === 'taking' &&
           transaction.review.rate === null
         "
         :name="transaction.pengepul.name"

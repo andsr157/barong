@@ -5,10 +5,10 @@ import { type TransactionData, type TransactionDetail, type TransactionImage, ty
 
 interface PostData {
     transaction: {
-        id?: string,
+        id?: string | any,
         user_id: string,
-        address: Address
-        chats_id?: string,
+        address: Address | any
+        chats_id?: string | any,
         image: string,
         status_id: string,
         note: string,

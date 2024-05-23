@@ -97,7 +97,7 @@ onMounted(async () => {
   <Header title="Transaksi" />
   <Transition name="bounce">
     <div
-      class="fixed w-full h-screen bg-white bg-opacity-10 flex justify-center items-center px-6"
+      class="fixed w-full max-w-[450px] h-screen bg-white bg-opacity-10 flex justify-center items-center px-6"
       v-if="isMainAddressNotExist"
     >
       <div class="w-[80%] mb-32 text-brg-primary-dark text-center">

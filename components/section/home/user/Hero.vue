@@ -32,7 +32,9 @@ const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
     </h1>
     <CardSummaryTransaction
       :total="
-        data.data !== null && status === 'success' ? data.data.totalAmount : 0
+        data && data.data !== null && status === 'success'
+          ? data.data.totalAmount
+          : 0
       "
     />
   </section>

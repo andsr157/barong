@@ -14,6 +14,8 @@ const handleDeleteImage = () => {
     emit("deleteImage")
   }
 }
+
+const isPreviewOpen = ref(false)
 </script>
 
 <template>
@@ -27,6 +29,7 @@ const handleDeleteImage = () => {
   >
     <NuxtImg
       v-if="props.url"
+      @click="isPreviewOpen = true"
       :src="props.url"
       class="object-cover h-48 w-full"
       width="312"
@@ -54,4 +57,31 @@ const handleDeleteImage = () => {
       </p>
     </div>
   </div>
+
+  <transition name="fade">
+    <div
+      v-if="isPreviewOpen"
+      @click="isPreviewOpen = false"
+      class="fixed top-0 z-50 w-full max-w-[450px] h-[100vh] bg-gray-500 bg-opacity-10 flex justify-center items-center"
+    >
+      <img
+        :src="props.url"
+        width="100%"
+        height="300px"
+        alt="partner profile img"
+        class="object-contain"
+      />
+    </div>
+  </transition>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

@@ -110,9 +110,14 @@ onMounted(async () => {
 
   console.log(res)
 })
+
+const googleMapsUrl = computed(() => {
+  return `https://www.google.com/maps?q=${transaction.value?.address.latitude},${transaction.value?.address.longitude}`
+})
 </script>
 
 <template>
+  {{ transaction }}
   <Toast />
   <Header title="Detail">
     <div
@@ -145,6 +150,8 @@ onMounted(async () => {
         :address="transaction.address.address"
         :detail="transaction.address.detail"
         label-button="Lihat Rute"
+        :path="googleMapsUrl"
+        button-target="_blank"
       />
     </section>
 
