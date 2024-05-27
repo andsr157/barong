@@ -144,7 +144,7 @@ model user_notification {
   link                 String?               
   mode                 NotificationMode
   isRead               Boolean               @default(false)
-  createdAt            DateTime              @default(now())
+  createdAt            DateTime              @unique @default(now())
   user                 users                @relation(fields: [user_id], references: [id])
   notification         notification          @relation(fields: [notificationId], references: [id])
 

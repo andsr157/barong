@@ -59,7 +59,14 @@ export default defineEventHandler(async (event) => {
             }
         }
 
-        return { data: { trash: trashes, totalAmount }, status: 200 }
+        const notifCount = await prisma.user_notification.count({
+            where: {
+                user_id: userId,
+                isRead: false
+            }
+        })
+
+        return { data: { trash: trashes, totalAmount, notification: notifCount }, status: 200 }
     } catch (error) {
         console.error(error)
         return { data: null, status: 500 };

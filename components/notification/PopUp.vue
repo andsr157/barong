@@ -7,7 +7,7 @@ const { notifications } = storeToRefs(notificationStore)
   <Teleport to="body">
     <div
       v-if="notifications.length"
-      class="fixed z-[99] right-1/2 translate-x-1/2 top-5 w-[100vw] max-w-96 grid grid-cols-6 items-center px-2 py-3 rounded-md bg-white border-[1px] border-brg-light-gray"
+      class="fixed z-[99] right-1/2 translate-x-1/2 top-5 w-full max-w-80 grid grid-cols-6 items-center px-2 py-3 rounded-md bg-white border-[1px] border-brg-light-gray"
     >
       <div>
         <img

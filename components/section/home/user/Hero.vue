@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { data: user } = <any>useAuth()
-import { debounce } from "lodash"
 const nuxt = useNuxtApp()
 
 const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
@@ -25,39 +24,57 @@ const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
   },
 })
 
-// const debouncedRefresh = debounce(refresh, 300)
-// let newHeroData: any
-// onMounted(() => {
-//   newHeroData = nuxt.$supabase
-//     .channel("user-home-hero")
-//     .on(
-//       "postgres_changes",
-//       {
-//         event: "UPDATE",
-//         schema: "public",
-//         table: "transaction",
-//         filter: `user_id=eq.${user?.value?.user?.id}`,
-//       },
-//       async (payload: any) => {
-//         console.log(payload)
-//         await refresh()
-//       }
-//     )
-//     .subscribe()
-// })
+let newHeroData: any
+onMounted(() => {
+  newHeroData = nuxt.$supabase
+    .channel("user-home-hero")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "transaction",
+        filter: `user_id=eq.${user?.value?.user?.id}`,
+      },
+      (payload: any) => {
+        console.log(payload)
+        refresh()
+      }
+    )
+    .subscribe()
+})
 
-// onUnmounted(() => {
-//   if (newHeroData) {
-//     newHeroData.unsubscribe()
-//   }
-// })
+onUnmounted(() => {
+  if (newHeroData) {
+    newHeroData.unsubscribe()
+  }
+})
 </script>
 
 <template>
   <section class="mt-[30px] mb-10 px-6">
-    <h1 class="text-2xl text-brg-primary-dark font-bold mb-4">
-      Hai {{ user.user.name }}
-    </h1>
+    <div class="flex w-full justify-between">
+      <h1 class="text-2xl text-brg-primary-dark font-bold mb-4">
+        Hai {{ user.user.name }}
+      </h1>
+      <div class="relative" @click="useRouter().push('/user/notification')">
+        <Icon
+          name="ri:notification-3-fill"
+          size="28px"
+          class="text-brg-primary-dark"
+        />
+        <div
+          class="text-center py-[2px] absolute -top-1 right-0 w-4 h-4 text-[9px] rounded-full bg-brg-primary text-white"
+        >
+          {{
+            data && data.data !== null && status === "success"
+              ? data.data.notification
+              : 0
+          }}
+        </div>
+      </div>
+    </div>
+
     <CardSummaryTransaction
       :total="
         data && data.data !== null && status === 'success'

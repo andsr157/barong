@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { BREAKSPOINTS } from "@/constants/swiper.constants"
-import { debounce } from "lodash"
 
 const nuxt = useNuxtApp()
 
