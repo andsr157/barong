@@ -33,7 +33,7 @@ const { data, pending, status, refresh } = await useFetch(
 
 const { data: user }: any = useAuth()
 
-const chat = nuxt.$supabase
+const NewTrashData = nuxt.$supabase
   .channel("user-home-trash")
   .on(
     "postgres_changes",
@@ -64,7 +64,7 @@ const test = computed(() => {
 
 const updatedCard = computed(() => {
   const updatedCardData = [...card]
-  if (data.value.status === 200) {
+  if (data.value && data.value.status === 200) {
     data.value.data.trash.forEach((trashItem: TrashItem) => {
       const index = updatedCardData.findIndex(
         (cardItem) => cardItem.category === trashItem.category

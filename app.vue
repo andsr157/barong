@@ -5,31 +5,42 @@ useHead({
 const notificationStore = useNotificationStore()
 const { data: user }: any = useAuth()
 
-const chat = useNuxtApp()
+const showNotification = async (payload: any) => {
+  try {
+    const res = (await $fetch(
+      `/api/v1/notification/${payload.notificationId}`
+    )) as any
+    console.log("data", res)
+    const payloadData = {
+      ...payload.new,
+      ...res.data,
+    }
+    if (res && res.status === 200) {
+      notificationStore.updateNotificationState(payloadData)
+      if (process.client) {
+        new Notification("transaksi", {
+          body: payloadData.title,
+        })
+      }
+    }
+  } catch (error) {
+    console.log("err", error)
+  }
+}
+
+const newNotificationData = useNuxtApp()
   .$supabase.channel("app-notification")
   .on(
     "postgres_changes",
     {
       event: "INSERT",
       schema: "public",
-      table: "UserNotification",
+      table: "user_notification",
       filter: `user_id=eq.${user?.value?.user?.id}`,
     },
-    async (payload: any) => {
+    (payload: any) => {
       console.log(payload)
-      const res = (await $fetch(
-        `/api/v1/notification/${payload.new.notificationId}`
-      )) as any
-      const payloadData = {
-        ...payload.new,
-        ...res.data,
-      }
-      if (res && res.status === 200) {
-        const notif = new Notification("transaksi", {
-          body: payloadData.title,
-        })
-        notificationStore.updateNotificationState(payloadData)
-      }
+      showNotification(payload.new)
     }
   )
   .subscribe()

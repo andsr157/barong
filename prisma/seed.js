@@ -20,22 +20,6 @@ async function seedUser() {
       })
     }
 
-    for (const address of DATA.ADDRESS) {
-      await prisma.address.create({
-        data: {
-          label: address.label,
-          address_name: address.address_name,
-          detail: address.detail,
-          owner_name: address.owner_name,
-          owner_telp: address.owner_telp,
-          latitude: address.latitude,
-          longitude: address.longitude,
-          user_id: address.user_id,
-          is_main: false,
-        },
-      })
-    }
-
     for (const category of DATA.TRASHCATEGORY) {
       await prisma.trashCategory.create({
         data: {
@@ -69,40 +53,11 @@ async function seedUser() {
       })
     }
 
-    for (const chat of DATA.CHATS) {
-      await prisma.chats.create({
+    for (const notif of DATA.NOTIFICATION) {
+      await prisma.notification.create({
         data: {
-          user_id: chat.user_id,
-          partner_id: chat.partner_id,
-        },
-      })
-    }
-
-    for (const transaction of DATA.TRANSACTION) {
-      await prisma.transaction.create({
-        data: {
-          user_id: transaction.user_id,
-          partner_id: transaction.partner_id,
-          chats_id: transaction.chats_id,
-          address: transaction.address,
-          image: transaction.image,
-          status_id: transaction.status_id,
-          partner_rate: transaction.partner_rate,
-          partner_review: transaction.partner_review,
-          note: transaction.note,
-          total: transaction.total,
-        },
-      })
-    }
-
-    for (const detail of DATA.TRANSACTION_DETAIL) {
-      await prisma.transaction_detail.create({
-        data: {
-          id: detail.id,
-          trash_id: detail.trash_id,
-          price: detail.price,
-          weight: detail.weight,
-          transaction_id: detail.transaction_id,
+          title: notif.title,
+          description: notif.description,
         },
       })
     }

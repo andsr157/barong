@@ -24,7 +24,7 @@ const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
   },
 })
 
-const chat = nuxt.$supabase
+const newHeroData = nuxt.$supabase
   .channel("user-home-hero")
   .on(
     "postgres_changes",

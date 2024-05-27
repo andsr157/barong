@@ -31,7 +31,7 @@ const {
 
 const { data: user }: any = useAuth()
 
-const chat = nuxt.$supabase
+const newActiveData = nuxt.$supabase
   .channel("user-home-active")
   .on(
     "postgres_changes",
@@ -42,7 +42,7 @@ const chat = nuxt.$supabase
       filter: `user_id=eq.${user?.value?.user?.id}`,
     },
     (payload: any) => {
-      console.log(payload)
+      console.log("active", payload)
       refresh()
     }
   )

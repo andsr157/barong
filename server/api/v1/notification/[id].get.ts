@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
         }
         return { data: res, status: 200 };
     } catch (error: any) {
-        console.error('Error saving subscription:', error);
+        console.error('Error saving notification:', error);
         return { error: error, status: 500 };
     }
 })

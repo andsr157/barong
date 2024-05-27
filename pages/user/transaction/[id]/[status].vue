@@ -87,7 +87,7 @@ definePageMeta({
   layout: "blank",
 })
 
-const chat = useNuxtApp()
+const newTransactionData = useNuxtApp()
   .$supabase.channel("user-transaction")
   .on(
     "postgres_changes",
