@@ -3,7 +3,7 @@ export default defineEventHandler(async (event) => {
     try {
         const body = await readBody(event)
 
-        const res = await prisma.userNotification.create({
+        const res = await prisma.user_notification.create({
             data: {
                 user_id: body.user_id,
                 notificationId: parseInt(body.notificationId),
