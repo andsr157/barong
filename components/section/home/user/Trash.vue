@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { BREAKSPOINTS } from "@/constants/swiper.constants"
+import { debounce } from "lodash"
 
 const nuxt = useNuxtApp()
-
-const { data: trashCache } = useNuxtData("")
 
 const { data, pending, status, refresh } = await useFetch(
   "/api/v1/dashboard/user",
@@ -32,23 +31,6 @@ const { data, pending, status, refresh } = await useFetch(
 )
 
 const { data: user }: any = useAuth()
-
-const NewTrashData = nuxt.$supabase
-  .channel("user-home-trash")
-  .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "transaction",
-      filter: `user_id=eq.${user?.value?.user?.id}`,
-    },
-    (payload: any) => {
-      console.log(payload)
-      refresh()
-    }
-  )
-  .subscribe()
 
 interface TrashItem {
   category: string
@@ -134,6 +116,34 @@ interface CARD {
   color: string
   dark: boolean
 }
+
+// const debouncedRefresh = debounce(refresh, 300)
+// let NewTrashData: any
+
+// onMounted(() => {
+//   const NewTrashData = nuxt.$supabase
+//     .channel("user-home-trash")
+//     .on(
+//       "postgres_changes",
+//       {
+//         event: "UPDATE",
+//         schema: "public",
+//         table: "transaction",
+//         filter: `user_id=eq.${user?.value?.user?.id}`,
+//       },
+//       async (payload: any) => {
+//         console.log(payload)
+//         await refresh()
+//       }
+//     )
+//     .subscribe()
+// })
+
+// onUnmounted(() => {
+//   if (NewTrashData) {
+//     NewTrashData.unsubscribe()
+//   }
+// })
 </script>
 <template>
   <section class="ps-6 mb-10">

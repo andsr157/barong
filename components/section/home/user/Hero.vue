@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { data: user } = <any>useAuth()
+import { debounce } from "lodash"
 const nuxt = useNuxtApp()
 
 const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
@@ -24,22 +25,32 @@ const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
   },
 })
 
-const newHeroData = nuxt.$supabase
-  .channel("user-home-hero")
-  .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "transaction",
-      filter: `user_id=eq.${user?.value?.user?.id}`,
-    },
-    (payload: any) => {
-      console.log(payload)
-      refresh()
-    }
-  )
-  .subscribe()
+// const debouncedRefresh = debounce(refresh, 300)
+// let newHeroData: any
+// onMounted(() => {
+//   newHeroData = nuxt.$supabase
+//     .channel("user-home-hero")
+//     .on(
+//       "postgres_changes",
+//       {
+//         event: "UPDATE",
+//         schema: "public",
+//         table: "transaction",
+//         filter: `user_id=eq.${user?.value?.user?.id}`,
+//       },
+//       async (payload: any) => {
+//         console.log(payload)
+//         await refresh()
+//       }
+//     )
+//     .subscribe()
+// })
+
+// onUnmounted(() => {
+//   if (newHeroData) {
+//     newHeroData.unsubscribe()
+//   }
+// })
 </script>
 
 <template>

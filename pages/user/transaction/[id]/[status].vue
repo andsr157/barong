@@ -116,6 +116,12 @@ onMounted(async () => {
   transaction.value = res.data
   console.log(res.data)
 })
+
+onUnmounted(() => {
+  if (newTransactionData) {
+    newTransactionData.unsubscribe()
+  }
+})
 </script>
 
 <template>
