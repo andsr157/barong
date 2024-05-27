@@ -50,3 +50,37 @@ export function convertToDate(dateTimeString: string): string {
 
     return `${day} ${month} ${year}`;
 }
+
+export function timeAgo(inputDate: string): string {
+    const date = new Date(inputDate);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    const intervals = {
+        tahun: 365 * 24 * 60 * 60,
+        bulan: 30 * 24 * 60 * 60,
+        hari: 24 * 60 * 60,
+        jam: 60 * 60,
+        menit: 60,
+    };
+
+    if (diffInSeconds < intervals.menit) {
+        return "baru saja";
+    }
+
+    if (diffInSeconds < intervals.jam) {
+        const minutes = Math.floor(diffInSeconds / intervals.menit);
+        return minutes === 1 ? `1 menit lalu` : `${minutes} menit lalu`;
+    }
+
+    for (const interval in intervals) {
+        const seconds = intervals[interval as keyof typeof intervals];
+        const quotient = Math.floor(diffInSeconds / seconds);
+        if (quotient >= 1) {
+            return quotient === 1 ? `1 ${interval} lalu` : `${quotient} ${interval} lalu`;
+        }
+    }
+
+    return "baru saja";
+}
+
