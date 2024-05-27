@@ -87,7 +87,7 @@ definePageMeta({
   layout: "blank",
 })
 
-const chat = useNuxtApp()
+const newTransactionData = useNuxtApp()
   .$supabase.channel("user-transaction")
   .on(
     "postgres_changes",
@@ -115,6 +115,12 @@ onMounted(async () => {
   const res = await transactionStore.getSingleTransaction(id)
   transaction.value = res.data
   console.log(res.data)
+})
+
+onUnmounted(() => {
+  if (newTransactionData) {
+    newTransactionData.unsubscribe()
+  }
 })
 </script>
 

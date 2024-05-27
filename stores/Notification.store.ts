@@ -5,7 +5,7 @@ interface Notification {
     description: string,
     link: string
 }
-const defaultTimeout = 6000
+const defaultTimeout = 5000
 
 export const useNotificationStore = defineStore('notification', {
     state: (): { notifications: Notification[] } => ({

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { formatSampah } from "~/composables/helpers"
-
 const nuxt = useNuxtApp()
 const {
   data: transactionActive,
@@ -31,22 +30,31 @@ const {
 
 const { data: user }: any = useAuth()
 
-const chat = nuxt.$supabase
-  .channel("user-home-active")
-  .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "transaction",
-      filter: `user_id=eq.${user?.value?.user?.id}`,
-    },
-    (payload: any) => {
-      console.log(payload)
-      refresh()
-    }
-  )
-  .subscribe()
+let newActiveData: any
+onMounted(() => {
+  newActiveData = nuxt.$supabase
+    .channel("user-home-active")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "transaction",
+        filter: `user_id=eq.${user?.value?.user?.id}`,
+      },
+      (payload: any) => {
+        console.log("active", payload)
+        refresh()
+      }
+    )
+    .subscribe()
+})
+
+onUnmounted(() => {
+  if (newActiveData) {
+    newActiveData.unsubscribe()
+  }
+})
 </script>
 
 <template>
@@ -57,7 +65,7 @@ const chat = nuxt.$supabase
     <div v-if="pending">lagi loading sabar</div>
     <div
       class="flex flex-col gap-5"
-      v-else-if="transactionActive.status === 200"
+      v-else-if="transactionActive !== null || transactionActive.status === 200"
     >
       <CardTransactionUser
         v-for="transaction in transactionActive?.data"

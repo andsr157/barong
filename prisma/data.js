@@ -171,6 +171,17 @@ export const DATA = {
     },
   ],
 
+  NOTIFICATION: [
+    {
+      title: "Transaksi Diambil",
+      description: "Transaksi diambil, pengepul menuju ke tempat anda",
+    },
+    {
+      title: "Transaksi dibatalkan",
+      description: "Pengepul membatalkan transaksi , mencari pengepul lain",
+    },
+  ],
+
   CHATS: [
     {
       user_id: "USR1",
