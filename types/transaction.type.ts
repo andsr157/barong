@@ -2,6 +2,7 @@ export interface Transaction {
     id: string
     chats_id: number,
     user: {
+        id?: string
         name: string
         telp: string
         address: string
@@ -13,6 +14,8 @@ export interface Transaction {
         name: string
         telp: string
         detail: string
+        latitude?: string
+        longitude?: string
     },
     trashImage: string
     detailSampah: {
@@ -41,6 +44,7 @@ export interface Transaction {
 export interface Transaction {
     id: string;
     user: {
+        id?: string
         name: string;
         telp: string;
         address: string;

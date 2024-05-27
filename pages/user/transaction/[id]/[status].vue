@@ -87,6 +87,24 @@ definePageMeta({
   layout: "blank",
 })
 
+const chat = useNuxtApp()
+  .$supabase.channel("user-transaction")
+  .on(
+    "postgres_changes",
+    {
+      event: "UPDATE",
+      schema: "public",
+      table: "transaction",
+      filter: `user_id=eq.${user?.value?.user?.id}`,
+    },
+    async (payload: any) => {
+      console.log(payload)
+      const res = await transactionStore.getSingleTransaction(payload.new.id)
+      transaction.value = res.data
+    }
+  )
+  .subscribe()
+
 onMounted(async () => {
   let id: string
   if (Array.isArray(route.params.id)) {
@@ -130,7 +148,7 @@ onMounted(async () => {
       <CardPartnerProfile
         class="mt-14"
         v-if="
-          transaction.status.name === 'finish' &&
+          transaction.status.name === 'taking' &&
           transaction.review.rate === null
         "
         :name="transaction.pengepul.name"

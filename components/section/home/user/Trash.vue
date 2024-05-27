@@ -31,6 +31,25 @@ const { data, pending, status, refresh } = await useFetch(
   }
 )
 
+const { data: user }: any = useAuth()
+
+const chat = nuxt.$supabase
+  .channel("user-home-trash")
+  .on(
+    "postgres_changes",
+    {
+      event: "UPDATE",
+      schema: "public",
+      table: "transaction",
+      filter: `user_id=eq.${user?.value?.user?.id}`,
+    },
+    (payload: any) => {
+      console.log(payload)
+      refresh()
+    }
+  )
+  .subscribe()
+
 interface TrashItem {
   category: string
   weight: number

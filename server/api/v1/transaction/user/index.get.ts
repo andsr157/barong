@@ -80,6 +80,7 @@ export default defineEventHandler(async (event) => {
             return {
                 id: data.id,
                 pengepul: data.partner,
+                chats_id: data.chats_id,
                 detailSampah: data.transaction_detail.map((detail: any) => ({
                     category: detail.trash.category.name,
                 })),

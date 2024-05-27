@@ -6,6 +6,7 @@ import { type Transaction } from "~/types/transaction.type"
 import axios from "axios"
 
 const transactionStore = useTransactionStore()
+const notificationStore = useNotificationStore()
 const toastStore = useToastStore()
 const { isLoading, statusLoading } = storeToRefs(transactionStore)
 const isModalOpen = ref(false)
@@ -58,6 +59,12 @@ const handleRequest = async (payload: any, request: string) => {
     const res = await transactionStore.updateStatusTransaction(id, payload)
     if (transaction.value) {
       transaction.value.status = res.data.status ?? transaction.value.status
+      const notifPayload = {
+        user_id: transaction.value.user?.id,
+        notificationId: request === "take" ? 1 : 2,
+        link: "/user/history",
+      }
+      notificationStore.sendNotification(notifPayload)
     }
 
     const payloadChats = {
@@ -110,6 +117,10 @@ onMounted(async () => {
 
   console.log(res)
 })
+
+const googleMapsUrl = computed(() => {
+  return `https://www.google.com/maps?q=${transaction.value?.address.latitude},${transaction.value?.address.longitude}`
+})
 </script>
 
 <template>
@@ -145,6 +156,8 @@ onMounted(async () => {
         :address="transaction.address.address"
         :detail="transaction.address.detail"
         label-button="Lihat Rute"
+        :path="googleMapsUrl"
+        button-target="_blank"
       />
     </section>
 

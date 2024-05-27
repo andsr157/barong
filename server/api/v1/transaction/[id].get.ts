@@ -44,6 +44,7 @@ export default defineEventHandler(async (event) => {
 
             },
             select: {
+                id: true,
                 name: true,
                 telp: true,
             }
@@ -100,7 +101,7 @@ export default defineEventHandler(async (event) => {
                 telp: addressData.owner_telp,
                 detail: addressData.detail,
                 latitude: addressData.latitude,
-                longituded: addressData.longitude,
+                longitude: addressData.longitude,
             },
             trashImage: transactions[0].image, // Gambar sampah (placeholder)
             detailSampah: transactions[0].transaction_detail.map((detail) => ({
