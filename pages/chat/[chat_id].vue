@@ -77,7 +77,7 @@ const chat = supabase
   .on(
     "postgres_changes",
     {
-      event: "*",
+      event: "INSERT",
       schema: "public",
       table: "messages",
       filter: `chats_id=eq.${messages?.value?.data.chats_id}`,

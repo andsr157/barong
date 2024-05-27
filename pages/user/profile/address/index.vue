@@ -17,8 +17,8 @@ onMounted(() => {
   <div v-if="!isLoading">
     <div class="px-5 mt-[20px] flex flex-col gap-7">
       <NuxtLink
-        v-for="data in address"
-        :key="data.id"
+        v-for="(data, index) in address"
+        :key="index"
         :to="`/user/profile/address/edit/${data.id}`"
       >
         <CardAddress

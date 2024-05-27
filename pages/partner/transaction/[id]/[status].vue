@@ -6,6 +6,7 @@ import { type Transaction } from "~/types/transaction.type"
 import axios from "axios"
 
 const transactionStore = useTransactionStore()
+const notificationStore = useNotificationStore()
 const toastStore = useToastStore()
 const { isLoading, statusLoading } = storeToRefs(transactionStore)
 const isModalOpen = ref(false)
@@ -58,6 +59,12 @@ const handleRequest = async (payload: any, request: string) => {
     const res = await transactionStore.updateStatusTransaction(id, payload)
     if (transaction.value) {
       transaction.value.status = res.data.status ?? transaction.value.status
+      const notifPayload = {
+        user_id: transaction.value.user?.id,
+        notificationId: request === "take" ? 1 : 2,
+        link: "/user/history",
+      }
+      notificationStore.sendNotification(notifPayload)
     }
 
     const payloadChats = {
@@ -117,7 +124,6 @@ const googleMapsUrl = computed(() => {
 </script>
 
 <template>
-  {{ transaction }}
   <Toast />
   <Header title="Detail">
     <div

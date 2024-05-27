@@ -22,6 +22,7 @@ model users {
   ReferredToUser transaction[] @relation("Partner")
   ReferrerToUser transaction[] @relation("User")
   pushSubscriptions PushSubscription[]
+  userNotifications user_notification[]
 }
 
 model address {
@@ -126,4 +127,30 @@ model PushSubscription {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
   user        users     @relation(fields: [user_id], references: [id])
+}
+
+model notification {
+  id                   Int                   @id @default(autoincrement())
+  title                String
+  description          String
+  createdAt            DateTime              @default(now())
+  userNotifications    user_notification[]
+}
+
+model user_notification {
+  id                    String    @id @default(cuid())
+  user_id               String
+  notificationId       Int
+  link                 String?               
+  mode                 NotificationMode
+  isRead               Boolean               @default(false)
+  createdAt            DateTime              @default(now())
+  user                 users                @relation(fields: [user_id], references: [id])
+  notification         notification          @relation(fields: [notificationId], references: [id])
+
+}
+
+enum NotificationMode {
+  PUSH
+  IN_APP
 }

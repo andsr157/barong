@@ -23,6 +23,23 @@ const { data, status, refresh } = useFetch("/api/v1/dashboard/user", {
     return dataCache
   },
 })
+
+const chat = nuxt.$supabase
+  .channel("user-home-hero")
+  .on(
+    "postgres_changes",
+    {
+      event: "UPDATE",
+      schema: "public",
+      table: "transaction",
+      filter: `user_id=eq.${user?.value?.user?.id}`,
+    },
+    (payload: any) => {
+      console.log(payload)
+      refresh()
+    }
+  )
+  .subscribe()
 </script>
 
 <template>

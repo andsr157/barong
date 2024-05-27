@@ -2,6 +2,7 @@ export interface Transaction {
     id: string
     chats_id: number,
     user: {
+        id?: string
         name: string
         telp: string
         address: string
@@ -43,6 +44,7 @@ export interface Transaction {
 export interface Transaction {
     id: string;
     user: {
+        id?: string
         name: string;
         telp: string;
         address: string;

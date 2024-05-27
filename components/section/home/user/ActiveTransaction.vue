@@ -28,6 +28,25 @@ const {
     return dataCache
   },
 })
+
+const { data: user }: any = useAuth()
+
+const chat = nuxt.$supabase
+  .channel("user-home-active")
+  .on(
+    "postgres_changes",
+    {
+      event: "UPDATE",
+      schema: "public",
+      table: "transaction",
+      filter: `user_id=eq.${user?.value?.user?.id}`,
+    },
+    (payload: any) => {
+      console.log(payload)
+      refresh()
+    }
+  )
+  .subscribe()
 </script>
 
 <template>
@@ -47,6 +66,7 @@ const {
         :status="transaction.status"
         :time="transaction.time"
         :path="`/user/transaction/${transaction.id}/${transaction.status.name}`"
+        :chat-id="transaction.chats_id"
       />
     </div>
     <div class="w-full pb-14" v-else>
