@@ -63,6 +63,8 @@ async function fetchData() {
     requestData.value.pagination = data.value.pagination
     cursor.value =
       requestData.value.data[requestData.value.data.length - 1].time
+  }
+  if (data.value !== null) {
     pageFlag.value += data.value.pagination.pageFlag
   }
 }
@@ -77,6 +79,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  {{ pageFlag }}
   <Header title="Permintaan" />
   <Suspense>
     <section class="px-6 pt-[30px] pb-24 overflow-auto">
