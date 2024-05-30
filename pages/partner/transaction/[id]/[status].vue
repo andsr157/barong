@@ -30,11 +30,6 @@ const handleFinishTransaction = () => {
 }
 
 const handleRequest = async (payload: any, request: string) => {
-  const randomDelay = Math.floor(Math.random() * (2000 - 100)) + 100
-  console.log(randomDelay)
-
-  await new Promise((resolve) => setTimeout(resolve, 3000))
-
   try {
     const id = Array.isArray(route.params.id)
       ? route.params.id[0]
@@ -54,7 +49,7 @@ const handleRequest = async (payload: any, request: string) => {
 
     const res = await transactionStore.updateStatusTransaction(id, payload)
     if (res?.data) {
-      transaction.value.status = res.data.status ?? transaction.value.status
+      fetchData(id)
       const notifPayload = {
         user_id: transaction.value.user?.id,
         notificationId: request === "take" ? 1 : 2,
@@ -111,14 +106,15 @@ const handleTakeRequest = () => {
       console.error(error)
       toastStore.error({
         text: "Gagal mengambil atau sudah diambil pengepul lain",
+        timeout: 3000,
       })
+      setTimeout(() => {
+        router.push("/partner/request")
+      }, 3000)
     })
 }
 
-onMounted(async () => {
-  const id = Array.isArray(route.params.id)
-    ? route.params.id[0]
-    : route.params.id
+const fetchData = async (id: string) => {
   const res = await transactionStore.getSingleTransaction(id)
   if (res?.error) {
     if (res.error.status === 403) {
@@ -126,6 +122,13 @@ onMounted(async () => {
     }
   }
   transaction.value = res.data
+}
+
+onMounted(async () => {
+  const id = Array.isArray(route.params.id)
+    ? route.params.id[0]
+    : route.params.id
+  await fetchData(id)
 })
 
 const googleMapsUrl = computed(() => {
@@ -134,6 +137,7 @@ const googleMapsUrl = computed(() => {
 </script>
 
 <template>
+  {{ transaction?.pengepul }}
   <Toast />
   <Header title="Detail">
     <div
