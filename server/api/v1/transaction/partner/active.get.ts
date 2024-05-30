@@ -42,8 +42,8 @@ export default defineEventHandler(async (event) => {
             return { data: null, status: 400 };
         }
 
-        if (AuthorizationCheck(session, transactions[0].partner_id ?? '').status !== 200) {
-            return AuthorizationCheck(session, transactions[0].partner_id ?? '');
+        if (session) {
+            AuthorizationCheck(session, transactions[0].partner_id ?? '');
         }
 
         const user = await prisma.users.findUnique({

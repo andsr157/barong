@@ -40,8 +40,9 @@ export const useAddressStore = defineStore('Address-store', {
                     console.log(this.formAdress)
                 }
                 this.isLoading = false
+                return Promise.resolve(res.data)
             } catch (error) {
-                console.error(error)
+                console.error('error')
             }
         },
 
@@ -87,9 +88,6 @@ export const useAddressStore = defineStore('Address-store', {
         },
 
         setForm(id: string) {
-            console.log(id)
-            console.log('jlan kuy')
-            console.log(this.address)
             const data = this.address.find((data: Address) => data.id === id);
             console.log(data)
             if (data) {

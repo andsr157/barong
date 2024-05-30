@@ -1,6 +1,5 @@
 import { prisma } from '~/composables/prisma'
 import { getServerSession } from '#auth'
-import { getNextNumber } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
     const session = await getServerSession(event) as any

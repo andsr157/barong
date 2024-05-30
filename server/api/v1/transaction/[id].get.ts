@@ -32,11 +32,26 @@ export default defineEventHandler(async (event) => {
             },
         });
 
-        if (AuthorizationCheck(session, transactions[0].user_id).status !== 200) {
-            if (session.user.role !== 'partner') {
-                return AuthorizationCheck(session, transactions[0].user_id);
+        if (!session) {
+            throw createError({
+                statusCode: 403,
+                statusMessage: 'Unauthorized'
+            })
+
+        } else {
+            if (session.user.role === 'user') {
+                AuthorizationCheck(session, transactions[0].user_id);
+            } else if (session.user.role === 'partner' && ['STS1', 'STS5'].includes(transactions[0].status_id)) {
+                AuthorizationCheck(session, transactions[0].partner_id ?? '')
             }
         }
+
+        // if (AuthorizationCheck(session, transactions[0].user_id).status !== 200) {
+        //     if (session.user.role !== 'partner') {
+        //         return AuthorizationCheck(session, transactions[0].user_id);
+        //     }
+        // }
+
 
         const user = await prisma.users.findUnique({
             where: {
@@ -130,6 +145,6 @@ export default defineEventHandler(async (event) => {
     } catch (error) {
         console.error('Error fetching transaction data:', error);
         // Kembalikan respons dengan pesan error
-        return { error: 'Internal server error', status: 500 };
+        return { error, status: 500 };
     }
 });

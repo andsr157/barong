@@ -1,15 +1,14 @@
 export function AuthorizationCheck(session: any, reqId: string) {
     if (!session || !session.user?.id) {
-        return { data: {}, status: 401 }
+        throw { data: null, status: 401 }
     }
 
     const userId = session.user.id
-
+    console.log(userId === reqId)
     if (userId !== reqId) {
-        return { data: {}, status: 403 }
+        throw { data: null, status: 403 }
     }
 
-    return { data: {}, status: 200 };
 }
 
 export function getCurrentMonth() {

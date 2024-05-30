@@ -70,8 +70,8 @@ export default defineEventHandler(async (event) => {
             return { data: null, status: 400 };
         }
 
-        if (AuthorizationCheck(session, transactions[0].partner_id.toString()).status !== 200) {
-            return AuthorizationCheck(session, transactions[0].partner_id.toString());
+        if (session) {
+            AuthorizationCheck(session, transactions[0].partner_id.toString());
         }
 
         const formattedTransactions = transactions.map((data: any) => {

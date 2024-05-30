@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
             return { data: null, status: 400 };
         }
 
-        if (AuthorizationCheck(session, transactions[0].user_id).status !== 200) {
+        if (session) {
             return AuthorizationCheck(session, transactions[0].user_id);
         }
 

@@ -42,8 +42,8 @@ export default defineEventHandler(async (event) => {
             return { data: null, status: 400 };
         }
 
-        if (AuthorizationCheck(session, notifications[0].user_id).status !== 200) {
-            return AuthorizationCheck(session, notifications[0].user_id);
+        if (session) {
+            AuthorizationCheck(session, notifications[0].user_id);
         }
 
         const pagination = {

@@ -18,10 +18,9 @@ export default defineEventHandler(async (event) => {
         }
     })
 
+
     if (res) {
-        if (AuthorizationCheck(session, res.user_id).status !== 200) {
-            return AuthorizationCheck(session, res.user_id);
-        }
+        AuthorizationCheck(session, res.user_id);
     }
 
     return { data: res, status: 200 }

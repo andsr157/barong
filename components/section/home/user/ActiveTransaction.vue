@@ -65,7 +65,7 @@ onUnmounted(() => {
     <div v-if="pending">lagi loading sabar</div>
     <div
       class="flex flex-col gap-5"
-      v-else-if="transactionActive !== null || transactionActive.status === 200"
+      v-else-if="transactionActive !== null && transactionActive.status === 200"
     >
       <CardTransactionUser
         v-for="transaction in transactionActive?.data"

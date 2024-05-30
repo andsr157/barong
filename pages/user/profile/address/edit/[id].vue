@@ -37,12 +37,6 @@ const isModalOpen = ref(false)
 const closeMap = () => {
   isMapOpen.value = false
 }
-onMounted(async () => {
-  if (addresStore.address.length === 0) {
-    await addresStore.getAddress()
-  }
-  addresStore.setForm(address_id)
-})
 
 const toggleLoading = ref(false)
 const toggleSwitch = async () => {
@@ -84,20 +78,25 @@ const handleDeleteAddress = async () => {
   }
 }
 
-// const handleUpdateAddress = async () => {
-//   console.log("jalan")
-//   const res = await addresStore.updateAddress()
-//   if (res.status === 200) {
-//     useRouter().push("/user/profile/address")
-//   }
-// }
-
 const handleUpdateAddress = handleSubmit(async (values) => {
   console.log(values)
   const res = await addresStore.updateAddress()
   if (res.status === 200) {
     useRouter().push("/user/profile/address")
   }
+})
+
+onMounted(async () => {
+  if (addresStore.address.length === 0) {
+    const res = await addresStore.getAddress()
+    console.log(res)
+    if (res?.error) {
+      if (res.error.status === 403) {
+        useRouter().push("/user/profile")
+      }
+    }
+  }
+  addresStore.setForm(address_id)
 })
 </script>
 <template>

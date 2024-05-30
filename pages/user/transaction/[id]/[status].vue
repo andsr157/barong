@@ -113,8 +113,12 @@ onMounted(async () => {
     id = route.params.id
   }
   const res = await transactionStore.getSingleTransaction(id)
+  if (res?.error) {
+    if (res.error.status === 403) {
+      router.push("/user")
+    }
+  }
   transaction.value = res.data
-  console.log(res.data)
 })
 
 onUnmounted(() => {

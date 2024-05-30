@@ -11,16 +11,20 @@ const chat_id: string = Array.isArray(route.params.chat_id)
   ? route.params.chat_id[0]
   : route.params.chat_id
 
+const isLoading = ref(false)
 const realTimeMessage = ref<Message[] | undefined>(undefined)
-const headers = useRequestHeaders(["cookie"]) as HeadersInit
-const {
-  data: messages,
-  pending,
-  status,
-} = await useFetch<ApiResponseChat>(`/api/v1/chat/${chat_id}`, {
-  headers,
-})
-realTimeMessage.value = messages.value?.data.messages
+const chats = ref<any>()
+const fetchData = async () => {
+  const res = await $fetch<ApiResponseChat>(`/api/v1/chat/${chat_id}`)
+  if (res && res.status === 200) {
+    chats.value = res.data
+    realTimeMessage.value = res.data.messages
+  } else {
+    if (res.status === 403) {
+      useRouter().push(`/${user.value.user.role}`)
+    }
+  }
+}
 
 const config = useRuntimeConfig().app
 const supabase = createClient(config.supabaseUrl, config.supabaseKey)
@@ -80,7 +84,7 @@ const chat = supabase
       event: "INSERT",
       schema: "public",
       table: "messages",
-      filter: `chats_id=eq.${messages?.value?.data.chats_id}`,
+      filter: `chats_id=eq.${chats?.value?.data.chats_id}`,
     },
     (payload: any) => {
       const message = {
@@ -96,6 +100,7 @@ const chat = supabase
   .subscribe()
 
 onMounted(async () => {
+  await fetchData()
   await nextTick(() => {
     scrollToBottom()
   })
@@ -105,22 +110,27 @@ onMounted(async () => {
 <template>
   <Header shadow fixed class="!z-50">
     <template #content>
-      <div class="flex gap-x-3 items-center" v-if="status === 'success'">
+      <div class="flex gap-x-3 items-center">
         <div class="w-9 h-9 rounded-full">
           <NuxtImg
-            :src="messages?.data.users[USER_INDEX].avatar"
+            v-if="chats"
+            :src="chats?.users[USER_INDEX].avatar"
             class="w-full h-full"
           />
         </div>
-        <p class="text-sm text-brg-primary-dark font-semibold">
-          {{ messages?.data.users[USER_INDEX].name }}
+        <p class="text-sm text-brg-primary-dark font-semibold" v-if="chats">
+          {{ chats?.users[USER_INDEX].name }}
         </p>
       </div>
     </template>
   </Header>
   <div class="bg-white w-full h-[70px]"></div>
-  <section class="h-[75vh] pt-6 pb-4 overflow-y-auto px-6 chat-container">
-    <div class="flex flex-col gap-y-5" v-if="status === 'success'">
+  <div v-if="isLoading">lagi loading</div>
+  <section
+    class="h-[75vh] pt-6 pb-4 overflow-y-auto px-6 chat-container"
+    v-if="chats"
+  >
+    <div class="flex flex-col gap-y-5">
       <div
         v-for="message in realTimeMessage"
         v-if="realTimeMessage !== undefined"
@@ -144,10 +154,10 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div v-else>gagal mengambil data coba refresh</div>
   </section>
 
   <div
+    v-if="chats"
     class="w-full max-w-[450px] pb-6 fixed bottom-0 pt-2 flex justify-between px-6 items-center bg-white"
   >
     <input
