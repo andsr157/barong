@@ -76,34 +76,40 @@ watch(
   { deep: true }
 )
 
-const chat = supabase
-  .channel("test-chat")
-  .on(
-    "postgres_changes",
-    {
-      event: "INSERT",
-      schema: "public",
-      table: "messages",
-      filter: `chats_id=eq.${chats?.value?.data.chats_id}`,
-    },
-    (payload: any) => {
-      const message = {
-        message_id: payload.new.id as string,
-        sender_id: payload.new.sender_id as string,
-        content: payload.new.content as string,
-        created_at: payload.new.created_at as string,
-      }
-
-      realTimeMessage.value?.push(message)
-    }
-  )
-  .subscribe()
-
+let chat: any
 onMounted(async () => {
   await fetchData()
   await nextTick(() => {
     scrollToBottom()
   })
+
+  chat = supabase
+    .channel("test-chat")
+    .on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "messages",
+        filter: `chats_id=eq.${chats.value.chats_id}`,
+      },
+      (payload: any) => {
+        console.log(payload)
+        const message = {
+          message_id: payload.new.id as string,
+          sender_id: payload.new.sender_id as string,
+          content: payload.new.content as string,
+          created_at: payload.new.created_at as string,
+        }
+
+        realTimeMessage.value?.push(message)
+      }
+    )
+    .subscribe()
+})
+
+onUnmounted(() => {
+  chat.unsubscribe()
 })
 </script>
 
@@ -124,6 +130,7 @@ onMounted(async () => {
       </div>
     </template>
   </Header>
+
   <div class="bg-white w-full h-[70px]"></div>
   <div v-if="isLoading">lagi loading</div>
   <section
@@ -155,7 +162,6 @@ onMounted(async () => {
       </div>
     </div>
   </section>
-
   <div
     v-if="chats"
     class="w-full max-w-[450px] pb-6 fixed bottom-0 pt-2 flex justify-between px-6 items-center bg-white"
