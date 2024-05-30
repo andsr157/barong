@@ -1,5 +1,8 @@
 import { prisma } from '~/composables/prisma';
 import { getServerSession } from '#auth';
+import { Mutex } from 'async-mutex';
+
+const mutex = new Mutex();
 
 export default defineEventHandler(async (event) => {
     const session = await getServerSession(event) as any;
@@ -7,7 +10,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
 
     try {
-        const result = await prisma.$transaction(async (prisma) => {
+        const result = await mutex.runExclusive(async () => {
             const transaction = await prisma.transaction.findUniqueOrThrow({
                 where: {
                     id: transaction_id

@@ -29,6 +29,9 @@ dependencies:
   '@vueuse/nuxt':
     specifier: ^10.9.0
     version: 10.9.0(nuxt@3.11.1)(rollup@2.79.1)(vue@3.4.21)
+  async-mutex:
+    specifier: ^0.5.0
+    version: 0.5.0
   axios:
     specifier: ^1.6.7
     version: 1.6.8
@@ -4674,6 +4677,12 @@ packages:
       ast-kit: 0.9.5(rollup@2.79.1)
     transitivePeerDependencies:
       - rollup
+
+  /async-mutex@0.5.0:
+    resolution: {integrity: sha512-1A94B18jkJ3DYq284ohPxoXbfTA5HsQ7/Mf4DEhcyLx3Bz27Rh59iScbB6EPiP+B+joue6YCxcMXSbFC1tZKwA==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
 
   /async-sema@3.1.1:
     resolution: {integrity: sha512-tLRNUXati5MFePdAk8dw7Qt7DpxPB60ofAgn8WRhW6a2rcimZnYBP9oxHiv0OHy+Wz7kPMG+t4LGdt31+4EmGg==}
