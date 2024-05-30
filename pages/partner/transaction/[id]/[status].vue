@@ -29,53 +29,56 @@ const handleFinishTransaction = () => {
   router.push(`/partner/transaction/${transaction.value?.id}/report`)
 }
 
+const randomDelay = Math.floor(Math.random() * 900) + 100
 const handleRequest = async (payload: any, request: string) => {
-  try {
-    const id = Array.isArray(route.params.id)
-      ? route.params.id[0]
-      : route.params.id
+  setTimeout(async () => {
+    try {
+      const id = Array.isArray(route.params.id)
+        ? route.params.id[0]
+        : route.params.id
 
-    if (!transaction.value) {
-      throw new Error("Transaction is not defined")
-    }
-
-    const clearMessage = await axios.delete(
-      `/api/v1/chat/message/${transaction.value?.chats_id}`
-    )
-
-    if (!clearMessage.data || clearMessage.data.status === 400) {
-      return
-    }
-
-    console.log(clearMessage.data)
-
-    const res = await transactionStore.updateStatusTransaction(id, payload)
-    if (res?.data) {
-      transaction.value.status = res.data.status ?? transaction.value.status
-
-      const notifPayload = {
-        user_id: transaction.value.user?.id,
-        notificationId: request === "take" ? 1 : 2,
-        link: "/user/history",
+      if (!transaction.value) {
+        throw new Error("Transaction is not defined")
       }
-      notificationStore.sendNotification(notifPayload)
 
-      // Update chat with new partner_id
-      const payloadChats = {
-        chats_id: transaction.value?.chats_id,
-        partner_id: request === "take" ? user.value.user.id : null,
+      const clearMessage = await axios.delete(
+        `/api/v1/chat/message/${transaction.value?.chats_id}`
+      )
+
+      if (!clearMessage.data || clearMessage.data.status === 400) {
+        return
       }
-      const chats = await axios.put("/api/v1/chat", payloadChats)
-      console.log(chats)
-    } else {
-      throw new Error("Failed to update transaction status")
-    }
 
-    console.log(res)
-  } catch (error) {
-    console.error(error)
-    throw error
-  }
+      console.log(clearMessage.data)
+
+      const res = await transactionStore.updateStatusTransaction(id, payload)
+      if (res?.data) {
+        transaction.value.status = res.data.status ?? transaction.value.status
+
+        const notifPayload = {
+          user_id: transaction.value.user?.id,
+          notificationId: request === "take" ? 1 : 2,
+          link: "/user/history",
+        }
+        notificationStore.sendNotification(notifPayload)
+
+        // Update chat with new partner_id
+        const payloadChats = {
+          chats_id: transaction.value?.chats_id,
+          partner_id: request === "take" ? user.value.user.id : null,
+        }
+        const chats = await axios.put("/api/v1/chat", payloadChats)
+        console.log(chats)
+      } else {
+        throw new Error("Failed to update transaction status")
+      }
+
+      console.log(res)
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }, randomDelay)
 }
 
 const handleCancelRequest = () => {
