@@ -49,7 +49,8 @@ const handleRequest = async (payload: any, request: string) => {
 
     const res = await transactionStore.updateStatusTransaction(id, payload)
     if (res?.data) {
-      fetchData(id)
+      await fetchData(id)
+      console.log("jalan dibawahnya")
       const notifPayload = {
         user_id: transaction.value.user?.id,
         notificationId: request === "take" ? 1 : 2,
@@ -118,7 +119,7 @@ const fetchData = async (id: string) => {
   const res = await transactionStore.getSingleTransaction(id)
   if (res?.error) {
     if (res.error.status === 403) {
-      router.push(`/${user?.value?.user.role}`)
+      throw new Error("forbidden")
     }
   }
   transaction.value = res.data
@@ -128,7 +129,9 @@ onMounted(async () => {
   const id = Array.isArray(route.params.id)
     ? route.params.id[0]
     : route.params.id
-  await fetchData(id)
+  await fetchData(id).catch(() => {
+    router.push(`/${user?.value?.user.role}`)
+  })
 })
 
 const googleMapsUrl = computed(() => {
