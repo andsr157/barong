@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
         } else {
             if (session.user.role === 'user') {
                 AuthorizationCheck(session, transactions[0].user_id);
-            } else if (session.user.role === 'partner' && ['STS1', 'STS5'].includes(transactions[0].status_id)) {
+            } else if (session.user.role === 'partner' && ['STS2', 'STS3', 'STS4'].includes(transactions[0].status_id)) {
                 AuthorizationCheck(session, transactions[0].partner_id ?? '')
             }
         }

@@ -29,22 +29,15 @@ const handleFinishTransaction = () => {
   router.push(`/partner/transaction/${transaction.value?.id}/report`)
 }
 
-// const createChat = async (payload: any) => {
-//   try {
-//     const res = await axios.post("/api/v1/chat", payload)
-//     if (res.data.status === 200) {
-//       return true
-//     }
-//   } catch (error) {}
-// }
-
-// const clearChat = async (chat_id) => {}
-
 const handleRequest = async (payload: any, request: string) => {
   try {
     const id = Array.isArray(route.params.id)
       ? route.params.id[0]
       : route.params.id
+
+    if (!transaction.value) {
+      throw new Error("Transaction is not defined")
+    }
 
     const clearMessage = await axios.delete(
       `/api/v1/chat/message/${transaction.value?.chats_id}`
@@ -57,26 +50,26 @@ const handleRequest = async (payload: any, request: string) => {
     console.log(clearMessage.data)
 
     const res = await transactionStore.updateStatusTransaction(id, payload)
-    if (transaction.value) {
+    if (res?.data) {
       transaction.value.status = res.data.status ?? transaction.value.status
+
       const notifPayload = {
         user_id: transaction.value.user?.id,
         notificationId: request === "take" ? 1 : 2,
         link: "/user/history",
       }
       notificationStore.sendNotification(notifPayload)
-    }
 
-    const payloadChats = {
-      chats_id: transaction.value?.chats_id,
-      partner_id: request === "take" ? user.value.user.id : null,
+      // Update chat with new partner_id
+      const payloadChats = {
+        chats_id: transaction.value?.chats_id,
+        partner_id: request === "take" ? user.value.user.id : null,
+      }
+      const chats = await axios.put("/api/v1/chat", payloadChats)
+      console.log(chats)
+    } else {
+      throw new Error("Failed to update transaction status")
     }
-    const chats = await axios
-      .put("/api/v1/chat", payloadChats)
-      .catch((error) => {
-        console.log(error)
-      })
-    console.log(chats)
 
     console.log(res)
   } catch (error) {
@@ -90,11 +83,18 @@ const handleCancelRequest = () => {
     status_id: "STS1",
   }
   handleRequest(payload, "cancel")
-
-  isModalOpen.value = false
-  toastStore.success({
-    text: "Pengambilan dibatalkan ",
-  })
+    .then(() => {
+      isModalOpen.value = false
+      toastStore.success({
+        text: "Pengambilan dibatalkan ",
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toastStore.error({
+        text: "Gagal membatalkan pengambilan",
+      })
+    })
 }
 
 const handleTakeRequest = () => {
@@ -103,9 +103,17 @@ const handleTakeRequest = () => {
     status_id: "STS2",
   }
   handleRequest(payload, "take")
-  toastStore.success({
-    text: "Berhasil diambil",
-  })
+    .then(() => {
+      toastStore.success({
+        text: "Berhasil diambil",
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+      toastStore.error({
+        text: "Gagal mengambil atau sudah diambil pengepul lain",
+      })
+    })
 }
 
 onMounted(async () => {
@@ -113,9 +121,12 @@ onMounted(async () => {
     ? route.params.id[0]
     : route.params.id
   const res = await transactionStore.getSingleTransaction(id)
+  if (res?.error) {
+    if (res.error.status === 403) {
+      router.push("/user")
+    }
+  }
   transaction.value = res.data
-
-  console.log(res)
 })
 
 const googleMapsUrl = computed(() => {
