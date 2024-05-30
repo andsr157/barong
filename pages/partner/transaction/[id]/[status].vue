@@ -74,6 +74,7 @@ const handleRequest = async (payload: any, request: string) => {
     console.log(res)
   } catch (error) {
     console.error(error)
+    throw error
   }
 }
 
@@ -123,7 +124,7 @@ onMounted(async () => {
   const res = await transactionStore.getSingleTransaction(id)
   if (res?.error) {
     if (res.error.status === 403) {
-      router.push("/user")
+      router.push(`/${user?.value?.user.role}`)
     }
   }
   transaction.value = res.data

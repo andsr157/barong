@@ -1,10 +1,25 @@
 import { prisma } from '~/composables/prisma';
+import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event) => {
-
     try {
+        const session = await getServerSession(event) as any
         const transaction_id = getRouterParam(event, 'id') ?? '';
         const body = await readBody(event)
+
+        const transaction = await prisma.transaction.findUnique({
+            where: {
+                id: transaction_id
+            }
+        })
+
+
+        if (transaction?.partner_id !== null && transaction?.partner_id !== session.user.id) {
+            throw createError({
+                statusCode: 403,
+                statusMessage: 'forbidden'
+            })
+        }
 
         const res = await prisma.transaction.update({
             where: {
@@ -36,6 +51,6 @@ export default defineEventHandler(async (event) => {
 
     } catch (error) {
         console.error('Error fetching transaction data:', error);
-        return { error: 'Internal server error', status: 500 };
+        return { error, status: 500 };
     }
 });

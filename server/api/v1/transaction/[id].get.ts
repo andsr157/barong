@@ -46,13 +46,6 @@ export default defineEventHandler(async (event) => {
             }
         }
 
-        // if (AuthorizationCheck(session, transactions[0].user_id).status !== 200) {
-        //     if (session.user.role !== 'partner') {
-        //         return AuthorizationCheck(session, transactions[0].user_id);
-        //     }
-        // }
-
-
         const user = await prisma.users.findUnique({
             where: {
                 id: transactions[0].user_id
