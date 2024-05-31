@@ -29,8 +29,6 @@ const { data, pending, status, refresh } = await useFetch(
   }
 )
 
-const { data: user }: any = useAuth()
-
 interface TrashItem {
   category: string
   weight: number

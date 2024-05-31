@@ -72,7 +72,7 @@ export default defineEventHandler(async (event) => {
         }
 
         if (session) {
-            return AuthorizationCheck(session, transactions[0].user_id);
+            AuthorizationCheck(session, transactions[0].user_id);
         }
 
         const formattedTransactions = transactions.map((data: any) => {

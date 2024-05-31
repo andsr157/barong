@@ -44,12 +44,24 @@ const newNotificationData = useNuxtApp()
     }
   )
   .subscribe()
+
+const isLoading = ref(false)
+const nuxtApp = useNuxtApp()
+
+nuxtApp.hook("page:start", () => {
+  isLoading.value = true
+})
+nuxtApp.hook("page:finish", () => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 800)
+})
 </script>
 
 <template>
+  <SplashScreen :is-loading="isLoading" />
   <VitePwaManifest />
   <NuxtLayout>
-    <NuxtLoadingIndicator />
     <NotificationPopUp />
     <NuxtPage />
   </NuxtLayout>
