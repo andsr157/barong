@@ -22,7 +22,21 @@ export default defineEventHandler(async (event) => {
             }
         })
 
-        const lackOfPayment = 200
+        const lastServiceFee = await prisma.serviceFee.findFirst({
+            where: {
+                partner_id: userId
+            },
+            orderBy: {
+                updated_at: 'desc'
+            }
+        })
+
+        let lackOfPayment = 0
+
+        if (lastServiceFee) {
+            lackOfPayment = lastServiceFee.totalFee
+        }
+
 
         let trashTotal = 0
         res.forEach(data => {
@@ -40,30 +54,30 @@ export default defineEventHandler(async (event) => {
 
             if (itemMonth === currentMonth) {
                 accumulator.monthlyTotal += transaction.total ?? 0;
+                accumulator.serviceBill += (transaction.total ?? 0) * 10 / 100
             }
-            accumulator.serviceBill += (transaction.total ?? 0) * 10 / 100
 
             accumulator.totalAmount += transaction.total ?? 0;
 
             return accumulator;
         }, { monthlyTotal: 0, totalAmount: 0, serviceBill: 0 });
 
-        const { lastMonthService } = res.reduce((accumulator, transaction) => {
-            const date = new Date(transaction.updated_at);
-            const itemMonth = date.getMonth() + 1;
+        // const { lastMonthService } = res.reduce((accumulator, transaction) => {
+        //     const date = new Date(transaction.updated_at);
+        //     const itemMonth = date.getMonth() + 1;
 
-            if (itemMonth === currentMonth - 1) {
-                accumulator.lastMonthService += (transaction.total ?? 0) * 0.10; // 10% dari total biaya
-            }
+        //     if (itemMonth === currentMonth - 1) {
+        //         accumulator.lastMonthService += (transaction.total ?? 0) * 0.10;
+        //     }
 
-            return accumulator;
-        }, { lastMonthService: 0 });
+        //     return accumulator;
+        // }, { lastMonthService: 0 });
 
-        const lackServiceBill = lastMonthService - lackOfPayment
+        const lackServiceBill = serviceBill - lackOfPayment
 
         return { data: { totalAmount, monthlyTotal, trashTotal, serviceBill, lackServiceBill }, status: 200 }
-    } catch (error) {
         return { data: null, error: 'internal server error', status: 500 }
+    } catch (error) {
     }
 
-})
+})  
