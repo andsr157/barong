@@ -197,7 +197,7 @@ onMounted(async () => {
 
     <Maps v-if="isMapOpen" :center="center" @closeMap="closeMap" />
   </div>
-  <div v-else>lagi loading</div>
+  <div v-else><SplashScreen /></div>
   <ModalDefault
     label-color="text-brg-primary"
     :is-show="isModalOpen"

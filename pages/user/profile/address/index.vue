@@ -42,5 +42,5 @@ onMounted(() => {
       </NuxtLink>
     </div>
   </div>
-  <div v-else>Lagi loading</div>
+  <div v-else><SplashScreen /></div>
 </template>

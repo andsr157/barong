@@ -1,24 +1,14 @@
 <script setup lang="ts">
 defineProps<{
-  isLoading: boolean
+  isLoading?: boolean
 }>()
-// const isLoading = ref(false)
-// const route = useRoute()
-// const nuxtApp = useNuxtApp()
-
-// nuxtApp.hook("page:start", () => {
-//   isLoading.value = true
-// })
-// nuxtApp.hook("page:finish", () => {
-//   isLoading.value = false
-// })
 </script>
 
 <template>
   <Transition name="shrink-fade">
     <div
       v-if="isLoading"
-      class="absolute flex justify-center items-center left-0 top-0 h-screen w-full z-[999] bg-white"
+      class="fixed flex justify-center items-center left-0 top-0 h-full w-full z-[999] bg-white"
     >
       <NuxtImg
         lazy

@@ -6,7 +6,7 @@ const router = useRouter()
 const redirectToHome = () => {
   setTimeout(() => {
     router.push("/partner")
-  }, 5000)
+  }, 4000)
 }
 
 const visible = ref(false)

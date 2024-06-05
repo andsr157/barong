@@ -100,7 +100,7 @@ onMounted(async () => {
           :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
         />
 
-        <div v-if="requestPending">loading data sabar</div>
+        <div v-if="requestPending"><SkeletonTransaction /></div>
 
         <button
           v-if="requestData.pagination.total_pages > pageFlag"
@@ -111,7 +111,7 @@ onMounted(async () => {
         </button>
       </div>
       <div v-else>
-        <div v-if="requestPending">loading data sabar</div>
+        <div v-if="requestPending"><SkeletonTransaction /></div>
         <p
           v-if="!requestPending && requestStatus !== 'pending'"
           class="text-center text-sm font-medium text-brg-primary-dark text-opacity-70 mt-10"

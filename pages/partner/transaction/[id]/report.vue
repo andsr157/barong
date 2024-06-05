@@ -138,7 +138,7 @@ const handleFinishTransaction = async () => {
 <template>
   <Toast />
   <Header title="Pelaporan" />
-  <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
+  <div v-if="isLoading" class="px-6 mt-6"><SplashScreen /></div>
   <div class="px-6" v-else-if="transaction">
     <div class="mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">Data Sampah</h2>
