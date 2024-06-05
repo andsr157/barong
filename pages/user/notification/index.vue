@@ -136,6 +136,7 @@ onUnmounted(() => {
 
 <template>
   <Header title="Notifikasi" />
+
   <section class="mt-[30px] px-6 pb-24">
     <div class="flex justify-beetween gap-x-4">
       <div class="text-right flex justify-end" @click="deleteAll">
@@ -151,8 +152,8 @@ onUnmounted(() => {
         >
       </div>
     </div>
-
-    <p v-if="!data.data.length">Tidak ada notifikasi</p>
+    <div v-if="isLoading"><SkeletonNotification /></div>
+    <p v-else-if="!data.data.length && !isLoading">Tidak ada notifikasi</p>
     <div v-else v-for="(notif, index) in data.data" :key="index">
       <div
         :class="`${
@@ -196,7 +197,6 @@ onUnmounted(() => {
       </Transition>
     </div>
 
-    <p v-if="isLoading">Loading data</p>
     <button
       v-if="data.data.length && pageFlag < data.pagination.total_pages"
       @click="fetchData"

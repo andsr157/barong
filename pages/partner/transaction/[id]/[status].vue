@@ -140,7 +140,6 @@ const googleMapsUrl = computed(() => {
 </script>
 
 <template>
-  {{ transaction?.pengepul }}
   <Toast />
   <Header title="Detail">
     <div
@@ -160,7 +159,7 @@ const googleMapsUrl = computed(() => {
       </NuxtLink>
     </div>
   </Header>
-  <div v-if="isLoading" class="px-6 mt-6">Lagi loading sabar</div>
+  <div v-if="isLoading" class="px-6 mt-6"><SplashScreen /></div>
   <div v-else-if="transaction">
     <section class="px-6 mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">

@@ -311,7 +311,7 @@ onUnmounted(() => {
       />
     </div>
   </div>
-  <div v-else="">lagi loading</div>
+  <div v-else=""><SplashScreen /></div>
 
   <ModalDefault
     title="Selesaikan Transaksi"
