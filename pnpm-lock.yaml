@@ -103,6 +103,9 @@ devDependencies:
   '@types/nodemailer':
     specifier: ^6.4.15
     version: 6.4.15
+  '@types/web-push':
+    specifier: ^3.6.3
+    version: 3.6.3
   '@vite-pwa/nuxt':
     specifier: ^0.7.0
     version: 0.7.0(rollup@2.79.1)(vite@5.2.6)(workbox-build@7.1.0)(workbox-window@7.1.0)
@@ -3456,6 +3459,12 @@ packages:
 
   /@types/web-bluetooth@0.0.20:
     resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
+
+  /@types/web-push@3.6.3:
+    resolution: {integrity: sha512-v3oT4mMJsHeJ/rraliZ+7TbZtr5bQQuxcgD7C3/1q/zkAj29c8RE0F9lVZVu3hiQe5Z9fYcBreV7TLnfKR+4mg==}
+    dependencies:
+      '@types/node': 20.11.30
+    dev: true
 
   /@types/ws@8.5.10:
     resolution: {integrity: sha512-vmQSUcfalpIq0R9q7uTo2lXs6eGIpt9wtnLdMv9LVpIjCA/+ufZRozlVoVelIYixx1ugCBKDhn89vnsEGOCx9A==}

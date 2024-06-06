@@ -17,11 +17,11 @@ const showNotification = async (payload: any) => {
     }
     if (res && res.status === 200) {
       notificationStore.updateNotificationState(payloadData)
-      if (process.client) {
-        new Notification("transaksi", {
-          body: payloadData.title,
-        })
-      }
+      // if (process.client) {
+      //   new Notification("transaksi", {
+      //     body: payloadData.title,
+      //   })
+      // }
     }
   } catch (error) {
     console.log("err", error)
