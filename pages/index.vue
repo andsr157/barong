@@ -4,7 +4,6 @@ import { useRouter } from "vue-router"
 
 definePageMeta({
   layout: "blank",
-  middleware: "auth",
 })
 
 const router = useRouter()
@@ -66,7 +65,37 @@ const redirectToRole = () => {
   }
 }
 
-onBeforeMount(() => {
+const checkNotifSubscription = async () => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.ready.then((registration) => {
+      console.log("Service Worker ready")
+      const { data: user } = <any>useAuth()
+      console.log("user", user)
+      if (user.value && user.value.user.id) {
+        console.log("User logged in")
+        const storedData = JSON.parse(localStorage.getItem("subscriptionData"))
+        const VERSION = "1.0.0"
+        if (!storedData || storedData.swVersion !== VERSION) {
+          registration.active.postMessage({
+            type: "SAVE_SUBSCRIPTION",
+            userId: user.id,
+          })
+        }
+        if (process.client) {
+          localStorage.setItem(
+            "subscriptionData",
+            JSON.stringify({ swVersion: VERSION })
+          )
+        }
+      }
+    })
+  } else {
+    console.warn("Service Worker is not supported in this browser.")
+  }
+}
+
+onBeforeMount(async () => {
+  await checkNotifSubscription()
   checkPermissions()
 })
 </script>

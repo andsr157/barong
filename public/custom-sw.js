@@ -6,14 +6,15 @@ import {
 } from "workbox-precaching"
 import { registerRoute, NavigationRoute } from "workbox-routing"
 
-self.skipWaiting()
+const VERSION = "v1.0.0"
+console.log(`Service Worker version: ${VERSION}`)
 
+self.skipWaiting()
 clientsClaim()
 
 precacheAndRoute(self.__WB_MANIFEST)
 cleanupOutdatedCaches()
 
-// You can remove this code if you aren't precaching anything, or leave it in and live with the warning message
 try {
   const handler = createHandlerBoundToURL("/")
   const route = new NavigationRoute(handler)
@@ -24,7 +25,7 @@ try {
 
 const urlBase64ToUint8Array = (base64String) => {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
-  const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/")
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/")
 
   const rawData = atob(base64)
   const outputArray = new Uint8Array(rawData.length)
@@ -50,37 +51,54 @@ const saveSubscription = async (subscription) => {
 }
 
 self.addEventListener("install", (event) => {
-  console.log("service worker installed", event)
+  console.log("Service worker installing...")
+  self.skipWaiting()
 })
 
-self.addEventListener("activate", async (event) => {
-  console.log("service worker activated", event)
+self.addEventListener("activate", (event) => {
+  console.log("Service worker activating...")
+  // event.waitUntil(
+  //   (async () => {
+  //     try {
+  //       const subscription = await self.registration.pushManager.subscribe({
+  //         userVisibleOnly: true,
+  //         applicationServerKey: urlBase64ToUint8Array(
+  //           "BNsKXx4n8kwghDYTigbDajuKtW0e4mH6DBV5cxQlFH1jprApNL9rZ_dLQNGYBVOuw84O-vhukLb1UDaCCW8nR5g"
+  //         ),
+  //       })
+  //       console.log("Subscription:", subscription)
+  //       await saveSubscription(subscription)
+  //     } catch (err) {
+  //       console.error("Subscription failed:", err)
+  //     }
+  //   })()
+  // )
+  clientsClaim()
+})
+
+self.addEventListener("push", (event) => {
+  console.log("Push received:", event)
+  const options = {
+    body: "This is a simple notification",
+  }
   event.waitUntil(
-    (async () => {
-      try {
-        console.log("inside", event)
-        const subscription = await self.registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(
-            "BNsKXx4n8kwghDYTigbDajuKtW0e4mH6DBV5cxQlFH1jprApNL9rZ_dLQNGYBVOuw84O-vhukLb1UDaCCW8nR5g"
-          ),
-        })
-        console.log("berfore save", subscription)
-        const response = await saveSubscription(subscription)
-        console.log("Subscribed:", subscription)
-      } catch (err) {
-        console.error("Subscription failed:", err)
-      }
-    })()
+    self.registration.showNotification("Simple Notification", options)
   )
 })
 
-self.addEventListener("push", (e) => {
-  console.log(e)
-  e.waitUntil(
-    console.log(e),
-    self.registration.showNotification("Simple Notification", {
-      body: "This is a simple notification",
-    })
-  )
+self.addEventListener("message", async (event) => {
+  if (event.data && event.data.type === "SAVE_SUBSCRIPTION") {
+    try {
+      const subscription = await self.registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(
+          "BNsKXx4n8kwghDYTigbDajuKtW0e4mH6DBV5cxQlFH1jprApNL9rZ_dLQNGYBVOuw84O-vhukLb1UDaCCW8nR5g"
+        ),
+      })
+      console.log("Subscription obtained:", subscription)
+      await saveSubscription(subscription, event.data.userId)
+    } catch (err) {
+      console.error("Subscription failed:", err)
+    }
+  }
 })
