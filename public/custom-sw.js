@@ -80,7 +80,7 @@ self.addEventListener("push", (e) => {
   e.waitUntil(
     console.log(e),
     self.registration.showNotification("Simple Notification", {
-      body: "This is a simple notifications",
+      body: "This is a simple notification",
     })
   )
 })
