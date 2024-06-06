@@ -7,6 +7,7 @@ const toastStore = useToastStore()
 const addresStore = useAddressStore()
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 const schema = Yup.object({
@@ -30,7 +31,9 @@ const address_id = Array.isArray(route.params.id)
   : route.params.id
 const toggle = ref("off")
 
-const { center, isLoading, formAdress, address } = storeToRefs(addresStore)
+const { center, isLoading, formAdress, address } = storeToRefs(
+  addresStore
+) as any
 const isMapOpen = ref(false)
 const isModalOpen = ref(false)
 
@@ -197,7 +200,7 @@ onMounted(async () => {
 
     <Maps v-if="isMapOpen" :center="center" @closeMap="closeMap" />
   </div>
-  <div v-else><SplashScreen /></div>
+  <div v-else><SplashScreen :is-loading="true" /></div>
   <ModalDefault
     label-color="text-brg-primary"
     :is-show="isModalOpen"

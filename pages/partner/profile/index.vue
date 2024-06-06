@@ -6,7 +6,7 @@ const handleLogout = async () => {
 }
 definePageMeta({
   layout: "partner",
-  middleware: "auth",
+  middleware: ["auth", "role"],
 })
 </script>
 <template>

@@ -15,7 +15,7 @@ const { data, status } = useFetch("/api/v1/dashboard/user", {
 })
 
 definePageMeta({
-  middleware: "auth",
+  middleware: ["auth", "role"],
 })
 </script>
 

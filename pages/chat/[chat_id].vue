@@ -41,6 +41,7 @@ const scrollToBottom = async () => {
 
 definePageMeta({
   layout: "blank",
+  middleware: ["auth"],
 })
 
 const sendChat = async () => {
@@ -123,10 +124,15 @@ onUnmounted(() => {
             :src="chats?.users[USER_INDEX].avatar"
             class="w-full h-full"
           />
+          <div v-else class="w-9 h-9 rounded-full bg-slate-200 animate-pulse" />
         </div>
         <p class="text-sm text-brg-primary-dark font-semibold" v-if="chats">
           {{ chats?.users[USER_INDEX].name }}
         </p>
+        <div
+          v-else
+          class="-mt-1 -ms-1 w-16 h-5 rounded-md bg-slate-200 animate-pulse"
+        />
       </div>
     </template>
   </Header>

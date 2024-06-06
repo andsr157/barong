@@ -3,6 +3,7 @@ import { useForm } from "vee-validate"
 import * as Yup from "yup"
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 const toastStore = useToastStore()
@@ -27,13 +28,13 @@ const { handleSubmit } = useForm({
 
 const onSubmit = handleSubmit(async () => {
   isLoading.value = true
-  const res = await $fetch("/api/v1/profile/password", {
+  const res = (await $fetch("/api/v1/profile/password", {
     method: "PUT",
     body: {
       oldPassword: oldPassword.value,
       newPassword: newPassword.value,
     },
-  })
+  })) as any
 
   if (res && res.status === 200) {
     toastStore.success({

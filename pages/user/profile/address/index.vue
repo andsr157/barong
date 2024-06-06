@@ -4,6 +4,7 @@ import { useAddressStore } from "~/stores/Address.store"
 const addresStore = useAddressStore()
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 const { address, isLoading } = storeToRefs(addresStore)
@@ -42,5 +43,5 @@ onMounted(() => {
       </NuxtLink>
     </div>
   </div>
-  <div v-else><SplashScreen /></div>
+  <div v-else><SplashScreen :isLoading="true" /></div>
 </template>

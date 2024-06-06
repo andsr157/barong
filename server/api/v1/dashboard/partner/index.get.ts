@@ -62,22 +62,11 @@ export default defineEventHandler(async (event) => {
             return accumulator;
         }, { monthlyTotal: 0, totalAmount: 0, serviceBill: 0 });
 
-        // const { lastMonthService } = res.reduce((accumulator, transaction) => {
-        //     const date = new Date(transaction.updated_at);
-        //     const itemMonth = date.getMonth() + 1;
-
-        //     if (itemMonth === currentMonth - 1) {
-        //         accumulator.lastMonthService += (transaction.total ?? 0) * 0.10;
-        //     }
-
-        //     return accumulator;
-        // }, { lastMonthService: 0 });
-
         const lackServiceBill = serviceBill - lackOfPayment
 
         return { data: { totalAmount, monthlyTotal, trashTotal, serviceBill, lackServiceBill }, status: 200 }
-        return { data: null, error: 'internal server error', status: 500 }
     } catch (error) {
+        return { data: null, error: 'internal server error', status: 500 }
     }
 
 })  

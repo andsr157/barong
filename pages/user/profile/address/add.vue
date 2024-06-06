@@ -54,6 +54,7 @@ const onSubmit = handleSubmit(async (values) => {
 })
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 onMounted(() => {

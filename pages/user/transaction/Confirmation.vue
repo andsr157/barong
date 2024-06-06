@@ -15,6 +15,7 @@ const { data: user } = <any>useAuth()
 
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 const router = useRouter()

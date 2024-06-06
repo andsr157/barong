@@ -13,6 +13,7 @@ const isModalOpen = ref(false)
 
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 const { data: user } = <any>useAuth()
@@ -159,7 +160,9 @@ const googleMapsUrl = computed(() => {
       </NuxtLink>
     </div>
   </Header>
-  <div v-if="isLoading" class="px-6 mt-6"><SplashScreen /></div>
+  <div v-if="isLoading" class="px-6 mt-6">
+    <SplashScreen :is-loading="true" />
+  </div>
   <div v-else-if="transaction">
     <section class="px-6 mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">

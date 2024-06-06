@@ -3,6 +3,7 @@ const nuxt = useNuxtApp()
 
 definePageMeta({
   layout: "partner",
+  middleware: ["auth", "role"],
 })
 
 const statusName = ref("saat ini")
