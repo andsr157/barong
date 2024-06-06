@@ -54,6 +54,7 @@ function nextToConfirmation() {
 }
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 onBeforeUnmount(() => {

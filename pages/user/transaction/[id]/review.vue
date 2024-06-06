@@ -3,6 +3,7 @@ import { useToastStore } from "~/stores/Toast.store"
 const toastStore = useToastStore()
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 const route = useRoute()

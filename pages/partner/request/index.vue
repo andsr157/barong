@@ -10,6 +10,7 @@ const { lat: latitude, lng: longitude } = storeToRefs(locationStore)
 
 definePageMeta({
   layout: "partner",
+  middleware: ["auth", "role"],
 })
 
 const { data: dataCache } = useNuxtData("request")

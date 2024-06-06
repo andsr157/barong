@@ -85,6 +85,7 @@ const handleSetCurrentTransaction = () => {
 
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 const newTransactionData = useNuxtApp()
@@ -311,7 +312,7 @@ onUnmounted(() => {
       />
     </div>
   </div>
-  <div v-else=""><SplashScreen /></div>
+  <div v-else=""><SplashScreen :isLoading="true" /></div>
 
   <ModalDefault
     title="Selesaikan Transaksi"

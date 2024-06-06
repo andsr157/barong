@@ -2,6 +2,7 @@
 const nuxt = useNuxtApp()
 definePageMeta({
   layout: "default",
+  middleware: ["auth", "role"],
 })
 
 const transactionDataContainer = ref(null) as any

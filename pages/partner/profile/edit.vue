@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 import { useForm } from "vee-validate"

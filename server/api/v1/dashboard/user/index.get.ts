@@ -1,6 +1,5 @@
 import { prisma } from '~/composables/prisma'
 import { getServerSession } from '#auth'
-import { AuthorizationCheck } from '~/server/helpers'
 
 export default defineEventHandler(async (event) => {
     try {

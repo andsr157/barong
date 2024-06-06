@@ -2,6 +2,7 @@
 import { timeAgo } from "~/composables/helpers"
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 
 const { data: user } = useAuth() as any

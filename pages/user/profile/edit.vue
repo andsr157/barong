@@ -1,6 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "blank",
+  middleware: ["auth", "role"],
 })
 import { useForm } from "vee-validate"
 import * as Yup from "yup"
