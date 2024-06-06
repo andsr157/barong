@@ -50,7 +50,7 @@ const saveSubscription = async (subscription) => {
 }
 
 self.addEventListener("install", (event) => {
-  console.log("service worker installe", event)
+  console.log("service worker installed", event)
 })
 
 self.addEventListener("activate", async (event) => {
@@ -80,7 +80,7 @@ self.addEventListener("push", (e) => {
   e.waitUntil(
     console.log(e),
     self.registration.showNotification("Simple Notification", {
-      body: "This is a simple notification.",
+      body: "This is a simple notifications",
     })
   )
 })
