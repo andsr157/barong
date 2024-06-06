@@ -79,6 +79,7 @@ export default defineNuxtConfig({
       ]
     },
     strategies: 'injectManifest',
+    injectRegister: null,
     srcDir: 'public',
     filename: 'custom-sw.js',
     workbox: {

@@ -2,6 +2,8 @@
 const { signOut } = useAuth()
 
 const handleLogout = async () => {
+  localStorage.removeItem("subscriptionData")
+  localStorage.removeItem("transaction")
   await signOut()
 }
 
