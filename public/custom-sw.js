@@ -77,13 +77,22 @@ self.addEventListener("activate", (event) => {
 })
 
 self.addEventListener("push", (event) => {
-  console.log("Push received:", event)
+  const payload = JSON.parse(event.data.text())
+  console.log(payload)
   const options = {
-    body: "This is a simple notification",
+    body: payload.body,
+    data: {
+      url: "https://barong-psi.vercel.app" + payload.url,
+    },
   }
-  event.waitUntil(
-    self.registration.showNotification("Simple Notification", options)
-  )
+  event.waitUntil(self.registration.showNotification(payload.title, options))
+})
+
+self.addEventListener("notificationclick", (event) => {
+  console.log("Notification click received:", event.notification)
+  event.notification.close()
+
+  event.waitUntil(clients.openWindow(event.notification.data.url))
 })
 
 self.addEventListener("message", async (event) => {

@@ -11,8 +11,9 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
 
     const payload = JSON.stringify({
-        title: 'Transaksi test',
-        body: 'Anda memiliki transaksi',
+        title: body.title,
+        body: body.body,
+        url: body.url
     });
 
     const subscriptions = await prisma.pushSubscription.findMany({

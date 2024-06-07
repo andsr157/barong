@@ -51,13 +51,34 @@ const handleRequest = async (payload: any, request: string) => {
     const res = await transactionStore.updateStatusTransaction(id, payload)
     if (res?.data) {
       await fetchData(id)
-      console.log("jalan dibawahnya")
       const notifPayload = {
         user_id: transaction.value.user?.id,
         notificationId: request === "take" ? 1 : 2,
-        link: "/user/history",
+        link: `/transaction/${transaction.value.id}/${transaction.value.status.name}`,
       }
       notificationStore.sendNotification(notifPayload)
+      //send push
+      if (request === "cancel") {
+        await $fetch("/api/v1/notification/sendPush", {
+          method: "POST",
+          body: {
+            user_id: transaction.value.user?.id,
+            title: "Transaksi Dicancel",
+            body: "Transaksi anda dibatalkan pengepul mencari pengepul lain..",
+            url: `/user/transaction/${transaction.value.id}/${transaction.value.status.name}`,
+          },
+        })
+      } else if (request === "take") {
+        await $fetch("/api/v1/notification/sendPush", {
+          method: "POST",
+          body: {
+            user_id: transaction.value.user?.id,
+            title: "Transaksi Diambil",
+            body: "Transaksi anda telah diambil pengepul",
+            url: `/user/transaction/${transaction.value.id}/${transaction.value.status.name}`,
+          },
+        })
+      }
 
       const payloadChats = {
         chats_id: transaction.value?.chats_id,
