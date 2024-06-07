@@ -18,18 +18,22 @@ const checkPermissions = async () => {
     })
   })
 
-  if (notificationPermission !== "granted") {
+  if (notificationPermission === "default") {
     isShowModalNotification.value = true
-  } else if (locationPermission !== "granted") {
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (const worker of registrations) {
-          console.log("Service worker:", worker)
-        }
-      })
-    }
+  } else if (locationPermission == "prompt") {
     isShowModalLocation.value = true
   } else {
+    if (notificationPermission === "denied") {
+      alert(
+        "Notifikasi tidak diizinkan. Silakan aktifkan notifikasi di pengaturan browser Anda atau Anda tidak akan menerima nNtifikasi apapun dari Aplikasi ini"
+      )
+    }
+
+    if (locationPermission === "denied") {
+      alert(
+        "Akses lokasi tidak diizinkan. Silakan aktifkan lokasi di pengaturan browser Anda, Atau Anda tidak akan dapat mengatur alamat lokasi anda"
+      )
+    }
     redirectToRole()
   }
 }
@@ -40,16 +44,45 @@ const handleLocationPermission = () => {
       isShowModalLocation.value = false
       redirectToRole()
     },
-    () => {
-      console.error("Geolocation permission denied")
+    (error) => {
+      if (error.code === error.PERMISSION_DENIED) {
+        alert(
+          "Akses lokasi tidak diizinkan. Silakan aktifkan lokasi di pengaturan browser Anda, Atau Anda tidak akan dapat mengatur alamat lokasi anda"
+        )
+        checkPermissions()
+      }
     }
   )
 }
+
+// const handleNotificationPermission = () => {
+//   if (Notification.permission === "denied") {
+//     isShowModalNotification.value = false
+//     alert(
+//       "Notifikasi diblokir. Silakan aktifkan notifikasi di pengaturan browser Anda atau Anda tidak akan menerima nNtifikasi apapun dari Aplikasi ini"
+//     )
+//     checkPermissions()
+//   } else if (Notification.permission === "default") {
+//     isShowModalNotification.value = true
+//     requestNotificationPermission()
+//   } else if (Notification.permission === "granted") {
+//     // If already granted, do what is needed
+//     isShowModalNotification.value = false
+//   }
+// }
 
 const handleNotificationPermission = () => {
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
       isShowModalNotification.value = false
+      checkPermissions()
+    } else if (permission === "default") {
+      isShowModalNotification.value = true
+    } else if (permission === "denied") {
+      isShowModalNotification.value = false
+      alert(
+        "Notifikasi tidak diizinkan. Silakan aktifkan notifikasi di pengaturan browser Anda atau Anda tidak akan menerima nNtifikasi apapun dari Aplikasi ini"
+      )
       checkPermissions()
     }
   })
