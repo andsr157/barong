@@ -198,6 +198,7 @@ const googleMapsUrl = computed(() => {
         label-button="Lihat Rute"
         :path="googleMapsUrl"
         button-target="_blank"
+        :no-button="transaction.status.name === 'finish'"
       />
     </section>
 

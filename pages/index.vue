@@ -4,6 +4,7 @@ import { useRouter } from "vue-router"
 
 definePageMeta({
   layout: "blank",
+  middleware: ["auth"],
 })
 
 const router = useRouter()

@@ -32,6 +32,19 @@ const handleCancelTransaction = async () => {
 
     if (res && res.status === 200) {
       transaction.value.status = res.data
+      if (transaction.value) {
+        const imageUrl = transaction.value?.trashImage as string
+        const parts = imageUrl.split("/")
+
+        const fileName = parts[parts.length - 1]
+        const { data, error } = await useNuxtApp()
+          .$supabase.storage.from("images")
+          .remove([fileName])
+        if (error) {
+          console.log("failed delete image", error)
+          return
+        }
+      }
       toastStore.success({
         text: "berhasil membatalkan transaksi",
       })
@@ -52,6 +65,7 @@ const handleSetCurrentTransaction = () => {
   const transactionData = {
     id: transaction.value.id,
     user_id: userId,
+    image: transaction.value.trashImage,
     address: {
       id: null,
       label: "",

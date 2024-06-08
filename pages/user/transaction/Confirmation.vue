@@ -65,12 +65,36 @@ const uploadImage = async () => {
   }
 }
 
+const deleteImage = async () => {
+  if (trash.value) {
+    const imageUrl = trash.value.transaction.image as string
+    const parts = imageUrl.split("/")
+
+    const fileName = parts[parts.length - 1]
+    const { data, error } = await supabase.storage
+      .from("images")
+      .remove([fileName])
+    if (error) {
+      console.log("failed delete image", error)
+      return
+    }
+  }
+}
+
 const onSubmit = async () => {
   try {
     isLoading.value = true
     const imageUrl = await uploadImage().catch((error) => {
       console.error("Error in uploadImage:", error)
+      return
     })
+
+    if (trash.value.transaction.id && imageUrl) {
+      await deleteImage().catch((error) => {
+        console.error("Error in deleteImage:", error)
+        return
+      })
+    }
 
     const transaction = {
       ...trash.value.transaction,
@@ -102,7 +126,6 @@ const onSubmit = async () => {
     let res
     if (trash.value.transaction.id) {
       res = await transactionStore.updateTransaction(payload).catch((error) => {
-        console.log("asuiuuuuu")
         isLoading.value = false
         console.error("Error in updateTransaction:", error)
         throw error
