@@ -62,14 +62,12 @@ const isPreviewOpen = ref(false)
     <div
       v-if="isPreviewOpen"
       @click="isPreviewOpen = false"
-      class="fixed top-0 z-50 w-full max-w-[450px] h-[100vh] bg-gray-500 bg-opacity-10 flex justify-center items-center"
+      class="fixed top-0 left-0 z-50 w-full h-[100vh] bg-gray-500 bg-opacity-10 flex justify-center items-center"
     >
       <img
         :src="props.url"
-        width="100%"
-        height="300px"
         alt="partner profile img"
-        class="object-contain"
+        class="w-[375px] h-auto md:w-3/4 object-contain"
       />
     </div>
   </transition>

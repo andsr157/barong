@@ -77,6 +77,19 @@ const onSubmit = handleSubmit(async () => {
       console.error("Error in uploadImage:", error)
     })
 
+    if (user.value) {
+      const imageUrl = user.value?.user.avatar as string
+      const parts = imageUrl.split("/")
+
+      const fileName = parts[parts.length - 1]
+      const { data, error } = await useNuxtApp()
+        .$supabase.storage.from("avatar")
+        .remove([fileName])
+      if (error) {
+        console.log("failed delete image", error)
+      }
+    }
+
     const payload = {
       id: user.value.user.id,
       name: name.value,

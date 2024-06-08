@@ -126,6 +126,20 @@ const handleFinishTransaction = async () => {
       `/api/v1/transaction/report/${transactionId.value}`,
       payload
     )
+
+    if (transaction.value) {
+      const imageUrl = transaction.value?.trashImage as string
+      const parts = imageUrl.split("/")
+
+      const fileName = parts[parts.length - 1]
+      const { data, error } = await useNuxtApp()
+        .$supabase.storage.from("images")
+        .remove([fileName])
+      if (error) {
+        console.log("failed delete image", error)
+      }
+    }
+
     isModalOpen.value = false
     if (res.data.status === 200) {
       router.push("/partner/transaction/success")

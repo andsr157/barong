@@ -47,8 +47,7 @@ const handleClick = (event: Event, callback: () => void) => {
           :src="partner?.avatar ?? '/assets/dummy-profile.png'"
           alt="foto pengepul"
           size="32px"
-          width="32"
-          height="32"
+          class="w-8 h-8 object-cover rounded-full overflow-hidden"
         />
         <span class="text-[11px] font-medium text-brg-primary-dark mt-1">
           {{ partner?.name }}

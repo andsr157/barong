@@ -2,6 +2,8 @@
 const transactionStore = useTransactionStore()
 const toastStore = useToastStore()
 const addressStore = useAddressStore()
+const route = useRoute()
+const router = useRouter()
 
 const { mainAddress } = storeToRefs(addressStore)
 
@@ -58,7 +60,13 @@ definePageMeta({
 })
 
 onBeforeUnmount(() => {
-  if (transactionData.value.transaction.id && addTransactionFlag.value) {
+  const currentRoute = route.path
+  const nextRoute = router.currentRoute.value.path
+  if (
+    nextRoute !== "/user/profile/address" &&
+    transactionData.value.transaction.id &&
+    addTransactionFlag.value
+  ) {
     transactionData.value = {
       transaction: {
         id: null,

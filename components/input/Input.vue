@@ -34,7 +34,6 @@ const updateInput = (event: Event) => {
 
   if (props.type === "number") {
     if (inputvalue.value === "" || parseFloat(inputvalue.value) < 0) {
-      console.log(inputvalue.value === "")
       inputvalue.value = props.min
     }
     emit("update:modelValue", parseFloat(inputvalue.value))

@@ -78,6 +78,7 @@ export interface TransactionData {
         user_id: string | null,
         address: Address,
         chats_id?: string | null,
+        image?: string | null,
         // image: string;
         status_id: string | null,
         note: string,
