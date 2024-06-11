@@ -185,7 +185,7 @@ onUnmounted(() => {
       <div
         v-if="
           transaction.status.name === 'finish' &&
-          transaction.review.rate !== null
+          (transaction.review.review !== null || transaction.review.rate)
         "
         class="mt-[30px] flex flex-col"
       >
@@ -201,7 +201,7 @@ onUnmounted(() => {
         <h2 class="text-brg-primary-dark font-semibold mb-4">Nilai</h2>
         <div class="mx-auto">
           <NuxtRating
-            :rating-value="transaction.review.rate"
+            :rating-value="transaction.review.rate ?? 0"
             :read-only="true"
             class="w-[209px]"
             :rating-size="'50px'"
