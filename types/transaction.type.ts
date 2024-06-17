@@ -23,6 +23,7 @@ export interface Transaction {
         trash_id: number;
         category: string,
         subcategory: string,
+        unit: string
         weight: number;
         minPrice?: number
         maxPrice?: number
@@ -56,6 +57,7 @@ export interface TransactionDetail {
     trash_id: string;
     category: string,
     subcategory: string,
+    trashUnit: string,
     weight: number;
     minPrice?: number
     maxPrice?: number

@@ -18,7 +18,6 @@ definePageMeta({
   middleware: ["auth", "role"],
 })
 
-const router = useRouter()
 const address = computed(() => {
   return trash.value.transaction.address
 })
@@ -175,6 +174,7 @@ const onSubmit = async () => {
           v-for="(data, index) in trash.transaction_detail"
           :key="index"
           :category="data.category"
+          :trashUnit="data.trashUnit"
           :subcategory="data.subcategory"
           :weight="data.weight"
           :min-price="data.minPrice"

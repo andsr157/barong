@@ -10,7 +10,11 @@ export default defineEventHandler(async (event) => {
         }
     })
 
-    const subcategory = await prisma.trash.findMany()
+    const subcategory = await prisma.trash.findMany({
+        include: {
+            trashUnit: true
+        }
+    })
 
     return { data: { category: category, subcategory: subcategory }, status: 200 }
 })

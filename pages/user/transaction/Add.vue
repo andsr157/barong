@@ -119,7 +119,7 @@ onMounted(async () => {
     <section>
       <div class="text-brg-primary-dark mt-[30px] mb-6">
         <h2 class="font-semibold mb-2">Keranjang Sampah</h2>
-        <p class="font-medium text-[11px] text-opacity-70">
+        <p class="font-medium text-[13px] text-opacity-70">
           Input sampah, pilih kategori dan masukkan perkiraan berat sampahmu
         </p>
       </div>

@@ -20,11 +20,21 @@ const optionSubCategory = computed((): TrashCategory[] => {
 })
 
 const selectedCategory = ref<TrashCategory | null>()
-const selectedSubCategory = ref<TrashSubCategory | null>()
-const trashWeight = ref(1)
+const selectedSubCategory = ref<TrashSubCategory | null>(null)
+const selectedUnit = ref<string>("pcs")
+const trashWeight = ref(0)
 
 watch(selectedCategory, () => {
-  selectedSubCategory.value = null
+  if (selectedSubCategory.value !== null) {
+    selectedSubCategory.value = null
+  }
+})
+
+watch(selectedSubCategory, () => {
+  const { trashUnit } = subcategory.value.filter(
+    (item: any) => item.id === selectedSubCategory?.value?.id
+  )[0] as any
+  selectedUnit.value = trashUnit.name
 })
 
 const trashForm = computed(() => {
@@ -34,6 +44,7 @@ const trashForm = computed(() => {
     subcategory: selectedSubCategory.value?.name || "",
     minPrice: selectedSubCategory.value?.minPrice || 0,
     maxPrice: selectedSubCategory.value?.maxPrice || 0,
+    trashUnit: selectedUnit.value,
     finalPrice: 0,
     weight: trashWeight.value,
   }
@@ -42,7 +53,8 @@ const trashForm = computed(() => {
 function resetTrashForm() {
   selectedCategory.value = null
   selectedSubCategory.value = null
-  trashWeight.value = 0
+  selectedUnit.value = "kg"
+  trashWeight.value = 1
 }
 
 function addTrash() {
@@ -71,12 +83,12 @@ onMounted(() => {
 <template>
   <Toast />
   <div
-    class="border-[1px] border-brg-light-gray rounded-[10px] p-[10px] flex flex-col gap-2"
+    class="border-[1px] border-brg-light-gray rounded-[10px] p-[10px] flex flex-col gap-y-3"
   >
     <div>
       <InputDropdown
         label="Kategori sampah"
-        label-class="!text-[10px] !font-medium text-brg-primary-dark"
+        label-class="!text-[13px] !font-medium text-brg-primary-dark"
         v-model="selectedCategory"
         :options="category"
         :is-loading="trashStore.loading"
@@ -85,7 +97,7 @@ onMounted(() => {
     <div>
       <InputDropdown
         label="SubKategori sampah"
-        label-class="!text-[10px] !font-medium text-brg-primary-dark"
+        label-class="!text-[13px] !font-medium text-brg-primary-dark"
         v-model="selectedSubCategory"
         :options="optionSubCategory"
         :disable="optionSubCategory?.length > 0 ? false : true"
@@ -93,13 +105,18 @@ onMounted(() => {
     </div>
     <div>
       <Input
-        label="Berat Sampah"
-        label-class="text-[10px] text-brg-primary-dark !font-medium"
+        label="Berat atau Jumlah Sampah"
+        label-class="!text-[13px] text-brg-primary-dark !font-medium"
         placeholder="0.0"
-        input-class="text-brg-primary-dark"
+        wrapper-class="!max-w-max !text-brg-dark-gray py-5 "
+        input-class="!w-[50px] !text-base !bg-transparent !font-medium py-5 "
         type="number"
         v-model="trashWeight"
-      />
+      >
+        <template #suffix>
+          <div class="!font-medium !text-sm">{{ selectedUnit }}</div>
+        </template>
+      </Input>
     </div>
 
     <div class="mt-3">

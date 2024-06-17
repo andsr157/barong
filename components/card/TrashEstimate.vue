@@ -3,6 +3,7 @@ import { toCurrency } from "~/composables/helpers"
 interface Props {
   category: string
   subcategory: string
+  trashUnit: string
   weight: number
   finalPrice?: number
   minPrice?: number
@@ -25,7 +26,7 @@ withDefaults(defineProps<Props>(), {
       </h3>
       <p class="text-xs">
         <span class="font-semibold">{{ weight }}</span
-        ><span> Kg</span>
+        ><span> {{ trashUnit }}</span>
       </p>
     </div>
 
@@ -52,7 +53,7 @@ withDefaults(defineProps<Props>(), {
       </p>
       <p class="text-sm text-end">
         <span class="font-semibold">{{ weight }}</span
-        ><span> Kg</span>
+        ><span>{{ trashUnit }}</span>
       </p>
     </div>
   </div>

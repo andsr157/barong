@@ -44,43 +44,48 @@ const updateInput = (event: Event) => {
 </script>
 
 <template>
-  <label class="mb-2 block text-brg-primary-dark" :class="props.labelClass">{{
-    props.label
-  }}</label>
-  <div
-    class="w-full h-[38px] border-[1px] border-brg-light-gray px-[14px] rounded-[10px] flex justify-between items-center"
-    :class="props.wrapperClass"
-  >
-    <Icon
-      v-if="props.prefixIcon"
-      :name="props.prefixIcon"
-      :size="props.prefixIconSize"
-      :class="props.prefixIconColor"
-    />
-    <slot name="prefix" />
-    <input
-      :step="props.type === 'number' ? 'any' : undefined"
-      :type="props.type"
-      :value="props.modelValue"
-      @input="updateInput"
-      class="w-full h-full focus:outline-none focus:text-xs text-xs"
-      :class="props.inputClass"
-      :placeholder="props.placeholder"
-      :readonly="props.readonly"
-      :min="props.min"
-    />
+  <div>
+    <label
+      v-if="props.label"
+      class="mb-2 block text-brg-primary-dark"
+      :class="props.labelClass"
+      >{{ props.label }}</label
+    >
+    <div
+      class="w-full h-[38px] border-[1px] border-brg-light-gray px-[14px] rounded-[10px] flex justify-between items-center"
+      :class="props.wrapperClass"
+    >
+      <Icon
+        v-if="props.prefixIcon"
+        :name="props.prefixIcon"
+        :size="props.prefixIconSize"
+        :class="props.prefixIconColor"
+      />
+      <slot name="prefix" />
+      <input
+        :step="props.type === 'number' ? 'any' : undefined"
+        :type="props.type"
+        :value="props.modelValue"
+        @input="updateInput"
+        class="w-full h-full focus:outline-none focus:text-xs text-xs"
+        :class="props.inputClass"
+        :placeholder="props.placeholder"
+        :readonly="props.readonly"
+        :min="props.min"
+      />
 
-    <Icon
-      v-if="props.suffixIcon"
-      :name="props.suffixIcon"
-      :size="props.suffixIconSize"
-      :class="props.suffixIconColor"
-    />
-    <slot name="suffix" />
+      <Icon
+        v-if="props.suffixIcon"
+        :name="props.suffixIcon"
+        :size="props.suffixIconSize"
+        :class="props.suffixIconColor"
+      />
+      <slot name="suffix" />
+    </div>
+    <p v-if="errorMessage" class="text-brg-red text-[10px] px-5 mt-[5px]">
+      {{ errorMessage }}
+    </p>
   </div>
-  <p v-if="errorMessage" class="text-brg-red text-[10px] px-5 mt-[5px]">
-    {{ errorMessage }}
-  </p>
 </template>
 
 <style scoped>
