@@ -58,16 +58,6 @@ const finalTotalPrice = computed(() => {
   return realTotal.value - servicePrice.value
 })
 
-onMounted(async () => {
-  const id = Array.isArray(route.params.id)
-    ? route.params.id[0]
-    : route.params.id
-
-  transactionId.value = id
-  const res = await transactionStore.getSingleTransaction(id)
-  transaction.value = res.data
-})
-
 const validationCheck = () => {
   const detailSampah =
     transaction.value?.detailSampah.filter((data: any) => {
@@ -148,6 +138,16 @@ const handleFinishTransaction = async () => {
     console.error(error)
   }
 }
+
+onMounted(async () => {
+  const id = Array.isArray(route.params.id)
+    ? route.params.id[0]
+    : route.params.id
+
+  transactionId.value = id
+  const res = await transactionStore.getSingleTransaction(id)
+  transaction.value = res.data
+})
 </script>
 
 <template>
@@ -160,7 +160,7 @@ const handleFinishTransaction = async () => {
     <div class="mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">Data Sampah</h2>
       <div
-        class="grid grid-cols-11 gap-x-1 items-end"
+        class="grid grid-cols-11 gap-x-1 items-end mb-3"
         v-for="(data, index) in transaction.detailSampah"
         :key="index"
       >
@@ -192,20 +192,20 @@ const handleFinishTransaction = async () => {
             :min="0"
           >
             <template #suffix>
-              <span class="text-brg-primary text-[9px] font-medium pt-1"
-                >Kg</span
-              >
+              <span class="text-brg-primary text-[9px] font-medium pt-1">{{
+                data.unit
+              }}</span>
             </template>
           </Input>
         </div>
       </div>
-      <div
+      <!-- <div
         class="flex gap-x-2 justify-end text-xs text-brg-primary-dark font-medium mt-3"
       >
         <p>Total Sampah</p>
         <p class="text-brg-primary text-sm">{{ totalTrashWeight ?? 0 }}</p>
         <p>Kg</p>
-      </div>
+      </div> -->
     </div>
 
     <div class="mt-[30px]">

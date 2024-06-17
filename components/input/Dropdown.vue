@@ -77,13 +77,13 @@ watch(
       </div>
       <div
         v-else-if="isOpen && !disable"
-        class="flex flex-col gap-y-4 absolute z-40 top-12 bg-white border-[1px] border-brg-light-gray border-opacity-40 rounded-lg p-3"
+        class="flex flex-col absolute z-40 top-12 bg-white border-[1px] border-brg-light-gray border-opacity-40 rounded-lg"
       >
         <div
           v-for="(option, index) in options"
           :key="index"
           @click="handleSelect(option)"
-          class="text-xs text-brg-gray font-medium w-56"
+          class="text-xs text-brg-gray font-medium w-56 p-3 hover:bg-brg-white"
         >
           {{ option.name }}
         </div>

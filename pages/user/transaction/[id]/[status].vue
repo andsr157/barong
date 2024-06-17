@@ -182,15 +182,21 @@ onUnmounted(() => {
         :photo="transaction.pengepul.avatar"
       />
 
+      <!-- rating section -->
       <div
         v-if="
           transaction.status.name === 'finish' &&
-          (transaction.review.review !== null || transaction.review.rate)
+          transaction.status.status === 'success'
         "
         class="mt-[30px] flex flex-col"
       >
         <div class="flex gap-2 mb-6">
-          <NuxtImg :src="transaction.pengepul.avatar" width="34" height="34" />
+          <NuxtImg
+            :src="transaction.pengepul.avatar"
+            width="34"
+            height="34"
+            class="rounded-full object-cover"
+          />
           <div class="flex flex-col">
             <h1 class="font-medium text-[14px]">
               {{ transaction.pengepul.name }}
@@ -223,6 +229,7 @@ onUnmounted(() => {
       </div>
     </section>
 
+    <!-- address section -->
     <section class="mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">
         Alamat Pengambilan
@@ -237,6 +244,7 @@ onUnmounted(() => {
       />
     </section>
 
+    <!-- trash detail section -->
     <section class="mt-[30px]">
       <h2 class="text-brg-primary-dark font-semibold mb-4">Data penjualan</h2>
       <div class="flex flex-col gap-y-2 mb-9">
@@ -245,6 +253,7 @@ onUnmounted(() => {
           v-for="(data, index) in transaction.detailSampah"
           :key="index"
           :category="data.category"
+          :trashUnit="data.unit"
           :subcategory="data.subcategory"
           :weight="data.weight"
           :final-price="data.finalPrice"
@@ -256,12 +265,12 @@ onUnmounted(() => {
           :key="transaction.id"
           :category="data.category"
           :subcategory="data.subcategory"
+          :trashUnit="data.unit"
           :weight="data.weight"
           :min-price="data.minPrice"
           :max-price="data.maxPrice"
         />
       </div>
-
       <CardTrashTotal
         v-if="transaction.status.name === 'finish'"
         :total="transaction.totalPrice"
@@ -272,6 +281,7 @@ onUnmounted(() => {
       <CardTrashTotal v-else :estimate-total="estimate" />
     </section>
 
+    <!-- note section -->
     <section class="mt-6">
       <h2 class="text-brg-primary-dark font-semibold mb-4">catatan</h2>
       <ClientOnly>

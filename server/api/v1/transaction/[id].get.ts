@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
                         trash: {
                             include: {
                                 category: true,
+                                trashUnit: true
                             }
                         },
                     },
@@ -117,6 +118,7 @@ export default defineEventHandler(async (event) => {
                 trash_id: detail.trash_id,
                 category: detail.trash.category.name,
                 subcategory: detail.trash.name, // Subkategori (jika ada)
+                unit: detail.trash.trashUnit.name,
                 minPrice: detail.trash.minPrice,
                 maxPrice: detail.trash.maxPrice,
                 weight: detail.weight,

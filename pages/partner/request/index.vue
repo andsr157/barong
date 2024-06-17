@@ -80,7 +80,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  {{ pageFlag }}
   <Header title="Permintaan" />
   <Suspense>
     <section class="px-6 pt-[30px] pb-24 overflow-auto">

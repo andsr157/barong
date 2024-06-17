@@ -4,7 +4,6 @@ export function AuthorizationCheck(session: any, reqId: string) {
     }
 
     const userId = session.user.id
-    console.log(userId === reqId)
     if (userId !== reqId) {
         throw { data: null, status: 403 }
     }
