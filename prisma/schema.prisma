@@ -8,20 +8,20 @@ datasource db {
 }
 
 model users {
-  id             String        @id @default(cuid())
-  name           String
-  email          String        @unique
-  telp           String
-  avatar         String
-  password       String
-  role           String
-  created_at     DateTime      @default(now())
-  updated_at     DateTime?     @default(now())
-  address        address[]
-  serviceFee     serviceFee[]
-  ReferredToUser transaction[] @relation("Partner")
-  ReferrerToUser transaction[] @relation("User")
-  pushSubscriptions PushSubscription[]
+  id                String              @id @default(cuid())
+  name              String
+  email             String              @unique
+  telp              String
+  avatar            String
+  password          String
+  role              String
+  created_at        DateTime            @default(now())
+  updated_at        DateTime?           @default(now())
+  pushSubscriptions PushSubscription?
+  address           address[]
+  serviceFee        serviceFee[]
+  ReferredToUser    transaction[]       @relation("Partner")
+  ReferrerToUser    transaction[]       @relation("User")
   userNotifications user_notification[]
 }
 
@@ -51,8 +51,10 @@ model trash {
   minPrice           Int
   maxPrice           Int
   category_id        String
+  unit_id            String
   transaction_detail transaction_detail[]
   category           trashCategory        @relation(fields: [category_id], references: [id])
+  trashUnit          trashUnit            @relation(fields: [unit_id], references: [id])
 }
 
 model status {
@@ -121,34 +123,38 @@ model serviceFee {
 }
 
 model PushSubscription {
-  id          Int      @id @default(autoincrement())
-  user_id      String  
+  id           Int      @id @default(autoincrement())
+  user_id      String   @unique
   subscription Json
-  endpoint    String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  user        users     @relation(fields: [user_id], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+  user         users    @relation(fields: [user_id], references: [id])
 }
 
 model notification {
-  id                   Int                   @id @default(autoincrement())
-  title                String
-  description          String
-  createdAt            DateTime              @default(now())
-  userNotifications    user_notification[]
+  id                Int                 @id @default(autoincrement())
+  title             String
+  description       String
+  createdAt         DateTime            @default(now())
+  userNotifications user_notification[]
 }
 
 model user_notification {
-  id                    String    @id @default(cuid())
-  user_id               String
-  notificationId       Int
-  link                 String?               
-  mode                 NotificationMode
-  isRead               Boolean               @default(false)
-  createdAt            DateTime              @unique @default(now())
-  user                 users                @relation(fields: [user_id], references: [id])
-  notification         notification          @relation(fields: [notificationId], references: [id])
+  id             String           @id @default(cuid())
+  user_id        String
+  notificationId Int
+  link           String?
+  mode           NotificationMode
+  isRead         Boolean          @default(false)
+  createdAt      DateTime         @unique @default(now())
+  notification   notification     @relation(fields: [notificationId], references: [id])
+  user           users            @relation(fields: [user_id], references: [id])
+}
 
+model trashUnit {
+  id    String  @id
+  name  String
+  trash trash[]
 }
 
 enum NotificationMode {
