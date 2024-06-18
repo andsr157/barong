@@ -22,7 +22,7 @@ const saveNewLocation = () => {
   emit("closeMap")
 }
 
-async function test(event: any) {
+async function getCoordinate(event: any) {
   addresStore.getLocationAdress(event.lat, event.lng)
   center.value = {
     lat: event.lat,
@@ -45,7 +45,7 @@ async function test(event: any) {
         />
         <LMarker
           :lat-lng="[props.center.lat, props.center.lng]"
-          @update:lat-lng="test"
+          @update:lat-lng="getCoordinate"
           draggable
         >
         </LMarker>

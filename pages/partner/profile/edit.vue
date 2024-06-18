@@ -25,11 +25,11 @@ const file = ref({
 })
 
 const schema = Yup.object({
-  name: Yup.string().required("Name is required"),
+  name: Yup.string().required("Name tidak boleh kosong"),
   telp: Yup.string()
-    .matches(/^\d+$/, "Phone number must be numeric")
-    .max(14, "Phone number must be at most 14 characters")
-    .required("Phone number is required"),
+    .matches(/^\d+$/, "Nomor telepon harus angka")
+    .max(14, "Nomor telepon harus terdiri dari maksimal 14 karakter")
+    .required("Nomor telepon tidak boleh kosong"),
 })
 const { handleSubmit } = useForm<FormData>({
   validationSchema: schema,

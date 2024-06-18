@@ -8,21 +8,23 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 const schema = Yup.object({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  name: Yup.string().required("Nama tidak boleh kosong"),
+  email: Yup.string()
+    .email("Email tidak valid")
+    .required("Email tidak boleh kosong"),
   telp: Yup.string()
-    .matches(/^\d+$/, "Phone number must be numeric")
-    .max(14, "Phone number must be at most 14 characters")
-    .required("Phone number is required"),
+    .matches(/^\d+$/, "Nomor telepon harus angka")
+    .max(14, "Nomor telepon harus terdiri dari maksimal 14 karakter.")
+    .required("Nomor tidak boleh kosong"),
   password: Yup.string()
     .matches(
       /^(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
-      "Password must contain at least 8 characters, including one uppercase letter and one digit"
+      "Kata sandi harus mengandung setidaknya 8 karakter, termasuk satu huruf besar dan satu angka."
     )
-    .required("Password is required"),
+    .required("Kata sandi tidak boleh kosong"),
   password_confirmation: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
-    .required("Confirm password is required"),
+    .oneOf([Yup.ref("password")], "Konfirmasi kata sandi harus cocok")
+    .required("Konfirmasi kata sandi tidak boleh kosong"),
 })
 
 interface FormData {
@@ -47,6 +49,9 @@ const onSubmit = handleSubmit(async (values) => {
       router.push("/login")
     }, 2000)
   } else {
+    toastStore.error({
+      text: "Pendafataran gagal",
+    })
     console.error("Registration failed")
   }
 })

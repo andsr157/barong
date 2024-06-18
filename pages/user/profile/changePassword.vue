@@ -10,16 +10,16 @@ const toastStore = useToastStore()
 const isLoading = ref(false)
 
 const schema = Yup.object({
-  oldPassword: Yup.string().required("Password is required"),
+  oldPassword: Yup.string().required("Kata sandi tidak boleh kosong"),
   newPassword: Yup.string()
     .matches(
       /^(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
-      "Password must contain at least 8 characters, including one uppercase letter and one digit"
+      "Kata sandi harus mengandung setidaknya 8 karakter, termasuk satu huruf besar dan satu angka"
     )
-    .required("Password is required"),
+    .required("Kata sandi baru tidak boleh kosong"),
   new_password_confirmation: Yup.string()
-    .oneOf([Yup.ref("newPassword")], "Passwords must match")
-    .required("Confirm password is required"),
+    .oneOf([Yup.ref("newPassword")], "Konfirmasi kata sandi harus cocok")
+    .required("Konfirmasi kata sandi tidak boleh kosong"),
 })
 
 const { handleSubmit } = useForm({

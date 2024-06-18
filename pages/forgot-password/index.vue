@@ -7,7 +7,10 @@ const email = ref<string>()
 const isLoading = ref(false)
 
 const schema = object({
-  email: string().required().email().label("Email"),
+  email: string()
+    .required("Email tidak boleh kosong")
+    .email("Email tidak valid")
+    .label("Email"),
 })
 
 const { values, handleSubmit } = useForm({

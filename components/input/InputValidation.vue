@@ -37,7 +37,9 @@ const { value, errorMessage } = useField(fieldName.value ?? "", undefined, {
   }}</label>
   <div
     class="w-full h-[38px] border-[1px] border-brg-light-gray px-[14px] rounded-[10px] flex justify-between items-center"
-    :class=" `${props.readonly ? 'bg-slate-200' : 'bg-white'} ${props.wrapperClass}`"
+    :class="`${props.readonly ? 'bg-slate-200' : 'bg-white'} ${
+      props.wrapperClass
+    }`"
   >
     <Icon
       v-if="props.prefixIcon"
@@ -72,7 +74,7 @@ const { value, errorMessage } = useField(fieldName.value ?? "", undefined, {
     />
     <slot name="suffix" />
   </div>
-  <p v-if="errorMessage" class="text-brg-red text-[10px] px-5 mt-[5px]">
+  <p v-if="errorMessage" class="text-brg-red text-[10px] px-1 mt-[5px]">
     {{ errorMessage }}
   </p>
 </template>

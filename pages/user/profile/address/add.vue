@@ -6,14 +6,14 @@ import * as Yup from "yup"
 const toastStore = useToastStore()
 
 const schema = Yup.object({
-  address_name: Yup.string().required("address is required"),
-  label: Yup.string().required("label is required"),
+  address_name: Yup.string().required("Alamat tidak boleh kosong"),
+  label: Yup.string().required("Label tidak boleh kosong"),
   detail: Yup.string(),
-  owner_name: Yup.string().required("owner name is required"),
+  owner_name: Yup.string().required("Nama pemilik tidak boleh kosong"),
   owner_telp: Yup.string()
-    .matches(/^\d+$/, "Phone number must be numeric")
-    .max(14, "Phone number must be at most 14 characters")
-    .required("Phone number is required"),
+    .matches(/^\d+$/, "Nomor telepon harus angka")
+    .max(14, "Nomor telepon harus terdiri dari maksimal 14 karakter")
+    .required("Nomor telepon tidak boleh kosong"),
 })
 
 const { handleSubmit } = useForm<FormData>({
@@ -41,15 +41,21 @@ const toggleSwitch = () => {
 }
 
 const onSubmit = handleSubmit(async (values) => {
-  const res = await addresStore.addAddress()
-  if (res) {
-    toastStore.success({
-      text: "Alamat ditambahkan",
+  if (formAdress.value.latitude && formAdress.value.longitude) {
+    const res = await addresStore.addAddress()
+    if (res) {
+      toastStore.success({
+        text: "Alamat ditambahkan",
+      })
+      setTimeout(() => {
+        addresStore.setDefaultFormAddress()
+        useRouter().push("/user/profile/address")
+      }, 1000)
+    }
+  } else {
+    toastStore.error({
+      text: "Anda belum memilih lokasi",
     })
-    setTimeout(() => {
-      addresStore.setDefaultFormAddress()
-      useRouter().push("/user/profile/address")
-    }, 1000)
   }
 })
 definePageMeta({
@@ -62,13 +68,17 @@ onMounted(() => {
 })
 </script>
 <template>
+  <Toast />
   <Header title="Tambah Alamat" />
   <Maps v-if="isMapOpen" :center="center" @closeMap="closeMap" />
 
   <div class="px-6 flex flex-col gap-4 mt-5">
     <div>
-      <h2 class="font-sm text-brg-primary-dark font-semibold mb-2">
+      <h2 class="text-brg-primary-dark font-semibold mb-2">
         Pilih lokasi anda
+      </h2>
+      <h2 class="text-xs text-brg-dark-gray mb-2">
+        Pilih Lokasi Anda terlebih dahulu klik dibawah ini !!
       </h2>
       <div
         @click="isMapOpen = true"

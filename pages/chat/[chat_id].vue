@@ -116,11 +116,11 @@ onUnmounted(() => {
   <Header shadow fixed class="!z-50">
     <template #content>
       <div class="flex gap-x-3 items-center">
-        <div class="w-9 h-9 rounded-full">
+        <div class="w-9 h-9 rounded-full overflow-hidden">
           <NuxtImg
             v-if="chats"
             :src="chats?.users[USER_INDEX].avatar"
-            class="w-full h-full"
+            class="w-full h-full object-cover"
           />
           <div v-else class="w-9 h-9 rounded-full bg-slate-200 animate-pulse" />
         </div>

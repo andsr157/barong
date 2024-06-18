@@ -11,14 +11,14 @@ definePageMeta({
 })
 
 const schema = Yup.object({
-  address_name: Yup.string().required("address is required"),
-  label: Yup.string().required("label is required"),
+  address_name: Yup.string().required("Alamat tidak boleh kosong"),
+  label: Yup.string().required("Label tidak boleh kosong"),
   detail: Yup.string(),
-  owner_name: Yup.string().required("owner name is required"),
+  owner_name: Yup.string().required("Nama pemilik tidak boleh kosong"),
   owner_telp: Yup.string()
-    .matches(/^\d+$/, "Phone number must be numeric")
-    .max(14, "Phone number must be at most 14 characters")
-    .required("Phone number is required"),
+    .matches(/^\d+$/, "Nomor telepon harus angka")
+    .max(14, "Nomor telepon paling panjang 14 angka")
+    .required("Nomor telepon tidak boleh kosong"),
 })
 
 const { handleSubmit } = useForm<FormData>({

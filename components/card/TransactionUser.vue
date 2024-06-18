@@ -74,7 +74,7 @@ const handleClick = (event: Event, callback: () => void) => {
       }}</span>
       <ButtonSmall
         @click="
-          (event) => handleClick(event, () => router.push(`/chat/${chatId}`))
+          (event:any) => handleClick(event, () => router.push(`/chat/${chatId}`))
         "
         v-if="status.name === 'taking'"
         label="chat"

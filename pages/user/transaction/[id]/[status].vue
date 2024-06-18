@@ -152,7 +152,10 @@ onUnmounted(() => {
           transaction.status.name === 'finish')
       "
     >
-      <NuxtLink :to="`/chat/${transaction.chats_id}`">
+      <NuxtLink
+        v-if="transaction.status.name === 'taking'"
+        :to="`/chat/${transaction.chats_id}`"
+      >
         <Icon
           name="mingcute:chat-1-fill"
           size="32px"
