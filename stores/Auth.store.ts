@@ -25,7 +25,6 @@ export const useAuthStore = defineStore('Auth-store', {
                 this.loading = true
                 const { password_confirmation, ...data } = { ...payload, role: 'user', avatar: '/assets/dummy-profile.png' }
                 const res = await axios.post('/api/v1/register', data)
-                console.log('res', res.data)
                 return Promise.resolve(res.data)
             } catch (error) {
                 console.error('Registration failed with status code:', error)

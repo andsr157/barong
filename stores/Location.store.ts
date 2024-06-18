@@ -18,7 +18,6 @@ export const useLocationStore = defineStore('location', {
     actions: {
         async updateLocation() {
             try {
-                console.log('jalanin update')
                 const { lat, lng } = await maps.getCurrentLocation();
                 this.lat = lat
                 this.lng = lng

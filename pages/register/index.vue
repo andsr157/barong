@@ -39,7 +39,6 @@ const { values, handleSubmit } = useForm<FormData>({
 
 const onSubmit = handleSubmit(async (values) => {
   const registerResult = await authStore.register(values)
-  console.log("result", registerResult)
   if (registerResult) {
     toastStore.success({
       text: "Pendafataran berhasil",

@@ -49,13 +49,10 @@ const uploadImage = async () => {
     const { data, error } = await supabase.storage
       .from("avatar")
       .upload(`${uuidv4()}.jpg`, file.value.image)
-
-    console.log(data)
     if (error) {
       console.error("Error uploading image:", error.message)
       return
     }
-    console.log(data.path)
     const { data: publicUrlData, error: publicUrlError }: any =
       await supabase.storage.from("avatar").getPublicUrl(data.path)
 
@@ -63,7 +60,6 @@ const uploadImage = async () => {
       console.error("Error getting public URL:", publicUrlError.message)
       return
     }
-    console.log(publicUrlData.publicUrl)
     file.value.image = null
     return publicUrlData.publicUrl
   } catch (error: any) {

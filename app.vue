@@ -10,7 +10,6 @@ const showNotification = async (payload: any) => {
     const res = (await $fetch(
       `/api/v1/notification/${payload.notificationId}`
     )) as any
-    console.log("data", res)
     const payloadData = {
       ...payload.new,
       ...res.data,
@@ -24,7 +23,7 @@ const showNotification = async (payload: any) => {
       // }
     }
   } catch (error) {
-    console.log("err", error)
+    console.log("err show notification", error)
   }
 }
 
@@ -39,7 +38,6 @@ const newNotificationData = useNuxtApp()
       filter: `user_id=eq.${user?.value?.user?.id}`,
     },
     (payload: any) => {
-      console.log(payload)
       showNotification(payload.new)
     }
   )

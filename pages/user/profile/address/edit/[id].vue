@@ -82,7 +82,6 @@ const handleDeleteAddress = async () => {
 }
 
 const handleUpdateAddress = handleSubmit(async (values) => {
-  console.log(values)
   const res = await addresStore.updateAddress()
   if (res.status === 200) {
     useRouter().push("/user/profile/address")
@@ -92,7 +91,6 @@ const handleUpdateAddress = handleSubmit(async (values) => {
 onMounted(async () => {
   if (addresStore.address.length === 0) {
     const res = await addresStore.getAddress()
-    console.log(res)
     if (res?.error) {
       if (res.error.status === 403) {
         useRouter().push("/user/profile")

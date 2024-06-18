@@ -127,7 +127,6 @@ export const useTransactionStore = defineStore('transaction', {
         },
 
         async addTransaction(payload: PostData) {
-            console.log('jalan')
             const chat = await axios.post('/api/v1/chat', { user_id: payload.transaction.user_id })
             if (chat.data && chat.data.status !== 200) {
                 return
@@ -141,7 +140,6 @@ export const useTransactionStore = defineStore('transaction', {
         },
 
         async updateTransaction(payload: PostData) {
-            console.log(payload)
             const res = await axios.put('/api/v1/transaction', payload)
             this.isLoading = false
             this.resetTransationData

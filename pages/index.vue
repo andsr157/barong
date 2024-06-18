@@ -104,9 +104,7 @@ const checkNotifSubscription = async () => {
     navigator.serviceWorker.ready.then((registration) => {
       console.log("Service Worker ready")
       const { data: user } = <any>useAuth()
-      console.log("user", user)
       if (user.value && user.value.user.id) {
-        console.log("User logged in")
         const storedData = JSON.parse(localStorage.getItem("subscriptionData"))
         const VERSION = "1.0.0"
         if (!storedData || storedData.swVersion !== VERSION) {

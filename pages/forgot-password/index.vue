@@ -21,8 +21,6 @@ const onSubmit = handleSubmit(async () => {
   })).catch((error: any) => {
     isLoading.value = false
   })
-  console.log(res)
-
   if (res) {
     toastStore.success({
       text: "berhasil terkirim cek pesan email",

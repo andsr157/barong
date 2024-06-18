@@ -61,7 +61,6 @@ const handleCancelTransaction = async () => {
 }
 
 const handleSetCurrentTransaction = () => {
-  console.log(user.value)
   const transactionData = {
     id: transaction.value.id,
     user_id: userId,
@@ -113,7 +112,6 @@ const newTransactionData = useNuxtApp()
       filter: `user_id=eq.${user?.value?.user?.id}`,
     },
     async (payload: any) => {
-      console.log(payload)
       const res = await transactionStore.getSingleTransaction(payload.new.id)
       transaction.value = res.data
     }

@@ -16,7 +16,6 @@ const { transactionData, formError, transactionImage } =
 const getMainAddress = async () => {
   try {
     const res = await useNuxtApp().$axios.get("address/main")
-    console.log("address", res.data)
     if (res.data.status === 200) {
       mainAddress.value = res.data
       transactionStore.transactionData.transaction.address = {

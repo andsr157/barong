@@ -50,7 +50,6 @@ const sendChat = async () => {
       console.warn("Message cannot be empty")
       return
     }
-    console.log(newMessage.value)
     const payload = {
       chats_id: chat_id,
       sender_id: user.value.user.id,
@@ -95,7 +94,6 @@ onMounted(async () => {
         filter: `chats_id=eq.${chats.value.chats_id}`,
       },
       (payload: any) => {
-        console.log(payload)
         const message = {
           message_id: payload.new.id as string,
           sender_id: payload.new.sender_id as string,

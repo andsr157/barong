@@ -78,7 +78,6 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("push", (event) => {
   const payload = JSON.parse(event.data.text())
-  console.log(payload)
   const options = {
     body: payload.body,
     data: {

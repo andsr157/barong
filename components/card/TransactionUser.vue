@@ -85,7 +85,6 @@ const handleClick = (event: Event, callback: () => void) => {
         v-else-if="status.name === 'searching'"
         label="batalkan"
         color="bg-brg-red"
-        @click.prevent="console.log('click')"
       />
       <ButtonSmall
         v-else-if="status.name === 'canceled'"

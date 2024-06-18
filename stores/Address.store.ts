@@ -37,7 +37,6 @@ export const useAddressStore = defineStore('Address-store', {
                 const res = await axios.get('/api/v1/address')
                 if (res.data.status === 200) {
                     this.address = res.data.data
-                    console.log(this.formAdress)
                 }
                 this.isLoading = false
                 return Promise.resolve(res.data)
@@ -89,11 +88,8 @@ export const useAddressStore = defineStore('Address-store', {
 
         setForm(id: string) {
             const data = this.address.find((data: Address) => data.id === id);
-            console.log(data)
             if (data) {
-                console.log('jalan')
                 this.formAdress = data
-                console.log(this.formAdress)
             }
         },
 
@@ -119,7 +115,6 @@ export const useAddressStore = defineStore('Address-store', {
             this.formAdress.latitude = defaultValues.latitude ?? this.formAdress.latitude;
             this.formAdress.longitude = defaultValues.longitude ?? this.formAdress.longitude;
             this.formAdress.is_main = defaultValues.is_main ?? this.formAdress.is_main;
-            console.log(this.formAdress)
         },
 
 

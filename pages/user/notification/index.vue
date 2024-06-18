@@ -23,11 +23,9 @@ const fetchData = async () => {
       `/api/v1/notification?cursor=${cursor.value}&limit=1`
     )) as any
     if (res && res.status == 200) {
-      console.log(res)
       res.data.map((i: any) => {
         data.value.data.push({ ...i, showActions: false })
       })
-      console.log("jalan")
       data.value.pagination = res.pagination
       cursor.value = res.data[res.data.length - 1].createdAt
       pageFlag.value += 1
@@ -52,7 +50,7 @@ const readAll = async () => {
       }
     }
   } catch (error) {
-    console.log()
+    console.log(error)
   }
 }
 
@@ -78,7 +76,6 @@ const deleteNotif = async (id: string) => {
       method: "DELETE",
     })) as any
     if (res && res.status == 200) {
-      console.log(res)
       if (data.value && data.value.data.length) {
         data.value.data = data.value.data.filter((i: any) => i.id !== id)
       }

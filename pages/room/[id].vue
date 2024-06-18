@@ -26,7 +26,6 @@ function initChannels() {
 }
 
 function receiveMessage(payload: any) {
-  console.log("realtime data:", payload.payload)
   chat.value.push(payload.payload.message)
 }
 
@@ -43,16 +42,12 @@ function receiveMessage(payload: any) {
 // })
 
 const sendMessage = () => {
-  console.log(channelA)
-  console.log(channelB)
   if (message.value) {
-    channelB
-      ?.send({
-        type: "broadcast",
-        event: "test",
-        payload: { message: message.value },
-      })
-      .then((res) => console.log(res))
+    channelB?.send({
+      type: "broadcast",
+      event: "test",
+      payload: { message: message.value },
+    })
     message.value = ""
     if (channelB) {
       supabase.removeChannel(channelB)
@@ -76,7 +71,6 @@ onMounted(() => {
     ? route.params.id[0]
     : route.params.id
   roomId.value = id
-  console.log(roomId.value)
   initChannels()
   // channelA.value = supabase.channel(`room-${id}`, {
   //   config: {

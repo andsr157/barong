@@ -23,16 +23,11 @@ const saveNewLocation = () => {
 }
 
 async function test(event: any) {
-  console.log(event)
   addresStore.getLocationAdress(event.lat, event.lng)
   center.value = {
     lat: event.lat,
     lng: event.lng,
   }
-}
-
-async function isReady(event: any) {
-  console.log(event)
 }
 </script>
 
@@ -51,7 +46,6 @@ async function isReady(event: any) {
         <LMarker
           :lat-lng="[props.center.lat, props.center.lng]"
           @update:lat-lng="test"
-          @ready="isReady"
           draggable
         >
         </LMarker>

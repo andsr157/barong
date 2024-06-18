@@ -43,7 +43,6 @@ onMounted(() => {
         filter: `user_id=eq.${user?.value?.user?.id}`,
       },
       (payload: any) => {
-        console.log("active", payload)
         refresh()
       }
     )
