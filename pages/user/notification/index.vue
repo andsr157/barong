@@ -54,6 +54,23 @@ const readAll = async () => {
   }
 }
 
+const seeNotification = async (id: string, url: string, isRead: boolean) => {
+  try {
+    if (isRead) {
+      router.push("/user" + url)
+    } else {
+      const res = (await $fetch(`/api/v1/notification/${id}`, {
+        method: "PUT",
+      })) as any
+      if (res && res.status == 200) {
+        router.push("/user" + url)
+      }
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const deleteNotif = async (id: string) => {
   try {
     if (
@@ -183,7 +200,10 @@ onUnmounted(() => {
             />
             Hapus
           </button>
-          <button @click="router.push('/user/history')" class="cursor-pointer">
+          <button
+            @click="seeNotification(notif.id, notif.link, notif.isRead)"
+            class="cursor-pointer"
+          >
             <Icon
               name="ic:outline-remove-red-eye"
               size="24px"
