@@ -9,7 +9,8 @@ export function toCurrency(value: number) {
 
 export function formatSampah(detailSampah: any) {
     if (detailSampah.length <= 2) {
-        return detailSampah.map((sampah: Record<string, any>) => sampah.category).join(', ');
+        const uniqueCategories = Array.from(new Set(detailSampah.map((sampah: Record<string, any>) => sampah.category)));
+        return uniqueCategories.join(', ');
     } else {
         const firstSampah = detailSampah[0].category;
         const remainingCount = detailSampah.length - 1;

@@ -193,7 +193,7 @@ onMounted(async () => {
           >
             <template #suffix>
               <span class="text-brg-primary text-[9px] font-medium pt-1">{{
-                data.unit
+                data.trashUnit
               }}</span>
             </template>
           </Input>
