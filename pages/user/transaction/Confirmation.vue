@@ -140,6 +140,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
+  <SplashScreen :is-loading="isLoading" />
   <Header title="Transaksi" />
   <div class="px-6 mt-[30px]">
     <section class="">

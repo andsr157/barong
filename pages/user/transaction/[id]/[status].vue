@@ -91,6 +91,7 @@ const handleSetCurrentTransaction = () => {
     transaction_id = route.params.id
   }
   transactionStore.transactionData = currentTransaction
+  console.log("current", transactionStore.transactionData)
   if (transactionStore.transactionData.transaction.id === transaction_id) {
     router.push("/user/transaction/add")
   }
@@ -126,6 +127,7 @@ onMounted(async () => {
     id = route.params.id
   }
   const res = await transactionStore.getSingleTransaction(id)
+  console.log(res)
   if (res?.error) {
     if (res.error.status === 403) {
       router.push("/user")
@@ -254,7 +256,7 @@ onUnmounted(() => {
           v-for="(data, index) in transaction.detailSampah"
           :key="index"
           :category="data.category"
-          :trashUnit="data.unit"
+          :trashUnit="data.trashUnit"
           :subcategory="data.subcategory"
           :weight="data.weight"
           :final-price="data.finalPrice"
@@ -266,7 +268,7 @@ onUnmounted(() => {
           :key="transaction.id"
           :category="data.category"
           :subcategory="data.subcategory"
-          :trashUnit="data.unit"
+          :trashUnit="data.trashUnit"
           :weight="data.weight"
           :min-price="data.minPrice"
           :max-price="data.maxPrice"

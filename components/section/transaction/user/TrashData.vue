@@ -30,9 +30,9 @@ const trashFormVisible = ref(false)
           v-model="trash.weight"
         >
           <template #suffix>
-            <span class="text-brg-primary text-[11px] font-medium pt-1">{{
-              trash.trashUnit
-            }}</span>
+            <span class="text-brg-primary text-[11px] font-medium pt-1">
+              {{ trash.trashUnit }}</span
+            >
           </template>
         </Input>
         <button

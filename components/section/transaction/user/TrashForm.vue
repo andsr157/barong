@@ -21,7 +21,7 @@ const optionSubCategory = computed((): TrashCategory[] => {
 
 const selectedCategory = ref<TrashCategory | null>()
 const selectedSubCategory = ref<TrashSubCategory | null>(null)
-const selectedUnit = ref<string>("pcs")
+const selectedUnit = ref<string>("kg")
 const trashWeight = ref(0)
 
 watch(selectedCategory, () => {
