@@ -45,11 +45,11 @@ definePageMeta({
 <template>
   <Toast />
   <section class="px-8 h-full pt-24 translate-y-1">
-    <h1 class="text-brg-primary-dark text-lg font-semibold text-center">
+    <h1 class="text-brg-primary-dark text-2xl font-semibold text-center">
       Lupa Kata Sandi
     </h1>
     <p
-      class="font-normal text-[11px] text-center mx-auto text-brg-primary-dark w-[211px]"
+      class="font-normal text-sm text-center mx-auto text-brg-primary-dark w-[270px] mt-2"
     >
       Masukan Email anda yang terhubung ke akun anda
     </p>
@@ -63,20 +63,20 @@ definePageMeta({
             placeholder="Email"
             prefixIcon="mdi:email"
             prefixIconColor="text-brg-primary"
-            prefixIconSize="22"
+            prefixIconSize="26"
             errorMessage="Email tidak valid"
-            inputClass="placeholder:text-[11px]"
+            inputClass="placeholder:text-sm focus:!text-sm !text-sm"
           />
         </div>
       </div>
     </div>
+    <div class="max-w-max mx-auto mt-20">
+      <ButtonLarge
+        label="Kirim"
+        class="text-base mt-10"
+        @click="onSubmit"
+        :disabled="isLoading"
+      />
+    </div>
   </section>
-  <div class="absolute bottom-0 right-1/2 translate-x-1/2 mb-16">
-    <ButtonLarge
-      label="Kirim"
-      class="text-base mt-10"
-      @click="onSubmit"
-      :disabled="isLoading"
-    />
-  </div>
 </template>

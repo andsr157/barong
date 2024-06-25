@@ -74,7 +74,7 @@ const { value, errorMessage } = useField(fieldName.value ?? "", undefined, {
     />
     <slot name="suffix" />
   </div>
-  <p v-if="errorMessage" class="text-brg-red text-[10px] px-1 mt-[5px]">
+  <p v-if="errorMessage" class="text-brg-red text-xs px-1 mt-[5px]">
     {{ errorMessage }}
   </p>
 </template>

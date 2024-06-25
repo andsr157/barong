@@ -14,8 +14,11 @@ definePageMeta({
 })
 
 const schema = object({
-  email: string().required().email().label("Email"),
-  password: string().required().label("Password"),
+  email: string()
+    .required("Email tidak boleh kosong")
+    .email("Email tidak valid")
+    .label("Email"),
+  password: string().required("Password tidak boleh kosong").label("Password"),
 })
 
 const { values, handleSubmit } = useForm({
@@ -60,27 +63,27 @@ const switchVisibility = () => {
 
 <template>
   <Toast />
-  <section class="px-8 pt-24 translate-y-1 w-full">
-    <div class="text-center font-semibold text-brg-primary-dark text-lg">
+  <section class="px-6 sm:px-8 pt-24 translate-y-1 w-full">
+    <div class="text-center font-semibold text-brg-primary-dark text-2xl">
       <h1>Masuk</h1>
-      <p class="font-normal text-[11px]">
+      <p class="font-normal text-sm mt-2">
         Belum Mendaftar?
         <NuxtLink to="/register" class="text-brg-primary"
           >Buat akun baru.</NuxtLink
         >
       </p>
     </div>
-    <div class="mt-8 flex flex-col gap-5 right-0">
+    <div class="mt-8 flex flex-col gap-5 right-0 text-">
       <div>
         <InputValidation
           name="email"
           type="email"
-          wrapperClass="!rounded-[20px] gap-2 !px-5"
+          wrapperClass="!rounded-[20px] gap-2 !px-6"
           placeholder="Email"
           prefixIcon="mdi:email"
           prefixIconColor="text-brg-primary"
-          prefixIconSize="22"
-          inputClass="placeholder:text-[11px]"
+          prefixIconSize="26"
+          inputClass="focus:!text-[15px] !text-[15px] placeholder:text-sm"
         />
       </div>
 
@@ -91,9 +94,9 @@ const switchVisibility = () => {
           placeholder="Password"
           prefixIcon="mdi:lock"
           prefixIconColor="text-brg-primary"
-          prefixIconSize="22"
+          prefixIconSize="26"
           :type="passwordFieldType"
-          inputClass="placeholder:text-[11px]"
+          inputClass="focus:!text-[15px] !text-[15px] placeholder:text-sm"
         >
           <template #suffix>
             <Icon
@@ -109,20 +112,18 @@ const switchVisibility = () => {
         </InputValidation>
       </div>
     </div>
-    <div class="flex justify-end mt-2">
-      <NuxtLink to="/forgot-password" class="text-brg-primary-dark text-[11px]"
+    <div class="flex justify-end mt-4">
+      <NuxtLink to="/forgot-password" class="text-brg-primary-dark text-sm"
         >Lupa kata sandi ?</NuxtLink
       >
     </div>
+    <div class="max-w-max mx-auto mt-20">
+      <ButtonLarge
+        @click="handleLogin"
+        label="Masuk"
+        class="text-base"
+        :disabled="isLoading"
+      />
+    </div>
   </section>
-  <div
-    class="w-full flex justify-center absolute bottom-0 right-1/2 translate-x-1/2 mb-16"
-  >
-    <ButtonLarge
-      @click="handleLogin"
-      label="Masuk"
-      class="text-base mt-14"
-      :disabled="isLoading"
-    />
-  </div>
 </template>

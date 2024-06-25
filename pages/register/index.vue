@@ -74,15 +74,15 @@ const switchVisibilityConfirmPassword = () =>
 
 <template>
   <Toast />
-  <section class="px-8 pt-24 translate-y-1">
-    <div class="text-center font-semibold text-brg-primary-dark text-lg">
+  <section class="px-6 sm:px-8 pt-24 translate-y-1">
+    <div class="text-center font-semibold text-brg-primary-dark text-2xl">
       <h1>Daftar</h1>
-      <p class="font-normal text-[11px]">
+      <p class="font-normal text-sm">
         Sudah Mendaftar?
         <NuxtLink to="/login" class="text-brg-primary">Masuk.</NuxtLink>
       </p>
     </div>
-    <div class="mt-8 flex flex-col gap-5">
+    <div class="mt-8 flex flex-col gap-3">
       <div>
         <InputValidation
           name="name"
@@ -90,8 +90,8 @@ const switchVisibilityConfirmPassword = () =>
           placeholder="Nama Lengkap"
           prefixIcon="mdi:account"
           prefixIconColor="text-brg-primary"
-          prefixIconSize="22"
-          inputClass="placeholder:text-[11px]"
+          prefixIconSize="26"
+          inputClass="placeholder:text-sm focus:!text-[15px] !text-[15px]"
         />
       </div>
 
@@ -103,8 +103,8 @@ const switchVisibilityConfirmPassword = () =>
           placeholder="Email"
           prefixIcon="mdi:email"
           prefixIconColor="text-brg-primary"
-          prefixIconSize="22"
-          inputClass="placeholder:text-[11px]"
+          prefixIconSize="26"
+          inputClass="placeholder:text-sm focus:!text-[15px] !text-[15px]"
         />
       </div>
 
@@ -115,8 +115,8 @@ const switchVisibilityConfirmPassword = () =>
           placeholder="Telepon"
           prefixIcon="mdi:call"
           prefixIconColor="text-brg-primary"
-          prefixIconSize="22"
-          inputClass="placeholder:text-[11px]"
+          prefixIconSize="26"
+          inputClass="placeholder:text-sm focus:!text-[15px] !text-[15px]"
         />
       </div>
 
@@ -127,9 +127,9 @@ const switchVisibilityConfirmPassword = () =>
           placeholder="Kata Sandi"
           prefixIcon="mdi:lock"
           prefixIconColor="text-brg-primary"
-          prefixIconSize="22"
+          prefixIconSize="26"
           :type="passwordFieldType"
-          inputClass="placeholder:text-[11px]"
+          inputClass="placeholder:text-sm focus:!text-[15px] !text-[15px]"
         >
           <template #suffix>
             <Icon
@@ -152,9 +152,9 @@ const switchVisibilityConfirmPassword = () =>
           placeholder="Konfirmasi Kata Sandi"
           prefixIcon="mdi:lock-check"
           prefixIconColor="text-brg-primary"
-          prefixIconSize="22"
+          prefixIconSize="26"
           :type="confirmPasswordFieldType"
-          inputClass="placeholder:text-[11px]"
+          inputClass="placeholder:text-sm focus:!text-[15px] !text-[15px]"
         >
           <template #suffix>
             <Icon
@@ -170,14 +170,13 @@ const switchVisibilityConfirmPassword = () =>
         </InputValidation>
       </div>
     </div>
+    <div class="max-w-max mx-auto mt-5">
+      <ButtonLarge
+        @click="onSubmit"
+        :disabled="authStore.loading"
+        label="Masuk"
+        class="text-base mt-14"
+      />
+    </div>
   </section>
-
-  <div class="absolute bottom-0 right-1/2 translate-x-1/2 mb-16">
-    <ButtonLarge
-      @click="onSubmit"
-      :disabled="authStore.loading"
-      label="Masuk"
-      class="text-base mt-14"
-    />
-  </div>
 </template>
