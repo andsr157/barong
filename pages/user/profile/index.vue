@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import SplashScreen from "~/components/SplashScreen.vue"
+
 const { signOut } = useAuth()
 
+const isLoading = ref(false)
+
 const handleLogout = async () => {
+  isLoading.value = true
   localStorage.removeItem("subscriptionData")
   localStorage.removeItem("transaction")
   await signOut()
+  isLoading.value = false
 }
 
 const { data: user } = <any>useAuth()
@@ -22,6 +28,7 @@ definePageMeta({
 </script>
 
 <template>
+  <SplashScreen :is-loading="isLoading" />
   <Header title="Profil" />
   <div class="h-[600px]">
     <div
