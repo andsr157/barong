@@ -1,6 +1,9 @@
 interface Coordinates {
     lat: number;
     lng: number;
+    heading?: number;
+    speed?: number;
+    accuracy?: number
 }
 
 const useCustomMaps = () => {
@@ -11,7 +14,10 @@ const useCustomMaps = () => {
                     (position) => {
                         resolve({
                             lat: position.coords.latitude,
-                            lng: position.coords.longitude
+                            lng: position.coords.longitude,
+                            heading: position.coords.heading || 0,
+                            speed: position.coords.speed || 0,
+                            accuracy: position.coords.accuracy
                         });
                     },
                     (error) => {
