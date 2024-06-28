@@ -3,6 +3,7 @@ import { estimateTotal } from "~/composables/helpers"
 
 const transactionStore = useTransactionStore()
 const toastStore = useToastStore()
+const supabase = useNuxtApp().$supabase as any
 
 const route = useRoute()
 const router = useRouter()
@@ -37,8 +38,8 @@ const handleCancelTransaction = async () => {
         const parts = imageUrl.split("/")
 
         const fileName = parts[parts.length - 1]
-        const { data, error } = await useNuxtApp()
-          .$supabase.storage.from("images")
+        const { data, error } = await supabase.storage
+          .from("images")
           .remove([fileName])
         if (error) {
           console.log("failed delete image", error)
@@ -102,8 +103,8 @@ definePageMeta({
   middleware: ["auth", "role"],
 })
 
-const newTransactionData = useNuxtApp()
-  .$supabase.channel("user-transaction")
+const newTransactionData = supabase
+  .channel("user-transaction")
   .on(
     "postgres_changes",
     {
@@ -243,7 +244,9 @@ onUnmounted(() => {
         :telp="transaction.address.telp"
         :address="transaction.address.address"
         :detail="transaction.address.detail"
-        no-button
+        label-button="Lacak"
+        :path="`/user/transaction/${transaction.id}/track?location=${transaction.address.latitude},${transaction.address.longitude}`"
+        :no-button="transaction.status.name !== 'taking' ? true : false"
       />
     </section>
 

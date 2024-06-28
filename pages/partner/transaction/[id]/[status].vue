@@ -298,7 +298,13 @@ const googleMapsUrl = computed(() => {
       class="w-full flex flex-col items-center py-12"
       v-else-if="transaction.status.name === 'taking'"
     >
-      <ButtonLarge label="Selesaikan" @click="handleFinishTransaction" />
+      <div class="flex gap-x-2">
+        <ButtonLarge
+          label="Mulai"
+          @click="router.push(`/partner/transaction/${transaction.id}/taking`)"
+        />
+        <ButtonLarge label="Selesaikan" @click="handleFinishTransaction" />
+      </div>
       <ButtonLarge
         label="Batalkan"
         class="mt-4"
