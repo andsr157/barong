@@ -301,7 +301,11 @@ const googleMapsUrl = computed(() => {
       <div class="flex gap-x-2">
         <ButtonLarge
           label="Mulai"
-          @click="router.push(`/partner/transaction/${transaction.id}/taking`)"
+          @click="
+            router.push(
+              `/partner/transaction/${transaction.id}/take?location=${transaction.address.latitude},${transaction.address.longitude}`
+            )
+          "
         />
         <ButtonLarge label="Selesaikan" @click="handleFinishTransaction" />
       </div>
