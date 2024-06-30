@@ -53,12 +53,27 @@ watch(currentLocation.value, (newValue, oldValue) => {
         L.latLng(newValue.lat, newValue.lng),
         L.latLng(userLocation.value.lat, userLocation.value.lng),
       ],
+      draggableWaypoints: false,
+      addWaypoints: false,
+      createMarker: (i: number, waypoint: any, n: number) => {
+        return L.marker(waypoint.latLng, {
+          icon: L.icon({
+            iconUrl: "/marker-icon.png",
+            iconSize: [25, 31],
+          }),
+        })
+      },
     }).addTo(map.value)
   }
-  let marker = L.marker([
-    currentLocation.value.lat,
-    currentLocation.value.lng,
-  ]).addTo(map.value)
+  let marker = L.marker(
+    [currentLocation.value.lat, currentLocation.value.lng],
+    {
+      icon: L.icon({
+        iconUrl: "/marker-icon.png",
+        iconSize: [25, 31],
+      }),
+    }
+  ).addTo(map.value)
   reqCount.value += 1
 })
 
@@ -130,3 +145,11 @@ onMounted(() => {
     ></div>
   </Teleport>
 </template>
+
+<style>
+div.leaflet-top.leaflet-right {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+}
+</style>

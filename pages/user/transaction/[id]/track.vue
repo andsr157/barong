@@ -47,12 +47,32 @@ watch(currentPartnerLocation.value, (newValue, oldValue) => {
         L.latLng(newValue.lat, newValue.lng),
         L.latLng(userLocation.value.lat, userLocation.value.lng),
       ],
+      draggableWaypoints: false,
+      addWaypoints: false,
+      createMarker: (i: number, waypoint: any, n: number) => {
+        return L.marker(waypoint.latLng, {
+          icon: L.icon({
+            iconUrl: "/marker-icon.png",
+            iconSize: [25, 31],
+          }),
+        })
+      },
     }).addTo(map.value)
   }
   if (!marker.value) {
-    marker.value = L.marker([newValue.lat, newValue.lng]).addTo(map.value)
+    marker.value = L.marker([newValue.lat, newValue.lng], {
+      icon: L.icon({
+        iconUrl: "/marker-icon.png",
+        iconSize: [25, 31],
+      }),
+    }).addTo(map.value)
   } else {
-    marker.value.setLatLng([newValue.lat, newValue.lng])
+    marker.value.setLatLng([newValue.lat, newValue.lng], {
+      icon: L.icon({
+        iconUrl: "/marker-icon.png",
+        iconSize: [25, 31],
+      }),
+    })
   }
   map.value?.setView([newValue.lat, newValue.lng], 15)
   reqCount.value += 1
@@ -118,12 +138,14 @@ onMounted(() => {
       v-if="
         currentPartnerLocation.lat === 0 && currentPartnerLocation.lng === 0
       "
-      class="shadow-xl rounded-xl hover:transform hover:scale-110 duration-200 z-50 bg-white absolute flex flex-col justify-center items-center px-6 h-28 max-w-[450px] right-1/2 translate-x-1/2 top-1/2 -translate-y-1/2"
+      class="shadow-xl rounded-xl hover:transform hover:scale-110 duration-200 z-50 bg-white absolute flex flex-col justify-center items-center px-2 sm:px-6 h-28 w-[80vw] max-w-[320px] right-1/2 translate-x-1/2 top-1/2 -translate-y-1/2"
     >
-      <h1 class="text-lg font-semibold text-center">
+      <h1 class="text-base sm:text-lg font-semibold text-center">
         Pengepul belum mulai jalan
       </h1>
-      <h1 class="text-lg font-semibold text-center">tunggu sebentar... :)</h1>
+      <h1 class="text-base sm:text-lg font-semibold text-center">
+        tunggu sebentar... :)
+      </h1>
     </div>
     <div
       class="absolute right-1/2 translate-x-1/2 border-1 border-brg-primary w-full max-w-[450px] sm:max-w-[100vw] h-[100vh]"
@@ -131,3 +153,11 @@ onMounted(() => {
     ></div>
   </Teleport>
 </template>
+
+<style>
+div.leaflet-top.leaflet-right {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
+}
+</style>
