@@ -10,6 +10,7 @@ const nuxtApp = useNuxtApp()
 const L = nuxtApp.$leaflet as typeof import("leaflet") as any
 
 const maps = useCustomMaps() as any
+const marker = ref<any>(null)
 let channelPartner: RealtimeChannel | null = null
 const route = useRoute()
 const reqCount = ref(0)
@@ -65,16 +66,28 @@ watch(currentLocation.value, (newValue, oldValue) => {
       },
     }).addTo(map.value)
   }
-  let marker = L.marker(
-    [currentLocation.value.lat, currentLocation.value.lng],
-    {
-      icon: L.icon({
-        iconUrl: "/marker-icon.png",
-        iconSize: [25, 31],
-      }),
-    }
-  ).addTo(map.value)
-  map.value?.setView([newValue.lat, newValue.lng], 15)
+  if (!marker.value) {
+    marker.value = L.marker(
+      [currentLocation.value.lat, currentLocation.value.lng],
+      {
+        icon: L.icon({
+          iconUrl: "/marker-pengepul.png",
+          iconSize: [25, 31],
+        }),
+      }
+    ).addTo(map.value)
+  } else {
+    marker.value.setLatLng(
+      [currentLocation.value.lat, currentLocation.value.lng],
+      {
+        icon: L.icon({
+          iconUrl: "/marker-pengepul.png",
+          iconSize: [25, 31],
+        }),
+      }
+    )
+  }
+  map.value?.setView([newValue.lat, newValue.lng], 18)
   reqCount.value += 1
 })
 

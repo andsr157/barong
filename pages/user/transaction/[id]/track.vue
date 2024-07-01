@@ -62,19 +62,19 @@ watch(currentPartnerLocation.value, (newValue, oldValue) => {
   if (!marker.value) {
     marker.value = L.marker([newValue.lat, newValue.lng], {
       icon: L.icon({
-        iconUrl: "/marker-icon.png",
+        iconUrl: "/marker-pengepul.png",
         iconSize: [25, 31],
       }),
     }).addTo(map.value)
   } else {
     marker.value.setLatLng([newValue.lat, newValue.lng], {
       icon: L.icon({
-        iconUrl: "/marker-icon.png",
+        iconUrl: "/marker-pengepul.png",
         iconSize: [25, 31],
       }),
     })
   }
-  map.value?.setView([newValue.lat, newValue.lng], 15)
+  map.value?.setView([newValue.lat, newValue.lng], 18)
   reqCount.value += 1
 })
 
