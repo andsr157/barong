@@ -74,6 +74,7 @@ watch(currentLocation.value, (newValue, oldValue) => {
       }),
     }
   ).addTo(map.value)
+  map.value?.setView([newValue.lat, newValue.lng], 15)
   reqCount.value += 1
 })
 
