@@ -95,7 +95,7 @@ onMounted(() => {
   updateLocation()
   const startUpdateLocation = setInterval(() => {
     updateLocation()
-  }, 5000)
+  }, 1000)
 
   const userCoordinate = route.query?.location as string
   const [userLat, userLng] = userCoordinate.split(",")
