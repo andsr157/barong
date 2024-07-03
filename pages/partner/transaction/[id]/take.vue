@@ -8,6 +8,7 @@ definePageMeta({
 })
 const nuxtApp = useNuxtApp()
 const L = nuxtApp.$leaflet as typeof import("leaflet") as any
+const userData = ref<any>(null)
 
 const maps = useCustomMaps() as any
 const marker = ref<any>(null)
@@ -91,9 +92,21 @@ watch(currentLocation.value, (newValue, oldValue) => {
   reqCount.value += 1
 })
 
-onMounted(() => {
+let startUpdateLocation: NodeJS.Timeout
+
+onMounted(async () => {
+  const transactionId = Array.isArray(route.params.id)
+    ? route.params.id[0]
+    : route.params.id
+
+  const res = (await $fetch(`/api/v1/map/user/${transactionId}`)) as any
+
+  if (res && res.status === 200) {
+    userData.value = res.data
+  }
+
   updateLocation()
-  const startUpdateLocation = setInterval(() => {
+  startUpdateLocation = setInterval(() => {
     updateLocation()
   }, 1000)
 
@@ -103,10 +116,6 @@ onMounted(() => {
   userLocation.value.lng = parseFloat(userLng)
 
   if (process.client) {
-    const transactionId = Array.isArray(route.params.id)
-      ? route.params.id[0]
-      : route.params.id
-
     initChannels(transactionId)
 
     const nuxtApp = useNuxtApp()
@@ -118,7 +127,6 @@ onMounted(() => {
     )
     const mapLink = "<a href='http://openstreetmap.org'>OpenStreetMap</a>"
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-      attribution: "Leaflet &copy; " + mapLink + ", contribution",
       maxZoom: 18,
     }).addTo(map.value)
 
@@ -144,20 +152,46 @@ onMounted(() => {
     //     .addTo(map.value)
     // })
   }
-  onBeforeUnmount(() => {
-    clearInterval(startUpdateLocation)
-    channelPartner?.unsubscribe()
-  })
+})
+
+onBeforeUnmount(() => {
+  clearInterval(startUpdateLocation)
+  channelPartner?.unsubscribe()
 })
 </script>
 
 <template>
   <Teleport to="body">
     <div
-      class="absolute w-full max-w-[450px] sm:max-w-[100vw] right-1/2 translate-x-1/2 h-[100vh]"
+      class="absolute top-0 w-full max-w-[450px] sm:max-w-[100vw] right-1/2 translate-x-1/2 h-[70vh] sm:h-[100vh]"
       id="map"
     ></div>
   </Teleport>
+  <div
+    v-if="userData !== null"
+    class="absolute z-[100] drop-shadow-2xl py-4 px-6 rounded-xl w-full max-w-[450px] h-[30vh] sm:right-1/2 sm:translate-x-1/2 bg-white bottom-0 sm:bottom-5"
+  >
+    <div class="flex justify-between items-center">
+      <div class="text-4xl font-bold text-brg-primary-dark">
+        20<span class="text-base">km</span>
+      </div>
+      <NuxtLink :to="`/chat/${userData.chats_id}`">
+        <Icon
+          name="mdi:chat-bubble"
+          class="text-brg-primary-dark"
+          size="36px"
+        />
+      </NuxtLink>
+    </div>
+    <div class="mt-4 text-base font-medium text-brg-primary-dark">
+      <div class="text-xl font-bold mb-1">{{ userData.user.name }}</div>
+      <p>
+        {{ userData.address.address_name }}
+        <span>({{ userData.address.detail }})</span>
+      </p>
+    </div>
+  </div>
+  <SkeletonMapCard v-else />
 </template>
 
 <style>
