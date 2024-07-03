@@ -9,6 +9,7 @@ definePageMeta({
 const nuxtApp = useNuxtApp()
 const L = nuxtApp.$leaflet as typeof import("leaflet") as any
 const maps = useCustomMaps() as any
+const partnerData = ref<any>(null)
 let channelUser: RealtimeChannel | null = null
 const route = useRoute()
 const userLocation = ref({
@@ -78,7 +79,17 @@ watch(currentPartnerLocation.value, (newValue, oldValue) => {
   reqCount.value += 1
 })
 
-onMounted(() => {
+onMounted(async () => {
+  const transactionId = Array.isArray(route.params.id)
+    ? route.params.id[0]
+    : route.params.id
+
+  const res = (await $fetch(`/api/v1/map/partner/${transactionId}`)) as any
+  console.log(res)
+  if (res && res.status === 200) {
+    console.log(res.data)
+    partnerData.value = res.data
+  }
   if (process.client) {
     console.log(currentPartnerLocation.value)
     const userCoordinate = route.query?.location as string
@@ -88,10 +99,6 @@ onMounted(() => {
 
     console.log(userLocation.value)
 
-    const transactionId = Array.isArray(route.params.id)
-      ? route.params.id[0]
-      : route.params.id
-
     initChannels(transactionId)
 
     map.value = L.map("map").setView(
@@ -100,7 +107,6 @@ onMounted(() => {
     )
     const mapLink = "<a href='http://openstreetmap.org'>OpenStreetMap</a>"
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-      attribution: "Leaflet &copy; " + mapLink + ", contribution",
       maxZoom: 18,
     }).addTo(map.value)
 
@@ -126,9 +132,10 @@ onMounted(() => {
     //     .addTo(map.value)
     // })
   }
-  onBeforeUnmount(() => {
-    channelUser?.unsubscribe()
-  })
+})
+
+onBeforeUnmount(() => {
+  channelUser?.unsubscribe()
 })
 </script>
 
@@ -148,10 +155,57 @@ onMounted(() => {
       </h1>
     </div>
     <div
-      class="absolute right-1/2 translate-x-1/2 border-1 border-brg-primary w-full max-w-[450px] sm:max-w-[100vw] h-[100vh]"
+      class="absolute top-0 right-1/2 translate-x-1/2 border-1 border-brg-primary w-full max-w-[450px] sm:max-w-[100vw] h-[80vh] sm:h-[100vh]"
       id="map"
     ></div>
   </Teleport>
+  <div
+    v-if="
+      partnerData !== null &&
+      currentPartnerLocation.lat !== 0 &&
+      currentPartnerLocation.lng !== 0
+    "
+    class="absolute z-[999] drop-shadow-2xl py-4 px-6 rounded-xl w-full max-w-[450px] h-[20vh] sm:right-1/2 sm:translate-x-1/2 bg-white bottom-0 sm:bottom-5"
+  >
+    <div class="flex justify-between items-center px-5 mt-5">
+      <div class="flex gap-x-2">
+        <div class="w-16 h-16 rounded-full bg-black overflow-hidden">
+          <NuxtImg
+            :src="partnerData.partner.avatar"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="text-brg-primary-dark">
+          <h1 class="text-xl font-bold">{{ partnerData.partner.name }}</h1>
+          <div class="flex items-center ps-2">
+            <p class="font-bold text-lg">
+              {{ partnerData.rate }}
+            </p>
+            <Icon
+              name="ic:round-star"
+              size="24px"
+              class="text-brg-primary-dark"
+            />
+          </div>
+        </div>
+      </div>
+
+      <NuxtLink :to="`/chat/${partnerData.chats_id}`">
+        <Icon
+          name="mdi:chat-bubble"
+          class="text-brg-primary-dark"
+          size="36px"
+        />
+      </NuxtLink>
+    </div>
+  </div>
+  <SkeletonMapCard
+    v-else-if="
+      partnerData === null &&
+      currentPartnerLocation.lat !== 0 &&
+      currentPartnerLocation.lng !== 0
+    "
+  />
 </template>
 
 <style>
