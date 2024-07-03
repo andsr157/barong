@@ -72,7 +72,7 @@ watch(currentLocation.value, (newValue, oldValue) => {
       {
         icon: L.icon({
           iconUrl: "/marker-pengepul.png",
-          iconSize: [25, 31],
+          iconSize: [32, 38],
         }),
       }
     ).addTo(map.value)
@@ -82,7 +82,7 @@ watch(currentLocation.value, (newValue, oldValue) => {
       {
         icon: L.icon({
           iconUrl: "/marker-pengepul.png",
-          iconSize: [25, 31],
+          iconSize: [32, 38],
         }),
       }
     )

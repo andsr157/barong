@@ -63,14 +63,14 @@ watch(currentPartnerLocation.value, (newValue, oldValue) => {
     marker.value = L.marker([newValue.lat, newValue.lng], {
       icon: L.icon({
         iconUrl: "/marker-pengepul.png",
-        iconSize: [25, 31],
+        iconSize: [32, 38],
       }),
     }).addTo(map.value)
   } else {
     marker.value.setLatLng([newValue.lat, newValue.lng], {
       icon: L.icon({
         iconUrl: "/marker-pengepul.png",
-        iconSize: [25, 31],
+        iconSize: [32, 38],
       }),
     })
   }
