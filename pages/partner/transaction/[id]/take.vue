@@ -11,6 +11,7 @@ const L = nuxtApp.$leaflet as typeof import("leaflet") as any
 const userData = ref<any>(null)
 
 const maps = useCustomMaps() as any
+const distance = ref(0)
 const marker = ref<any>(null)
 let channelPartner: RealtimeChannel | null = null
 const route = useRoute()
@@ -51,6 +52,12 @@ const updateLocation = async () => {
 
 watch(currentLocation.value, (newValue, oldValue) => {
   if (!reqCount.value) {
+    distance.value = maps.calculateDistance(
+      currentLocation.value.lat,
+      currentLocation.value.lng,
+      userLocation.value.lat,
+      userLocation.value.lng
+    )
     L.Routing.control({
       waypoints: [
         L.latLng(newValue.lat, newValue.lng),
@@ -191,7 +198,7 @@ onBeforeUnmount(() => {
   >
     <div class="flex justify-between items-center">
       <div class="text-4xl font-bold text-brg-primary-dark">
-        20<span class="text-base">km</span>
+        {{ distance }}<span class="text-base">km</span>
       </div>
       <NuxtLink :to="`/chat/${userData.chats_id}`">
         <div class="relative">
