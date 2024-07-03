@@ -22,6 +22,7 @@ const currentPartnerLocation = ref({
 })
 
 const reqCount = ref(0)
+const chatNotifCount = ref(0)
 const map = ref<LeafletMap>()
 const marker = ref<any>(null)
 const supabase = useNuxtApp().$supabase as any
@@ -78,6 +79,7 @@ watch(currentPartnerLocation.value, (newValue, oldValue) => {
   map.value?.setView([newValue.lat, newValue.lng], 18)
   reqCount.value += 1
 })
+let chats: any
 
 onMounted(async () => {
   const transactionId = Array.isArray(route.params.id)
@@ -89,7 +91,24 @@ onMounted(async () => {
   if (res && res.status === 200) {
     console.log(res.data)
     partnerData.value = res.data
+
+    chats = supabase
+      .channel("chat-track")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `chats_id=eq.${res.data.chats_id}`,
+        },
+        (payload: any) => {
+          chatNotifCount.value += 1
+        }
+      )
+      .subscribe()
   }
+
   if (process.client) {
     console.log(currentPartnerLocation.value)
     const userCoordinate = route.query?.location as string
@@ -136,6 +155,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   channelUser?.unsubscribe()
+  chats?.unsubscribe()
 })
 </script>
 
@@ -191,11 +211,18 @@ onBeforeUnmount(() => {
       </div>
 
       <NuxtLink :to="`/chat/${partnerData.chats_id}`">
-        <Icon
-          name="mdi:chat-bubble"
-          class="text-brg-primary-dark"
-          size="36px"
-        />
+        <div class="relative">
+          <Icon
+            name="mdi:chat-bubble"
+            class="text-brg-primary-dark"
+            size="36px"
+          />
+          <div
+            class="absolute -top-1 -right-1 rounded-full text-center bg-brg-primary text-white w-6 h-6"
+          >
+            {{ chatNotifCount }}
+          </div>
+        </div>
       </NuxtLink>
     </div>
   </div>

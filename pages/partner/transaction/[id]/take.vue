@@ -15,6 +15,7 @@ const marker = ref<any>(null)
 let channelPartner: RealtimeChannel | null = null
 const route = useRoute()
 const reqCount = ref(0)
+let chatNotifCount = ref(0)
 
 const currentLocation = ref({
   lat: 0,
@@ -93,7 +94,7 @@ watch(currentLocation.value, (newValue, oldValue) => {
 })
 
 let startUpdateLocation: NodeJS.Timeout
-
+let chats: any
 onMounted(async () => {
   const transactionId = Array.isArray(route.params.id)
     ? route.params.id[0]
@@ -103,6 +104,22 @@ onMounted(async () => {
 
   if (res && res.status === 200) {
     userData.value = res.data
+    chats = supabase
+      .channel("take-chat")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+          filter: `chats_id=eq.${res.data.chats_id}`,
+        },
+        (payload: any) => {
+          console.log(payload)
+          chatNotifCount.value += 1
+        }
+      )
+      .subscribe()
   }
 
   updateLocation()
@@ -157,6 +174,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   clearInterval(startUpdateLocation)
   channelPartner?.unsubscribe()
+  chats?.unsubscribe()
 })
 </script>
 
@@ -176,11 +194,18 @@ onBeforeUnmount(() => {
         20<span class="text-base">km</span>
       </div>
       <NuxtLink :to="`/chat/${userData.chats_id}`">
-        <Icon
-          name="mdi:chat-bubble"
-          class="text-brg-primary-dark"
-          size="36px"
-        />
+        <div class="relative">
+          <Icon
+            name="mdi:chat-bubble"
+            class="text-brg-primary-dark"
+            size="36px"
+          />
+          <div
+            class="absolute -top-1 -right-1 rounded-full text-center bg-brg-primary text-white w-6 h-6"
+          >
+            {{ chatNotifCount }}
+          </div>
+        </div>
       </NuxtLink>
     </div>
     <div class="mt-4 text-base font-medium text-brg-primary-dark">
