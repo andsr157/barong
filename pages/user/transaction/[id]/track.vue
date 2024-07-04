@@ -55,7 +55,6 @@ const updateLocation = (payload: any) => {
       }),
     })
   }
-  map.value?.setView([payload.lat, payload.lng], 18)
 }
 
 watch(currentPartnerLocation.value, (newValue, oldValue) => {
@@ -85,6 +84,7 @@ watch(currentPartnerLocation.value, (newValue, oldValue) => {
       }),
     }).addTo(map.value)
   }
+  map.value?.setView([newValue.lat, newValue.lng], 18)
   reqCount.value += 1
 })
 let chats: any
