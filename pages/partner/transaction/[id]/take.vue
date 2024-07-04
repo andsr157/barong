@@ -31,14 +31,49 @@ const userLocation = ref({
 const map = ref<LeafletMap>()
 const supabase = useNuxtApp().$supabase as any
 
+const lastLocation = { lat: 0, lng: 0 }
+
 const initChannels = (id: string) => {
   channelPartner = supabase.channel(`room-${id}`)
 }
 
 const updateLocation = async () => {
   const { lat, lng } = await maps.getCurrentLocation()
+  const distanceMoved = maps.calculateDistance(
+    lastLocation.lat,
+    lastLocation.lng,
+    lat,
+    lng
+  )
+
+  if (distanceMoved < 0.01) {
+    return
+  }
   currentLocation.value.lat = lat
   currentLocation.value.lng = lng
+
+  if (!marker.value) {
+    marker.value = L.marker(
+      [currentLocation.value.lat, currentLocation.value.lng],
+      {
+        icon: L.icon({
+          iconUrl: "/marker-pengepul.png",
+          iconSize: [32, 38],
+        }),
+      }
+    ).addTo(map.value)
+  } else {
+    marker.value.setLatLng(
+      [currentLocation.value.lat, currentLocation.value.lng],
+      {
+        icon: L.icon({
+          iconUrl: "/marker-pengepul.png",
+          iconSize: [32, 38],
+        }),
+      }
+    )
+  }
+
   channelPartner?.send({
     type: "broadcast",
     event: "updatePartnerLocation",
@@ -75,28 +110,7 @@ watch(currentLocation.value, (newValue, oldValue) => {
       },
     }).addTo(map.value)
   }
-  if (!marker.value) {
-    marker.value = L.marker(
-      [currentLocation.value.lat, currentLocation.value.lng],
-      {
-        icon: L.icon({
-          iconUrl: "/marker-pengepul.png",
-          iconSize: [32, 38],
-        }),
-      }
-    ).addTo(map.value)
-  } else {
-    marker.value.setLatLng(
-      [currentLocation.value.lat, currentLocation.value.lng],
-      {
-        icon: L.icon({
-          iconUrl: "/marker-pengepul.png",
-          iconSize: [32, 38],
-        }),
-      }
-    )
-  }
-  map.value?.setView([newValue.lat, newValue.lng], 18)
+  map.value?.setView([currentLocation.value.lat, currentLocation.value.lng], 18)
   reqCount.value += 1
 })
 
@@ -132,7 +146,7 @@ onMounted(async () => {
   updateLocation()
   startUpdateLocation = setInterval(() => {
     updateLocation()
-  }, 1000)
+  }, 3000)
 
   const userCoordinate = route.query?.location as string
   const [userLat, userLng] = userCoordinate.split(",")

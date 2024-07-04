@@ -40,6 +40,22 @@ const updateLocation = (payload: any) => {
   console.log("update:", payload)
   currentPartnerLocation.value.lat = payload.lat
   currentPartnerLocation.value.lng = payload.lng
+  if (!marker.value) {
+    marker.value = L.marker([payload.lat, payload.lng], {
+      icon: L.icon({
+        iconUrl: "/marker-pengepul.png",
+        iconSize: [32, 38],
+      }),
+    }).addTo(map.value)
+  } else {
+    marker.value.setLatLng([payload.lat, payload.lng], {
+      icon: L.icon({
+        iconUrl: "/marker-pengepul.png",
+        iconSize: [32, 38],
+      }),
+    })
+  }
+  map.value?.setView([payload.lat, payload.lng], 18)
 }
 
 watch(currentPartnerLocation.value, (newValue, oldValue) => {
@@ -68,15 +84,7 @@ watch(currentPartnerLocation.value, (newValue, oldValue) => {
         iconSize: [32, 38],
       }),
     }).addTo(map.value)
-  } else {
-    marker.value.setLatLng([newValue.lat, newValue.lng], {
-      icon: L.icon({
-        iconUrl: "/marker-pengepul.png",
-        iconSize: [32, 38],
-      }),
-    })
   }
-  map.value?.setView([newValue.lat, newValue.lng], 18)
   reqCount.value += 1
 })
 let chats: any
