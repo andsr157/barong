@@ -59,7 +59,7 @@ const fetchData = async (status: string) => {
       status,
       () =>
         $fetch(
-          `/api/v1/transaction/user?limit=1&status=${status}&cursor=${cursor.value[status]}`
+          `/api/v1/transaction/user?limit=3&status=${status}&cursor=${cursor.value[status]}`
         ),
       { immediate: false }
     )

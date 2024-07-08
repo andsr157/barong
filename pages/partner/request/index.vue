@@ -31,7 +31,7 @@ async function fetchData() {
     "request",
     () =>
       $fetch(
-        `/api/v1/transaction/request?limit=1&cursor=${cursor.value}&lat=${latitude.value}&lng=${longitude.value}`
+        `/api/v1/transaction/request?limit=3&cursor=${cursor.value}&lat=${latitude.value}&lng=${longitude.value}`
       ),
     { immediate: false }
   ) as any
