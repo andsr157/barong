@@ -41,12 +41,13 @@ const {
     >
       <CardTransactionPartner
         v-for="transaction in transactionActive?.data"
+        :transaction_id="transaction.id"
         :detail-sampah="formatSampah(transaction.detailSampah)"
         :status="transaction.status"
         :user="transaction.user"
         :address="transaction.address"
         :time="transaction.time"
-        :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
+        :path="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
       />
     </div>
     <div class="w-full pb-14" v-else>

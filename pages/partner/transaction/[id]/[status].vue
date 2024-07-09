@@ -157,7 +157,7 @@ onMounted(async () => {
 })
 
 const googleMapsUrl = computed(() => {
-  return `https://www.google.com/maps?q=${transaction.value?.address.latitude},${transaction.value?.address.longitude}`
+  return `/partner/transaction/${transaction.value?.id}/route?location=${transaction.value?.address.latitude},${transaction.value?.address.longitude}`
 })
 </script>
 
@@ -197,7 +197,6 @@ const googleMapsUrl = computed(() => {
         :detail="transaction.address.detail"
         label-button="Lihat Rute"
         :path="googleMapsUrl"
-        button-target="_blank"
         :no-button="transaction.status.name === 'finish'"
       />
     </section>

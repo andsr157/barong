@@ -92,12 +92,13 @@ onMounted(async () => {
       >
         <CardTransactionPartner
           v-for="transaction in requestData.data"
+          :transaction_id="transaction.id"
           :detailSampah="formatSampah(transaction.detailSampah)"
-          :address="transaction.address.address"
+          :address="transaction.address"
           :status="transaction.status"
           :user="transaction.user"
           :time="transaction.time"
-          :to="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
+          :path="`/partner/transaction/${transaction.id}/${transaction.status.name}`"
         />
 
         <div v-if="requestPending"><SkeletonTransaction /></div>

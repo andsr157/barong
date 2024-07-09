@@ -84,7 +84,9 @@ export default defineEventHandler(async (event) => {
                             id: data.id,
                             user: data.user,
                             address: {
-                                address: addressData.address_name,
+                                address_name: addressData.address_name,
+                                lat: addressData.latitude,
+                                lng: addressData.longitude
                             },
                             detailSampah: data.transaction_detail.map((detail: any) => ({
                                 id: detail.id,
