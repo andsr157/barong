@@ -35,7 +35,7 @@ const { data, status, refresh } = await (<any>(
       <div>
         <div class="flex items-center gap-x-2">
           <h1 class="text-[20px] text-brg-primary-dark font-semibold">
-            Hai {{ user.user.name }}
+            Hai {{ user.user.name.split(" ")[0] }}
           </h1>
           <h2 class="!text-brg-primary">
             <span class="text-sm font-semibold">4.5</span>

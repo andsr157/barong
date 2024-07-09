@@ -34,13 +34,6 @@ interface TrashItem {
   weight: number
 }
 
-const trashData = ref<TrashItem[]>([])
-
-const test = computed(() => {
-  const NewData = trashData.value.find((d: any) => d.category === "Besi")
-  return NewData
-})
-
 const updatedCard = computed(() => {
   const updatedCardData = [...card]
   if (data.value && data.value.status === 200) {
@@ -57,9 +50,9 @@ const updatedCard = computed(() => {
   return []
 })
 
-const newTrashData = computed(() => {
-  return updatedCard.value.filter((cardItem) => cardItem.weight !== 0)
-})
+// const newTrashData = computed(() => {
+//   return updatedCard.value.filter((cardItem) => cardItem.weight !== 0)
+// })
 
 const isLoading = ref(false)
 const card = <CARD[]>[
@@ -148,9 +141,9 @@ interface CARD {
       Total sampahmu
     </h2>
     <div v-if="pending">lagi loading sabar</div>
-    <div v-else-if="newTrashData.length > 0 && status === 'success'">
+    <div v-else-if="updatedCard.length > 0 && status === 'success'">
       <Swiper :breakpoints="BREAKSPOINTS">
-        <SwiperSlide v-for="data in newTrashData">
+        <SwiperSlide v-for="data in updatedCard">
           <CardTrash
             :category="data.category"
             :weight="data.weight"
