@@ -52,7 +52,7 @@ nuxtApp.hook("page:start", () => {
 nuxtApp.hook("page:finish", () => {
   setTimeout(() => {
     isLoading.value = false
-  }, 800)
+  }, 400)
 })
 </script>
 

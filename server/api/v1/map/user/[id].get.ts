@@ -38,9 +38,11 @@ export default defineEventHandler(async (event) => {
         }
         const data = { ...resData, ...parseAddress }
 
-        if (session) {
-            AuthorizationCheck(session, res?.partner_id);
-        }
+        console.log(res)
+
+        // if (session) {
+        //     AuthorizationCheck(session, res?.partner_id);
+        // }
 
         return { data: data, status: 200 }
     } catch (error) {
