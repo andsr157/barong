@@ -54,7 +54,7 @@ onUnmounted(() => {
   <section class="mt-[30px] mb-10 px-6">
     <div class="flex w-full justify-between">
       <h1 class="text-2xl text-brg-primary-dark font-bold mb-4">
-        Hai {{ user.user.name }}
+        Hai {{ user.user.name.split(" ")[0] }}
       </h1>
       <div class="relative" @click="useRouter().push('/user/notification')">
         <Icon
