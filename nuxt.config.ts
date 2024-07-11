@@ -38,7 +38,7 @@ export default defineNuxtConfig({
       name: 'Barong',
       short_name: 'Barong',
       description: 'Barong: aplikasi Jual Beli Rongsok',
-      theme_color: '#ffff',
+      theme_color: '#ffffff',
       icons: [
         {
           src: 'icons/icon_64x64.png',
