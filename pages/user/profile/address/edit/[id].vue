@@ -51,7 +51,10 @@ const toggleSwitch = async () => {
     formAdress.value.is_main = false
   }
 
-  if (formAdress.value.is_main || address.value.length <= 1) {
+  if (
+    (formAdress.value.is_main && address.value.length <= 1) ||
+    formAdress.value?.is_main
+  ) {
     toastStore.error({
       text: "alamat utama harus ada setidaknya satu",
     })
