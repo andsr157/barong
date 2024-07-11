@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.barong_psi.twa",
+      "sha256_cert_fingerprints": [
+        "7B:4F:BE:2C:6A:21:96:59:E4:C0:4E:15:5C:8A:40:7C:55:7C:FE:00:50:56:7D:64:7F:7C:29:88:B8:F4:05:78"
+      ]
+    }
+  }
+]
