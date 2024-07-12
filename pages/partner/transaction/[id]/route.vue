@@ -72,6 +72,14 @@ onMounted(async () => {
       ],
       draggableWaypoints: false,
       addWaypoints: false,
+      createMarker: (i: number, waypoint: any, n: number) => {
+        return L.marker(waypoint.latLng, {
+          icon: L.icon({
+            iconUrl: "/marker-icon.png",
+            iconSize: [25, 31],
+          }),
+        })
+      },
     }).addTo(map.value)
   }
 })
