@@ -30,54 +30,80 @@ definePageMeta({
 <template>
   <SplashScreen :is-loading="isLoading" />
   <Header title="Profil" />
-  <div class="h-[600px]">
+  <div class="h-[600px] mt-5 px-6">
     <div
-      class="h-[238px] bg-brg-primary rounded-br-3xl rounded-bl-3xl flex flex-col justify-center items-center"
+      class="w-full py-6 rounded-lg mx-auto bg-gradient-to-br from-brg-primary to-brg-secondary flex flex-col justify-center items-center"
     >
-      <div
-        class="w-[98px] h-[98px] rounded-full border-[3px] overflow-y-hidden"
-      >
-        <NuxtImg
-          :src="user.user.avatar"
-          width="98"
-          height="98"
-          class="object-cover w-full h-full"
-        />
-      </div>
-      <h1 class="font-semibold text-white text-sm my-1">
+      <h1 class="font-semibold text-white my-1 capitalize">
         {{ user.user.name }}
       </h1>
-      <h1 class="text-[11px] text-white font-light mb-1">
+      <h1 class="text-sm text-white font-normal mb-1">
         {{ user.user.telp }}
       </h1>
-      <h1 class="text-[11px] text-white font-light">{{ user.user.email }}</h1>
+      <h1 class="text-sm text-white">{{ user.user.email }}</h1>
     </div>
-    <div class="px-6 mt-[34px] flex flex-col gap-[15px]">
-      <NuxtLink class="flex items-center gap-2" to="/user/profile/edit">
-        <Icon
-          name="mdi:account-edit"
-          size="24px"
-          class="text-brg-primary-dark"
-        />
-        <h1 class="font-semibold text-brg-primary-dark">Ubah Profil</h1>
+    <div class="mt-[34px] flex flex-col gap-[15px]">
+      <NuxtLink class="flex items-start gap-2" to="/user/profile/edit">
+        <Icon name="mdi:account-edit" size="26px" class="text-brg-gray" />
+        <div>
+          <h1 class="text-[15px] font-semibold text-brg-primary-dark">
+            Ubah Profil
+          </h1>
+          <p class="text-xs text-brg-gray font-light">Kelola Data Profilmu</p>
+        </div>
       </NuxtLink>
-      <NuxtLink class="flex items-center gap-2" to="/user/profile/address">
+      <NuxtLink class="flex items-start gap-2" to="/user/profile/address">
         <Icon
           name="uil:map-marker-edit"
-          size="24px"
+          size="26px"
           class="text-brg-primary-dark"
         />
-        <h1 class="font-semibold text-brg-primary-dark">Alamat</h1>
+        <div>
+          <h1 class="text-[15px] font-semibold text-brg-primary-dark">
+            Alamat
+          </h1>
+          <p class="text-xs text-brg-gray font-light">
+            Tambah dan edit Data Alamat
+          </p>
+        </div>
       </NuxtLink>
       <NuxtLink
-        class="flex items-center gap-2"
+        class="flex items-start gap-2"
         to="/user/profile/changePassword"
       >
-        <Icon name="ooui:edit-lock" class="text-brg-primary-dark" size="22px" />
-        <h1 class="font-semibold text-brg-primary-dark">Ubah Kata Sandi</h1>
+        <Icon
+          name="ooui:edit-lock"
+          class="text-brg-primary-dark me-1"
+          size="22px"
+        />
+        <div>
+          <h1 class="text-[15px] font-semibold text-brg-primary-dark">
+            Ubah Kata Sandi
+          </h1>
+          <p class="text-xs text-brg-gray font-light">Kelola kata sandi akun</p>
+        </div>
       </NuxtLink>
+      <a
+        class="flex items-start gap-2"
+        href="https://www.barongsolo.com/feature"
+        target="_blank"
+      >
+        <Icon
+          name="material-symbols:info-outline"
+          size="26px"
+          class="text-brg-primary-dark"
+        />
+        <div>
+          <h1 class="text-[15px] font-semibold text-brg-primary-dark">
+            Panduan Penggunaan
+          </h1>
+          <p class="text-xs text-brg-gray font-light">
+            Panduan penggunaan semua Ffitur aplikasi
+          </p>
+        </div>
+      </a>
     </div>
-    <div class="px-6 mt-[34px] flex flex-col gap-[15px]">
+    <div class="mt-[34px] flex flex-col gap-[15px]">
       <div class="flex items-center gap-2 cursor-pointer" @click="handleLogout">
         <Icon name="mdi:logout" size="24px" class="text-brg-red" />
         <h1 class="font-semibold text-brg-red">Keluar</h1>

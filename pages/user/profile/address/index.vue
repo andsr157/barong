@@ -4,7 +4,7 @@ import { useAddressStore } from "~/stores/Address.store"
 const addresStore = useAddressStore()
 definePageMeta({
   layout: "blank",
-  middleware: ["auth", "role"],
+  middleware: ["auth", "role", "address"],
 })
 
 const { address, isLoading } = storeToRefs(addresStore)
@@ -14,7 +14,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <Header title="Daftar Alamat" />
+  <AddressHeader title="Daftar Alamat" />
   <div v-if="!isLoading">
     <div class="px-5 mt-[20px] flex flex-col gap-7">
       <NuxtLink
