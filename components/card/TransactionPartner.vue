@@ -4,6 +4,7 @@ defineProps<{
   transaction_id: string
   detailSampah: string
   status: { name: string; label: string; status: string }
+  distance?: number
   user: {
     name: string
     telp: string
@@ -43,11 +44,16 @@ const handleClick = (event: Event, callback: () => void) => {
         >{{ status.label }}</span
       >
     </div>
-    <div>
-      <p class="text-[10px] text-brg-gray">+{{ user.telp }}</p>
-      <p class="text-xs text-brg-primary-dark font-semibold mt-1">
-        {{ user.name }}
-      </p>
+    <div class="flex justify-between items-end">
+      <div>
+        <p class="text-[10px] text-brg-gray">+{{ user.telp }}</p>
+        <p class="text-xs text-brg-primary-dark font-semibold mt-1">
+          {{ user.name }}
+        </p>
+      </div>
+      <div class="pe-6" v-if="distance">
+        <p class="font-bold">{{ distance }} Km</p>
+      </div>
     </div>
 
     <div class="flex justify-between items-end">

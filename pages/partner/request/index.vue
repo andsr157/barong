@@ -70,6 +70,14 @@ async function fetchData() {
   }
 }
 
+const sortedByDistance = computed(() => {
+  if (requestData.value.data.length !== 0) {
+    return requestData.value.data.sort(
+      (a: any, b: any) => a.distance - b.distance
+    )
+  }
+})
+
 onMounted(async () => {
   setInterval(() => {
     locationStore.updateLocation()
@@ -91,10 +99,11 @@ onMounted(async () => {
         class="flex flex-col gap-y-5"
       >
         <CardTransactionPartner
-          v-for="transaction in requestData.data"
+          v-for="transaction in sortedByDistance"
           :transaction_id="transaction.id"
           :detailSampah="formatSampah(transaction.detailSampah)"
           :address="transaction.address"
+          :distance="transaction.distance"
           :status="transaction.status"
           :user="transaction.user"
           :time="transaction.time"
