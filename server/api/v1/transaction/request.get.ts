@@ -93,6 +93,7 @@ export default defineEventHandler(async (event) => {
                                 category: detail.trash.category.name,
                             })),
                             time: data.updated_at,
+                            distance: (distance / 1000).toFixed(2),
                             status: status,
                         });
                     }
