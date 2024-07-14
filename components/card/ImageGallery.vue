@@ -66,7 +66,7 @@ const isPreviewOpen = ref(false)
     >
       <img
         :src="props.url"
-        alt="partner profile img"
+        alt="gambar sampah"
         class="w-[375px] h-auto md:w-3/4 object-contain"
       />
     </div>

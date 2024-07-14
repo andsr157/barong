@@ -127,9 +127,7 @@ const onSubmit = async () => {
         throw error
       })
     }
-
     isLoading.value = false
-
     localStorage.removeItem("transaction")
     useRouter().push("/user/transaction/success")
   } catch (error) {
