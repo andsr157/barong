@@ -25,6 +25,24 @@ const { values, handleSubmit } = useForm({
   validationSchema: schema,
 })
 
+const handleGoogleLogin = async () => {
+  isLoading.value = true
+  try {
+    const response = (await signIn("google")) as any
+    console.log("Response from Google Sign-In:", response)
+    if (response.error) {
+      console.error(response.error)
+      toastStore.error({ text: "Login dengan Google gagal" })
+    } else {
+      toastStore.success({ text: "Login berhasil" })
+      router.push("/")
+    }
+  } catch (error) {
+    console.error(error)
+    toastStore.error({ text: "Terjadi kesalahan saat login" })
+  }
+}
+
 const handleLogin = handleSubmit(async (values) => {
   try {
     isLoading.value = true
@@ -63,7 +81,7 @@ const switchVisibility = () => {
 
 <template>
   <Toast />
-  <section class="px-6 sm:px-8 pt-24 translate-y-1 w-full">
+  <section class="px-6 sm:px-8 pt-16 translate-y-1 w-full">
     <div class="text-center font-semibold text-brg-primary-dark text-2xl">
       <h1>Masuk</h1>
       <p class="font-normal text-sm mt-2">
@@ -73,7 +91,7 @@ const switchVisibility = () => {
         >
       </p>
     </div>
-    <div class="mt-8 flex flex-col gap-5 right-0 text-">
+    <div class="mt-8 flex flex-col gap-5 right-0">
       <div>
         <InputValidation
           name="email"
@@ -117,6 +135,7 @@ const switchVisibility = () => {
         >Lupa kata sandi ?</NuxtLink
       >
     </div>
+
     <div class="max-w-max mx-auto mt-20">
       <ButtonLarge
         @click="handleLogin"
@@ -124,6 +143,18 @@ const switchVisibility = () => {
         class="text-base"
         :disabled="isLoading"
       />
+    </div>
+    <div class="my-4">
+      <p class="text-center text-brg-gray text-sm">atau</p>
+    </div>
+    <div
+      @click="handleGoogleLogin"
+      class="hover:bg-brg-white cursor-pointer w-[80vw] sm:w-[292px] mx-auto py-[5px] border-[1px] border-brg-primary-dark rounded-full flex justify-center gap-x-2 items-center"
+    >
+      <NuxtImg src="/icons/google.png" width="32px" height="32px" />
+      <p class="font-medium text-brg-primary-dark text-[15px]">
+        Masuk Dengan Google
+      </p>
     </div>
   </section>
 </template>

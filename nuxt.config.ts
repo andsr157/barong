@@ -25,6 +25,8 @@ export default defineNuxtConfig({
       supabaseKey: process.env.SUPABASE_KEY,
       bucketUrl: process.env.BUCKET_URL,
       jwtSecret: process.env.JWT_SECRET,
+      googleClientId: process.env.GOOGLE_CLIENT_ID,
+      googleSecret: process.env.GOOGLE_SECRET
     },
     public: {
       appUrl: process.env.BASE_URL ?? "http://localhost:3000",
