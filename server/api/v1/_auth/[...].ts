@@ -14,8 +14,8 @@ export default NuxtAuthHandler({
     providers: [
         // @ts-expect-error
         GoogleProvider.default({
-            clientId: '736911043380-6o3hqbj8qjpkv250jal58sdigbhhoafc.apps.googleusercontent.com',
-            clientSecret: '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'
+            clientId: useRuntimeConfig().app.googleClientId,
+            clientSecret: useRuntimeConfig().app.googleSecret
         }),
 
         // @ts-expect-error
