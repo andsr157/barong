@@ -1,8 +1,8 @@
 import { NuxtAuthHandler } from '#auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 import { prisma } from "@/composables/prisma"
 import bcrypt from 'bcrypt'
-
 
 export default NuxtAuthHandler({
 
@@ -12,6 +12,12 @@ export default NuxtAuthHandler({
         signIn: "/login"
     },
     providers: [
+        // @ts-expect-error
+        GoogleProvider.default({
+            clientId: '736911043380-6o3hqbj8qjpkv250jal58sdigbhhoafc.apps.googleusercontent.com',
+            clientSecret: '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'
+        }),
+
         // @ts-expect-error
         CredentialsProvider.default({
             name: 'credentials',
@@ -56,6 +62,34 @@ export default NuxtAuthHandler({
                 token = {
                     ...token,
                     ...userData
+                }
+            }
+
+            if (account?.provider === 'google') {
+                const existingUser = await prisma.users.findUnique({
+                    where: {
+                        email: token.email,
+                    }
+                })
+
+                if (!existingUser) {
+                    const salt = await bcrypt.genSalt(10)
+                    const randomPassword = Math.random().toString(36).slice(-8)
+                    const hashedPassword = await bcrypt.hash(randomPassword, salt)
+                    const newUser = await prisma.users.create({
+                        data: {
+                            email: token.email,
+                            name: token.name,
+                            avatar: '/assets/dummy-profile.png',
+                            telp: '62',
+                            password: hashedPassword,
+                            role: 'user',
+                        }
+                    })
+                    token = {
+                        ...token,
+                        ...newUser
+                    }
                 }
             }
             return token

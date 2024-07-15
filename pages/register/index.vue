@@ -74,7 +74,7 @@ const switchVisibilityConfirmPassword = () =>
 
 <template>
   <Toast />
-  <section class="px-6 sm:px-8 pt-24 translate-y-1">
+  <section class="px-6 sm:px-8 pt-16 translate-y-1">
     <div class="text-center font-semibold text-brg-primary-dark text-2xl">
       <h1>Daftar</h1>
       <p class="font-normal text-sm">
