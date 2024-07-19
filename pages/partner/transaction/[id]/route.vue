@@ -49,10 +49,16 @@ onMounted(async () => {
     const nuxtApp = useNuxtApp()
     const L = nuxtApp.$leaflet as typeof import("leaflet") as any
 
-    map.value = L.map("map").setView(
-      [currentLocation.value.lat, currentLocation.value.lng],
-      15
-    )
+    map.value = L.map("map", {
+      rotate: true,
+      rotateControl: {
+        closeOnZeroBearing: false,
+        position: "topleft",
+      },
+      bearing: 0,
+      shiftKeyRotate: true,
+      touchRotate: true,
+    }).setView([currentLocation.value.lat, currentLocation.value.lng], 15)
     const mapLink = "<a href='http://openstreetmap.org'>OpenStreetMap</a>"
     L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
       maxZoom: 18,
