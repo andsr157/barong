@@ -92,12 +92,12 @@ const card = <CARD[]>[
     color: "brgSecondaryDark",
     dark: false,
   },
-  {
-    category: "Cair",
-    weight: 0,
-    color: "brgBrown",
-    dark: false,
-  },
+  // {
+  //   category: "Cair",
+  //   weight: 0,
+  //   color: "brgBrown",
+  //   dark: false,
+  // },
 ]
 
 interface CARD {
