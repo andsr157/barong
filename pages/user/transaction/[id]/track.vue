@@ -128,7 +128,16 @@ onMounted(async () => {
 
     initChannels(transactionId)
 
-    map.value = L.map("map").setView(
+    map.value = L.map("map" ,{
+      rotate: true,
+      rotateControl: {
+        closeOnZeroBearing: false,
+        position: "topleft",
+      },
+      bearing: 0,
+      shiftKeyRotate: true,
+      touchRotate: true,
+    }).setView(
       [userLocation.value.lat, userLocation.value.lng],
       15
     )
