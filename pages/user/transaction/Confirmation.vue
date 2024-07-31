@@ -128,6 +128,16 @@ const onSubmit = async () => {
       })
     }
     isLoading.value = false
+    console.log("tes", res)
+    await $fetch("/api/v1/notification/sendPushRequest", {
+      method: "POST",
+      body: {
+        title: "Request Pengambilan",
+        body: "Request Pengambilan Baru",
+        url: `/partner/request`,
+      },
+    })
+
     localStorage.removeItem("transaction")
     useRouter().push("/user/transaction/success")
   } catch (error) {
