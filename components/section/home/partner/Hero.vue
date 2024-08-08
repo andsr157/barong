@@ -48,10 +48,7 @@ const { data, status, refresh } = await (<any>(
       </div>
 
       <div class="w-11 h-11 rounded-full overflow-hidden">
-        <NuxtImg
-          src="/assets/dummy-profile.png"
-          class="w-full h-full object-cover"
-        />
+        <NuxtImg :src="user.user.avatar" class="w-full h-full object-cover" />
       </div>
     </div>
 
