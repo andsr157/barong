@@ -127,8 +127,6 @@ const onSubmit = async () => {
         throw error
       })
     }
-    isLoading.value = false
-    console.log("tes", res)
     await $fetch("/api/v1/notification/sendPushRequest", {
       method: "POST",
       body: {
@@ -137,8 +135,8 @@ const onSubmit = async () => {
         url: `/partner/request`,
       },
     })
-
     localStorage.removeItem("transaction")
+    isLoading.value = false
     useRouter().push("/user/transaction/success")
   } catch (error) {
     isLoading.value = false

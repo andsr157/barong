@@ -20,11 +20,10 @@ export default defineEventHandler(async (event) => {
         if (query.cursor !== '0') {
             latestCursor = new Date(query.cursor)
         }
-        ;
-        let formattedTransactions = [];
-        let keepFetching = true;
-        let pageFlag = 0
 
+        let formattedTransactions = []
+        let keepFetching = true
+        let pageFlag = 0
 
         const count = await prisma.transaction.count({
             where: {
@@ -55,6 +54,9 @@ export default defineEventHandler(async (event) => {
                         },
                     },
                     status: true,
+                },
+                orderBy: {
+                    updated_at: 'asc',
                 },
             };
 
@@ -110,7 +112,7 @@ export default defineEventHandler(async (event) => {
         }
 
 
-        const total_pages = Math.ceil(count / limit)
+        const total_pages = Math.ceil(count / limit) + 1
         let pagination
         if (total_pages >= pageFlag) {
             pagination = {

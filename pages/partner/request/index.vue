@@ -59,6 +59,9 @@ async function fetchData() {
   })
 
   await execute()
+  if (data.value.pagination.next === null) {
+    pageFlag.value += 10
+  }
   if (data.value !== null && data.value.data.length !== 0) {
     requestData.value.data.push(...data.value.data)
     requestData.value.pagination = data.value.pagination
