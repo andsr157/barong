@@ -4,6 +4,8 @@ import { useForm } from "vee-validate"
 import { object, string } from "yup"
 
 const toastStore = useToastStore()
+const isShowInstallApp = ref(false)
+const isShowLogin = ref(false)
 const { signIn } = useAuth()
 const router = useRouter()
 const isLoading = ref(false)
@@ -12,6 +14,67 @@ definePageMeta({
   middleware: "login",
   layout: "blank",
 })
+
+let deferredPrompt: any
+let beforeInstallPromptHandler: any
+let hasInstalled = false
+
+const handleInstallApp = async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt()
+    const { outcome } = await deferredPrompt.userChoice
+    if (outcome === "accepted") {
+      deferredPrompt = null
+      isShowInstallApp.value = false
+      isShowLogin.value = true
+      localStorage.setItem("hasInstalled", "true")
+    }
+  }
+}
+
+const cleanUpLocalStorage = () => {
+  console.log("Cleaning up localStorage...")
+  localStorage.removeItem("hasInstalled")
+}
+
+const checkInstall = async () => {
+  console.log("Checking install status...")
+
+  if (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone
+  ) {
+    console.log("App is in standalone mode.")
+    isShowInstallApp.value = false
+    isShowLogin.value = true
+    hasInstalled = true
+    localStorage.setItem("hasInstalled", "true")
+  } else {
+    console.log("App is running in a browser tab.")
+
+    beforeInstallPromptHandler = (e: any) => {
+      e.preventDefault()
+      deferredPrompt = e
+      console.log("beforeinstallprompt event fired.")
+      isShowInstallApp.value = true
+    }
+    window.addEventListener("beforeinstallprompt", beforeInstallPromptHandler)
+
+    if (localStorage.getItem("hasInstalled") === "true") {
+      isShowLogin.value = true
+    } else {
+      cleanUpLocalStorage()
+    }
+  }
+
+  window.addEventListener("appinstalled", () => {
+    console.log("App installed.")
+    isShowInstallApp.value = false
+    isShowLogin.value = true
+    hasInstalled = true
+    localStorage.setItem("hasInstalled", "true")
+  })
+}
 
 const schema = object({
   email: string()
@@ -77,11 +140,27 @@ const switchVisibility = () => {
   passwordFieldType.value =
     passwordFieldType.value === "password" ? "text" : "password"
 }
+
+onBeforeMount(async () => {
+  await checkInstall()
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener("beforeinstallprompt", beforeInstallPromptHandler)
+})
 </script>
 
 <template>
   <Toast />
-  <section class="px-6 sm:px-8 pt-16 translate-y-1 w-full">
+  <ModalPermission
+    title="Install App"
+    desc="Install Aplikasi"
+    :is-show="isShowInstallApp"
+    emit-function="handleInstallApp"
+    @handleInstallApp="handleInstallApp"
+    labelConfirmation="Install"
+  />
+  <section class="px-6 sm:px-8 pt-16 translate-y-1 w-full" v-if="isShowLogin">
     <div class="text-center font-semibold text-brg-primary-dark text-2xl">
       <h1>Masuk</h1>
       <p class="font-normal text-sm mt-2">
