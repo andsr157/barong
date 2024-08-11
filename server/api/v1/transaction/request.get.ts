@@ -112,7 +112,7 @@ export default defineEventHandler(async (event) => {
         }
 
 
-        const total_pages = Math.ceil(count / limit) + 1
+        const total_pages = Math.ceil(count / limit) + 9999
         let pagination
         if (total_pages >= pageFlag) {
             pagination = {
