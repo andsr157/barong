@@ -53,7 +53,7 @@ withDefaults(defineProps<Props>(), {
         </div>
 
         <div>
-          <span class="text-[10px] text-brg-gray">bulan layanan bulan ini</span>
+          <span class="text-[10px] text-brg-gray">biaya layanan bulan ini</span>
           <h3 class="text-sm text-brg-primary-dark font-semibold">
             {{ toCurrency(serviceBill) }}
           </h3>

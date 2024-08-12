@@ -44,7 +44,7 @@ const { data, status, refresh } = await (<any>(
             </span>
           </h2>
         </div>
-        <p class="text-xs text-brg-gray">Ayo ambil dan cari sampah anda</p>
+        <p class="text-xs text-brg-gray">Ayo ambil dan cari rongsok anda</p>
       </div>
 
       <div class="w-11 h-11 rounded-full overflow-hidden">
